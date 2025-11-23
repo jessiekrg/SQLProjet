@@ -34,3 +34,4 @@ CREATE TABLE COMMANDE(
 );
 
 
+-- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))

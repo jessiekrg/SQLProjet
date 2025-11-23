@@ -1,0 +1,1 @@
+--  la question en langage naturel, suivi du script SQL.

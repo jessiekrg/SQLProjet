@@ -1,0 +1,1 @@
+--  les scripts PL/SQL de création des triggers, ainsi que leur formulation en langage naturel.
