@@ -143,5 +143,77 @@ CREATE TABLE ORDONNANCE(
 );
 
 
+CREATE TABLE VENTE(
+    id_Vente int primary key;
+    DateVente date;
+    PrixFinal int;
+    id_Pharmacien ;
+    id_Client;
+
+    foreign key (id_Pharmacien) references Pharmacien(id_RPS);
+    foreign key (id_Client) references Client(NSSI);
+);
+
+CREATE TABLE LIGNEORDONNANCE(
+    id_ligneordonnace int primary key,
+    qt_délivré int,
+    dosage_med int,
+    duree_trait int,
+    date_traitement date,
+    id_medicament int,
+    id_ordonnance int,
+    id_RPPS int,
+
+    foreign key (id_medicament) references Medicament(Code_CIP),
+    foreign key (id_ordonnance) references Ordonnance(id_Ordonnance),
+    foreign key (id_RPPS) references Pharmacien(id_RPPS)
+);
+
+
+
+CREATE TABLE FOURNISSEUR(
+    id_Fournisseur int primary key ,
+    Mail varchar(40),
+    Numero  varchar(40),
+    Adresse varchar(40),
+    Ville varchar(40)
+);
+
+CREATE TABLE COMMANDE(
+    id_Commande int primary key,
+    Date_Commande date,
+    Statut varchar(40),
+    Prix_Commande int,
+    Quantite int,
+    id_Fournisseur,
+
+    foreign key (id_Fournisseur) references Fournisseur(Id_Fournisseur)
+);
+
+
+CREATE TABLE LOT(
+    num_lot int primary key,
+    Quantite int,
+    Date_Peremption date,
+    Date_Fabrication date,
+    Id_Fournisseur int ,
+    Id_LigneVente int,
+    Id_Commande int,
+    CODE_CIP int,
+
+    foreign key (Id_Fournisseur) references Fournisseur(Id_Fournisseur),
+    foreign key (CODE_CIP) references Medicament(CODE_CIP),
+    foreign key (Id_Commande) references Commande(id_Commande)
+);
+
+CREATE TABLE PHARMACIEN(
+    id_RPPS int primary key,
+    Prenom varchar(40),
+    Nom varchar(40),
+    Mail varchar(40),
+    Adresse varchar(40)
+);
+
+
 
 INSERT INTO MEDICAMENT VALUES (340005,"Pararacétamol", 2.18, ,)
