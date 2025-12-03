@@ -10,6 +10,47 @@ CREATE TABLE MEDICAMENT(
 
 );
 
+CREATE TABLE PHARMACIEN(
+    id_RPPS int primary key,
+    Prenom varchar(40),
+    Nom varchar(40),
+    Mail varchar(40),
+    Adresse varchar(40)
+);
+
+CREATE TABLE MEDECIN(
+    Id_RPPS int,
+    Prenom varchar(40),
+    Nom varchar(40),
+    Specialite varchar(40),
+    Telephone varcha varchar(40),
+    Email varchar(40),
+);
+
+CREATE TABLE MEDICAMENT(
+    code_cip int primary key,
+    nom VARCHAR(40),
+    prix_public int,
+    Categorie VARCHAR(40),
+    Statue_Vente VARCHAR(40),
+    Laboratoire VARCHAR(40)
+);
+
+CREATE TABLE FOURNISSEUR(
+    id_Fournisseur int primary key ,
+    Mail varchar(40),
+    Numero  varchar(40),
+    Adresse varchar(40),
+    Ville varchar(40)
+);
+
+CREATE TABLE COUVERTURE(
+    Numero_AMC int primary key,
+    taux_de_remboursement int
+); 
+
+
+
 CREATE TABLE LIGNEVENTE(
     id_Lignevente int primary key,
     quantité_vendu int ,
@@ -34,14 +75,6 @@ CREATE TABLE ORDONNANCE(
     foreign key (NSSI) references client(NSSI),
 );
 
-CREATE TABLE MEDECIN(
-    Id_RPPS int,
-    Prenom varchar(40),
-    Nom varchar(40),
-    Specialite varchar(40),
-    Telephone varcha varchar(40),
-    Email varchar(40),
-);
 
 CREATE TABLE CLIENT(
     NSSI int,
@@ -53,41 +86,6 @@ CREATE TABLE CLIENT(
     Numero_AMC varchar(40),
 
     foreign key (Numero_AMC) references COUVERTURE(Numero_AMC),
-);
-
-CREATE TABLE COUVERTURE(
-    Numero_AMC int,
-    taux_de_remboursement int,
-); 
-
-CREATE TABLE VENTE(
-    
-);
-
-CREATE TABLE LIGNEORDONNANCE(
-);
-
-CREATE TABLE LOT(
-);
-
-CREATE TABLE FOURNISSEUR(
-);
-
-CREATE TABLE COMMANDE(
-);
-
-
--- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
-
--- corrigé
-
-CREATE TABLE MEDICAMENT(
-    code_cip int primary key,
-    nom VARCHAR(40),
-    prix_public int,
-    Categorie VARCHAR(40),
-    Statue_Vente VARCHAR(40),
-    Laboratoire VARCHAR(40)
 );
 
 CREATE TABLE LIGNEVENTE(
@@ -103,11 +101,6 @@ CREATE TABLE LIGNEVENTE(
 );
 
 
-CREATE TABLE COUVERTURE(
-    Numero_AMC int primary key,
-    taux_de_remboursement int
-); 
-
 CREATE TABLE CLIENT(
     NSSI int primary key,
     Nom varchar(40),
@@ -119,16 +112,6 @@ CREATE TABLE CLIENT(
     foreign key (Numero_AMC) references COUVERTURE(Numero_AMC)
 );
 
-
-
-CREATE TABLE MEDECIN(
-    Id_RPPS int primary key,
-    Prenom varchar(40),
-    Nom varchar(40),
-    Specialite varchar(40),
-    Telephone varchar(40),
-    Email varchar(40)
-);
 
 CREATE TABLE ORDONNANCE(
     id_Ordonnance int primary key,
@@ -171,14 +154,6 @@ CREATE TABLE LIGNEORDONNANCE(
 
 
 
-CREATE TABLE FOURNISSEUR(
-    id_Fournisseur int primary key ,
-    Mail varchar(40),
-    Numero  varchar(40),
-    Adresse varchar(40),
-    Ville varchar(40)
-);
-
 CREATE TABLE COMMANDE(
     id_Commande int primary key,
     Date_Commande date,
@@ -206,13 +181,10 @@ CREATE TABLE LOT(
     foreign key (Id_Commande) references Commande(id_Commande)
 );
 
-CREATE TABLE PHARMACIEN(
-    id_RPPS int primary key,
-    Prenom varchar(40),
-    Nom varchar(40),
-    Mail varchar(40),
-    Adresse varchar(40)
-);
+
+-- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
+
+-- corrigé
 
 
 
