@@ -1,7 +1,7 @@
 -- CREATION DE TABLES (ORDRE PAS DEFINI IL FAUT REARRANGER)
 
 CREATE TABLE MEDICAMENT(
-    code_cip int primary key,
+    code_cip VARCHAR(12),
     nom VARCHAR(40),
     prix_public int,
     Categorie VARCHAR(40),
@@ -398,3 +398,38 @@ insert into ORDONNANCE values (10000000027, TO_DATE('2025-12-27','YYYY-MM-DD'), 
 insert into ORDONNANCE values (10000000028, TO_DATE('2025-12-28','YYYY-MM-DD'), TO_DATE('2026-01-28','YYYY-MM-DD'), '10118901234', 203093145678954);
 insert into ORDONNANCE values (10000000029, TO_DATE('2025-12-29','YYYY-MM-DD'), TO_DATE('2026-01-29','YYYY-MM-DD'), '10119012345', 195108433344481);
 insert into ORDONNANCE values (10000000030, TO_DATE('2025-12-30','YYYY-MM-DD'), TO_DATE('2026-01-30','YYYY-MM-DD'), '10120123456', 204026755566609);
+
+-- MEDICAMENT
+
+
+INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laboratoire) VALUES
+('340093000001', 'Doliprane 500mg', 1.95, 'Antalgique', 'Libre', 'Sanofi'),
+('340093000002', 'Doliprane 1000mg', 2.50, 'Antalgique', 'Libre', 'Sanofi'),
+('340093000003', 'Efferalgan 500mg', 2.10, 'Antalgique', 'Libre', 'UPSA'),
+('340093000004', 'Efferalgan 1000mg', 2.90, 'Antalgique', 'Libre', 'UPSA'),
+('340093000005', 'Paracetamol Biogaran', 1.60, 'Antalgique', 'Libre', 'Biogaran'),
+('340093000006', 'Ibuprofene 200mg', 2.30, 'Anti-inflammatoire', 'Libre', 'Mylan'),
+('340093000007', 'Ibuprofene 400mg', 3.10, 'Anti-inflammatoire', 'Libre', 'Mylan'),
+('340093000008', 'Spasfon', 3.50, 'Antispasmodique', 'Libre', 'Teva'),
+('340093000009', 'Smecta', 3.80, 'Gastro', 'Libre', 'Ipsen'),
+('340093000010', 'Gaviscon', 4.20, 'Gastro', 'Libre', 'Reckitt'),
+('340093000011', 'Augmentin 1g', 7.20, 'Antibiotique', 'Ordonnance', 'GSK'),
+('340093000012', 'Amoxicilline 500mg', 5.10, 'Antibiotique', 'Ordonnance', 'Biogaran'),
+('340093000013', 'Azithromycine', 6.40, 'Antibiotique', 'Ordonnance', 'Pfizer'),
+('340093000014', 'Ventoline', 4.30, 'Respiratoire', 'Ordonnance', 'GSK'),
+('340093000015', 'Seretide', 18.90, 'Respiratoire', 'Ordonnance', 'GSK'),
+('340093000016', 'Levothyrox', 2.10, 'Hormonal', 'Ordonnance', 'Merck'),
+('340093000017', 'Aerius', 3.90, 'Antihistaminique', 'Libre', 'MSD'),
+('340093000018', 'Zyrtec', 4.10, 'Antihistaminique', 'Libre', 'UCB'),
+('340093000019', 'Xanax', 2.80, 'Anxiolytique', 'Ordonnance', 'Pfizer'),
+('340093000020', 'Lexomil', 2.60, 'Anxiolytique', 'Ordonnance', 'Roche'),
+('340093000021', 'Imodium', 3.20, 'Gastro', 'Libre', 'Janssen'),
+('340093000022', 'Dafalgan', 2.00, 'Antalgique', 'Libre', 'UPSA'),
+('340093000023', 'Forlax', 5.50, 'Laxatif', 'Libre', 'Ipsen'),
+('340093000024', 'Maalox', 3.70, 'Gastro', 'Libre', 'Sanofi'),
+('340093000025', 'Inexium', 8.90, 'Gastro', 'Ordonnance', 'AstraZeneca'),
+('340093000026', 'Omeprazole', 4.60, 'Gastro', 'Ordonnance', 'Teva'),
+('340093000027', 'Plavix', 21.00, 'Cardiologie', 'Ordonnance', 'Sanofi'),
+('340093000028', 'Kardegic', 3.40, 'Cardiologie', 'Libre', 'Sanofi'),
+('340093000029', 'Lovenox', 12.80, 'Anticoagulant', 'Ordonnance', 'Sanofi'),
+('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
