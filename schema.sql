@@ -11,7 +11,6 @@ CREATE TABLE MEDICAMENT(
 );
 
 
-
 CREATE TABLE MEDECIN(
     Id_RPPS int,
     Prenom varchar(40),
@@ -21,14 +20,6 @@ CREATE TABLE MEDECIN(
     Email varchar(40),
 );
 
-CREATE TABLE MEDICAMENT(
-    code_cip int primary key,
-    nom VARCHAR(40),
-    prix_public int,
-    Categorie VARCHAR(40),
-    Statue_Vente VARCHAR(40),
-    Laboratoire VARCHAR(40)
-);
 
 CREATE TABLE FOURNISSEUR(
     id_Fournisseur int primary key ,
@@ -44,18 +35,6 @@ CREATE TABLE COUVERTURE(
 ); 
 
 
-
-CREATE TABLE LIGNEVENTE(
-    id_Lignevente int primary key,
-    quantité_vendu int ,
-    prix_après_remboursement int,
-
-    id_Vente int,
-    numero_de_lot int,
-
-    foreign key (id_Vente) references vente(id_Vente),
-    foreign key (numero_de_lot) reference lot(numero_de_lot),
-);
 
 CREATE TABLE ORDONNANCE(
     id_Ordonnance int primary key,
@@ -184,11 +163,7 @@ CREATE TABLE PHARMACIEN(
     Adresse varchar(40)
 );
 
-create table LigneVente(
-    Id_LigneVente int primary key,
-    quantite_vendu int,
-    prix_après_remboursement int
-);
+
 
 
 -- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
@@ -206,7 +181,7 @@ insert into Client values(1 95 10 84 333 444 81,"Leroy","Maxime","33 avenue des 
 insert into Client values(2 04 02 67 555 666 09,"Moreau","Sarah","14 rue Lecourbe, 75015 Paris","06 44 33 22 11")
 
 
--- Pharmaciens
+-- Pharmacien
 
 insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris")
 insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris")
