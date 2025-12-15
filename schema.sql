@@ -277,7 +277,7 @@ insert into Pharmacien values (10000000278,'Lola','Renault','07 88 99 00 11','37
 insert into Pharmacien values (10000000289,'Vincent','Leclerc','06 99 00 11 22','40 rue Saint-Denis, 75001 Paris');
 insert into Pharmacien values (10000000290,'Émilie','Roux','07 00 11 22 33','42 rue de Rivoli, 75001 Paris');
 
--- Médecins
+-- Médecinss
 
 INSERT INTO MEDECIN
 (Id_RPPS, Prenom, Nom, Specialite, Telephone, Email)
