@@ -334,3 +334,37 @@ WHERE Id_RPPS IN (
   '10114567890'
 );
 
+-- FOURNISSEURS 
+
+INSERT INTO FOURNISSEUR (Nom ,Mail,Numero,Adresse ,Ville) VALUES 
+('PharmaDis', 'contact@pharmadis.fr', '0145678901', '12 rue des Pharmaciens', 'Paris'),
+('MediLux', 'info@medilux.fr', '0156789012', '8 avenue de la Santé', 'Paris'),
+('BioCare', 'contact@biocare.fr', '0167890123', '25 boulevard Pasteur', 'Paris'),
+('PharmaTech', 'support@pharmatech.fr', '0178901234', '3 rue des Laboratoires', 'Paris'),
+('Medexia', 'vente@medexia.fr', '0189012345', '40 rue Saint-Jacques', 'Paris'),
+('PharmaSud', 'contact@pharmasud.fr', '0491234567', '15 avenue du Prado', 'Marseille'),
+('MediSud', 'info@medisud.fr', '0492345678', '6 rue de la Canebière', 'Marseille'),
+('BioHealth', 'vente@biohealth.fr', '0493456789', '22 boulevard Michelet', 'Marseille'),
+('PharmaPlus', 'support@pharmaplus.fr', '0494567890', '9 rue Paradis', 'Marseille'),
+('MediLog', 'contact@medilog.fr', '0495678901', '31 avenue du Littoral', 'Marseille'),
+('PharmaLyon', 'contact@pharmalyon.fr', '0478123456', '18 rue de la République', 'Lyon'),
+('MediLyon', 'info@medilyon.fr', '0478234567', '5 rue Victor Hugo', 'Lyon'),
+('BioLyon', 'vente@biolyon.fr', '0478345678', '27 cours Lafayette', 'Lyon'),
+('LyonPharma', 'support@lyonpharma.fr', '0478456789', '14 rue Garibaldi', 'Lyon'),
+('HealthLyon', 'contact@healthlyon.fr', '0478567890', '33 avenue Jean Jaurès', 'Lyon'),
+('PharmaNord', 'contact@pharmanord.fr', '0320123456', '10 rue Nationale', 'Lille'),
+('MediNord', 'info@medinord.fr', '0320234567', '21 rue Faidherbe', 'Lille'),
+('NordBio', 'vente@nordbio.fr', '0320345678', '7 boulevard Vauban', 'Lille'),
+('LillePharma', 'support@lillepharma.fr', '0320456789', '19 rue Solférino', 'Lille'),
+('HealthNord', 'contact@healthnord.fr', '0320567890', '28 rue de Béthune', 'Lille'),
+('PharmaTLS', 'contact@pharmatoulouse.fr', '0561123456', '11 rue d’Alsace', 'Toulouse'),
+('MediTLS', 'info@meditoulouse.fr', '0561234567', '4 boulevard Carnot', 'Toulouse'),
+('BioTLS', 'vente@biotls.fr', '0561345678', '26 rue du Taur', 'Toulouse'),
+('TLSPharma', 'support@toulousepharma.fr', '0561456789', '9 allée Jean Jaurès', 'Toulouse'),
+('HealthTLS', 'contact@healthtls.fr', '0561567890', '35 rue Matabiau', 'Toulouse'),
+('PharmaBDX', 'contact@pharmabdx.fr', '0556123456', '6 cours de l’Intendance', 'Bordeaux'),
+('MediBDX', 'info@medibdx.fr', '0556234567', '17 rue Sainte-Catherine', 'Bordeaux'),
+('BioBDX', 'vente@biobdx.fr', '0556345678', '29 quai des Chartrons', 'Bordeaux'),
+('BDXPharma', 'support@bordeauxpharma.fr', '0556456789', '13 rue Judaïque', 'Bordeaux'),
+('HealthBDX', 'contact@healthbdx.fr', '0556567890', '41 rue Fondaudège', 'Bordeaux');
+
