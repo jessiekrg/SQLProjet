@@ -11,6 +11,7 @@ CREATE TABLE MEDICAMENT(
 );
 
 
+
 CREATE TABLE MEDECIN(
     Id_RPPS int,
     Prenom varchar(40),
@@ -19,6 +20,7 @@ CREATE TABLE MEDECIN(
     Telephone varcha varchar(40),
     Email varchar(40),
 );
+
 
 
 CREATE TABLE FOURNISSEUR(
@@ -33,6 +35,7 @@ CREATE TABLE COUVERTURE(
     Numero_AMC int primary key,
     taux_de_remboursement int
 ); 
+
 
 
 
@@ -165,7 +168,6 @@ CREATE TABLE PHARMACIEN(
 
 
 
-
 -- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
 
 -- Client
@@ -181,7 +183,7 @@ insert into Client values(1 95 10 84 333 444 81,"Leroy","Maxime","33 avenue des 
 insert into Client values(2 04 02 67 555 666 09,"Moreau","Sarah","14 rue Lecourbe, 75015 Paris","06 44 33 22 11")
 
 
--- Pharmacien
+-- Pharmaciens
 
 insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris")
 insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris")
