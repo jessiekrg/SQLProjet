@@ -3,8 +3,8 @@
 CREATE TABLE MEDICAMENT(
     code_cip int primary key,
     nom VARCHAR(40),
-    prix_public NUMBER(40),
-    Categorie VARCHCAR(40),
+    prix_public int,
+    Categorie VARCHAR(40),
     Statue_Vente VARCHAR(40),
     Laboratoire VARCHAR(40)
 
@@ -24,7 +24,7 @@ CREATE TABLE MEDECIN(
 
 
 CREATE TABLE FOURNISSEUR(
-    id_Fournisseur int primary key ,
+    Nom VARCHAR(40) primary key ,
     Mail varchar(40),
     Numero  varchar(40),
     Adresse varchar(40),
@@ -136,10 +136,10 @@ CREATE TABLE COMMANDE(
     Statut varchar(40),
     Prix_Commande int,
     Quantite int,
-    id_Fournisseur,
-
-    foreign key (id_Fournisseur) references Fournisseur(Id_Fournisseur)
+    Nom VARCHAR(40),
+    foreign key (Nom) references Fournisseur(Nom)
 );
+
 
 
 CREATE TABLE LOT(
@@ -147,12 +147,12 @@ CREATE TABLE LOT(
     Quantite int,
     Date_Peremption date,
     Date_Fabrication date,
-    Id_Fournisseur int ,
+    Nom VARCHAR(40) ,
     Id_LigneVente int,
     Id_Commande int,
     CODE_CIP int,
 
-    foreign key (Id_Fournisseur) references Fournisseur(Id_Fournisseur),
+    foreign key (Nom) references Fournisseur(Nom),
     foreign key (CODE_CIP) references Medicament(CODE_CIP),
     foreign key (Id_Commande) references Commande(id_Commande)
 );
