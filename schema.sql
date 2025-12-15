@@ -32,7 +32,7 @@ CREATE TABLE FOURNISSEUR(
 );
 
 CREATE TABLE COUVERTURE(
-    Numero_AMC int primary key,
+    Nom_mutuelle varchar(40) primary key,
     taux_de_remboursement int
 ); 
 
@@ -53,15 +53,15 @@ CREATE TABLE ORDONNANCE(
 
 
 CREATE TABLE CLIENT(
-    NSSI int,
+    NSSI int primary key,
     Nom varchar(40),
     Prenom varchar(40),
     adresse varchar(40),
     Contact varchar(40),
 
-    Numero_AMC varchar(40),
+    Nom_mutuelle varchar(40),
 
-    foreign key (Numero_AMC) references COUVERTURE(Numero_AMC),
+    foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle),
 );
 
 CREATE TABLE LIGNEVENTE(
@@ -74,18 +74,6 @@ CREATE TABLE LIGNEVENTE(
 
     foreign key (id_Vente) references vente(id_Vente),
     foreign key (numero_de_lot) reference lot(numero_de_lot),
-);
-
-
-CREATE TABLE CLIENT(
-    NSSI int primary key,
-    Nom varchar(40),
-    Prenom varchar(40),
-    adresse varchar(40),
-    Contact varchar(40),
-    Numero_AMC int,
-
-    foreign key (Numero_AMC) references COUVERTURE(Numero_AMC)
 );
 
 
@@ -210,7 +198,7 @@ insert into Client values(201116924531245,'Bernard','Emma','45 boulevard Saint-G
 insert into Client values(198031340217891,'Dubois','Hugo','8 avenue de l’Opéra, 75002 Paris','06 34 56 78 90','MACIF');
 insert into Client values(200073311965422,'Thomas','Léa','27 rue Oberkampf, 75011 Paris','07 11 22 33 44','Harmonie Mutuelle');
 insert into Client values(197125932198710,'Robert','Nathan','1102 avenue de la République, 75011 Paris','07 22 33 44 55','Malakoff Humanis');
-insert into Client values(202019221034566,'Richard','Camille','5 rue Mouffetard, 75005 Paris','06 98 76 54 32','GMF');
+insert into Client values(202019221034566,'Richard','Camille', '5 rue Mouffetard, 75005 Paris','06 98 76 54 32','GMF');
 insert into Client values(196064411122233,'Petit','Thomas','60 boulevard Haussmann, 75009 Paris','07 65 43 21 09','Swiss Life');
 insert into Client values(203093145678954,'Durand','Chloé','18 rue de Belleville, 75020 Paris','06 55 66 77 88','MAAF');
 insert into Client values(195108433344481,'Leroy','Maxime','33 avenue des Champs-Élysées, 75008 Paris','07 88 77 66 55','Mutuelle Générale');
@@ -570,7 +558,6 @@ INSERT INTO VENTE VALUES (28, TO_DATE('2025-12-15','YYYY-MM-DD'), NULL, 10000000
 INSERT INTO VENTE VALUES (29, TO_DATE('2025-12-17','YYYY-MM-DD'), NULL, 10000000123, 101234567890125);  -- nouveau client et pharmacien
 INSERT INTO VENTE VALUES (30, TO_DATE('2025-12-18','YYYY-MM-DD'), NULL, 10000000267, 202789012345679);  -- nouveau client
 INSERT INTO VENTE VALUES (31, TO_DATE('2025-12-19','YYYY-MM-DD'), NULL, 10000000134, 101678901234568);  -- client déjà utilisé
-INSERT INTO VENTE VALUES (1212, TO_DATE('2025-12-20','YYYY-MM-DD'), NULL, 10000000189, 202123456789013);  -- nouveau pharmacien
-INSERT INTO VENTE VALUES (1213, TO_DATE('2025-12-21','YYYY-MM-DD'), NULL, 10000000078, 101890123456780);  -- client déjà utilisé
+INSERT INTO VENTE VALUES (32, TO_DATE('2025-12-20','YYYY-MM-DD'), NULL, 10000000189, 202123456789013);  -- nouveau pharmacien
+INSERT INTO VENTE VALUES (33, TO_DATE('2025-12-21','YYYY-MM-DD'), NULL, 10000000078, 101890123456780);  -- client déjà utilisé
 
-INSERT INTO VENTE VALUES (24, TO_DATE('2025-12-09','YYYY-MM-DD'), NULL, 10000000112, 101456789012346)
