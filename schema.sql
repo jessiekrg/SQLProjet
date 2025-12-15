@@ -10,13 +10,7 @@ CREATE TABLE MEDICAMENT(
 
 );
 
-CREATE TABLE PHARMACIEN(
-    id_RPPS int primary key,
-    Prenom varchar(40),
-    Nom varchar(40),
-    Mail varchar(40),
-    Adresse varchar(40)
-);
+
 
 CREATE TABLE MEDECIN(
     Id_RPPS int,
@@ -189,3 +183,18 @@ CREATE TABLE LOT(
 
 
 INSERT INTO MEDICAMENT VALUES (340005,"Pararacétamol", 2.18, ,)
+
+
+CREATE TABLE PHARMACIEN(
+    id_RPPS int primary key,
+    Prenom varchar(40),
+    Nom varchar(40),
+    Mail varchar(40),
+    Adresse varchar(40)
+);
+
+create table LigneVente(
+    Id_LigneVente int primary key,
+    quantite_vendu int,
+    prix_après_remboursement int
+);
