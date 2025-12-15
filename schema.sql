@@ -116,7 +116,6 @@ CREATE TABLE VENTE(
 CREATE TABLE LIGNEORDONNANCE(
     id_ligneordonnace int primary key,
     qt_délivré int,
-    dosage_med int,
     duree_trait int,
     date_traitement date,
     id_medicament int,
@@ -433,3 +432,5 @@ INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laborat
 ('340093000028', 'Kardegic', 3.40, 'Cardiologie', 'Libre', 'Sanofi'),
 ('340093000029', 'Lovenox', 12.80, 'Anticoagulant', 'Ordonnance', 'Sanofi'),
 ('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
+
+insert into ligneordonnance 
