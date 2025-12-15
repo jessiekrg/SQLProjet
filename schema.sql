@@ -176,15 +176,6 @@ CREATE TABLE LOT(
 );
 
 
--- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
-
--- corrigé
-
-
-
-INSERT INTO MEDICAMENT VALUES (340005,"Pararacétamol", 2.18, ,)
-
-
 CREATE TABLE PHARMACIEN(
     id_RPPS int primary key,
     Prenom varchar(40),
@@ -198,3 +189,33 @@ create table LigneVente(
     quantite_vendu int,
     prix_après_remboursement int
 );
+
+
+-- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
+
+-- Client
+insert into Client values(1 99 05 75 123 456 78,"Martin","Lucas","12 rue de Rivoli, 75001 Paris","06 12 34 56 78")
+insert into Client values(2 01 11 69 245 312 45,"Bernard","Emma","45 boulevard Saint-Germain, 75005 Paris","06 23 45 67 89")
+insert into Client values(1 98 03 13 402 178 91,"Dubois","Hugo","8 avenue de l’Opéra, 75002 Paris","06 34 56 78 90")
+insert into Client values(2 00 07 33 119 654 22,"Thomas","Léa","27 rue Oberkampf, 75011 Paris","07 11 22 33 44")
+insert into Client values(1 97 12 59 321 987 10,"Robert","Nathan","1102 avenue de la République, 75011 Paris","07 22 33 44 55")
+insert into Client values(2 02 01 92 210 345 66,"Richard","Camille","5 rue Mouffetard, 75005 Paris","06 98 76 54 32")
+insert into Client values(1 96 06 44 111 222 33,"Petit","Thomas","60 boulevard Haussmann, 75009 Paris","07 65 43 21 09")
+insert into Client values(2 03 09 31 456 789 54,"Durand","Chloé","18 rue de Belleville, 75020 Paris","06 55 66 77 88")
+insert into Client values(1 95 10 84 333 444 81,"Leroy","Maxime","33 avenue des Champs-Élysées, 75008 Paris","07 88 77 66 55")
+insert into Client values(2 04 02 67 555 666 09,"Moreau","Sarah","14 rue Lecourbe, 75015 Paris","06 44 33 22 11")
+
+
+-- Pharmaciens
+
+insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris")
+insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris")
+insert into Pharmacien values (10000000023,"Antoine","Girard","06 78 34 12 56","9 rue Mouffetard, 75005 Paris")
+insert into Pharmacien values (10000000034,"Claire","Fontaine","07 61 90 45 28","27 rue Monge, 75005 Paris")
+insert into Pharmacien values (10000000045,"Nicolas","Roux","06 25 87 49 63","65 rue de Vaugirard, 75006 Paris")
+insert into Pharmacien values (10000000056,"Sophie","Lambert","07 38 56 71 04","12 rue Monsieur-le-Prince, 75006 Paris")
+insert into Pharmacien values (10000000067,"Paul","Blanchard","006 93 12 40 85","88 rue de Belleville, 75020 Paris")
+insert into Pharmacien values (10000000078,"Laura","Chevalier","07 44 68 29 51","15 rue des Pyrénées, 75020 Paris")
+insert into Pharmacien values (10000000089,"Vincent","Perrin","06 59 73 84 12","31 boulevard Voltaire, 75011 Paris")
+insert into Pharmacien values (10000000090,"Émilie","Marchand","07 26 95 31 47","7 rue Saint-Jacques, 75005 Paris")
+
