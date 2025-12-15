@@ -215,28 +215,29 @@ insert into Client values(196064411122233,'Petit','Thomas','60 boulevard Haussma
 insert into Client values(203093145678954,'Durand','Chloé','18 rue de Belleville, 75020 Paris','06 55 66 77 88','MAAF');
 insert into Client values(195108433344481,'Leroy','Maxime','33 avenue des Champs-Élysées, 75008 Paris','07 88 77 66 55','Mutuelle Générale');
 insert into Client values(204026755566609,'Moreau','Sarah','14 rue Lecourbe, 75015 Paris','06 44 33 22 11','AG2R La Mondiale');
-insert into Client values(101234567890123,'Alexandre','Durand','11 rue de Rivoli, 75001 Paris','06 12 34 56 78','MGEN');
-insert into Client values(202345678901234,'Clara','Lemoine','22 rue Saint-Honoré, 75001 Paris','06 23 45 67 89','MAIF');
-insert into Client values(101456789012345,'Jules','Morel','33 rue de la Paix, 75002 Paris','07 34 56 78 90','MACIF');
-insert into Client values(202567890123456,'Élodie','Fabre','44 rue Saint-Denis, 75002 Paris','06 45 67 89 01','Harmonie Mutuelle');
-insert into Client values(101678901234567,'Victor','Benoît','55 avenue de l’Opéra, 75001 Paris','07 56 78 90 12','Malakoff Humanis');
-insert into Client values(202789012345678,'Inès','Perrin','66 rue Faubourg St-Antoine, 75011 Paris','06 67 89 01 23','GMF');
-insert into Client values(101890123456789,'Louis','Rousseau','77 rue Oberkampf, 75011 Paris','07 78 90 12 34','Swiss Life');
-insert into Client values(202901234567890,'Manon','Gautier','88 rue de Charonne, 75011 Paris','06 89 01 23 45','MAAF');
-insert into Client values(101012345678901,'Théo','Marchal','99 rue de Belleville, 75020 Paris','07 90 12 34 56','Mutuelle Générale');
-insert into Client values(202123456789012,'Sarah','Colin','12 rue Lecourbe, 75015 Paris','06 01 23 45 67','AG2R La Mondiale');
-insert into Client values(101234567890124,'Hugo','Fournier','15 rue des Martyrs, 75009 Paris','06 12 34 56 78','Allianz');
-insert into Client values(202345678901235,'Léa','Mercier','18 rue Saint-Jacques, 75005 Paris','07 23 45 67 89','AXA');
-insert into Client values(101456789012346,'Maxime','Giraud','21 rue de Bellefond, 75009 Paris','06 34 56 78 90','Groupama');
-insert into Client values(202567890123457,'Chloé','Renard','24 rue de la Santé, 75013 Paris','07 45 67 89 01','Swisscare');
-insert into Client values(101678901234568,'Lucas','Brun','27 rue du Temple, 75003 Paris','06 56 78 90 12','Mutuelle Bleue');
-insert into Client values(202789012345679,'Emma','Vidal','30 rue Saint-Maur, 75011 Paris','07 67 89 01 23','Mutuelle Saint-Christophe');
-insert into Client values(101890123456780,'Antoine','Lopez','33 rue Oberkampf, 75011 Paris','06 78 90 12 34','Mutuelle Familiale');
-insert into Client values(202901234567891,'Camille','Faure','36 rue de Turbigo, 75003 Paris','07 89 01 23 45','Mutuelle Générale de l’Education');
-insert into Client values(101012345678902,'Nathan','Picard','39 rue Faubourg du Temple, 75010 Paris','06 90 12 34 56','Mutuelle Santé Plus');
-insert into Client values(202123456789013,'Lola','Garnier','42 rue Saint-Denis, 75001 Paris','07 01 23 45 67','Mutuelle Humanis');
-insert into Client values(101234567890125,'Mathis','Bernard','14 rue de la République, 75011 Paris','06 11 22 33 44','MGEN');
-insert into Client values(202345678901236,'Anaïs','Petit','17 rue de la Roquette, 75011 Paris','07 22 33 44 55','MAIF');
+insert into Client values(101234567890123,'Durand','Alexandre','11 rue de Rivoli, 75001 Paris','06 12 34 56 78','MGEN');
+insert into Client values(202345678901234,'Lemoine','Clara','22 rue Saint-Honoré, 75001 Paris','06 23 45 67 89','MAIF');
+insert into Client values(101456789012345,'Morel','Jules','33 rue de la Paix, 75002 Paris','07 34 56 78 90','MACIF');
+insert into Client values(202567890123456,'Fabre','Élodie','44 rue Saint-Denis, 75002 Paris','06 45 67 89 01','Harmonie Mutuelle');
+insert into Client values(101678901234567,'Benoît','Victor','55 avenue de l’Opéra, 75001 Paris','07 56 78 90 12','Malakoff Humanis');
+insert into Client values(202789012345678,'Perrin','Inès','66 rue Faubourg St-Antoine, 75011 Paris','06 67 89 01 23','GMF');
+insert into Client values(101890123456789,'Rousseau','Louis','77 rue Oberkampf, 75011 Paris','07 78 90 12 34','Swiss Life');
+insert into Client values(202901234567890,'Gautier','Manon','88 rue de Charonne, 75011 Paris','06 89 01 23 45','MAAF');
+insert into Client values(101012345678901,'Marchal','Théo','99 rue de Belleville, 75020 Paris','07 90 12 34 56','Mutuelle Générale');
+insert into Client values(202123456789012,'Colin','Sarah','12 rue Lecourbe, 75015 Paris','06 01 23 45 67','AG2R La Mondiale');
+insert into Client values(101234567890124,'Fournier','Hugo','15 rue des Martyrs, 75009 Paris','06 12 34 56 78','Allianz');
+insert into Client values(202345678901235,'Mercier','Léa','18 rue Saint-Jacques, 75005 Paris','07 23 45 67 89','AXA');
+insert into Client values(101456789012346,'Giraud','Maxime','21 rue de Bellefond, 75009 Paris','06 34 56 78 90','Groupama');
+insert into Client values(202567890123457,'Renard','Chloé','24 rue de la Santé, 75013 Paris','07 45 67 89 01','Swisscare');
+insert into Client values(101678901234568,'Brun','Lucas','27 rue du Temple, 75003 Paris','06 56 78 90 12','Mutuelle Bleue');
+insert into Client values(202789012345679,'Vidal','Emma','30 rue Saint-Maur, 75011 Paris','07 67 89 01 23','Mutuelle Saint-Christophe');
+insert into Client values(101890123456780,'Lopez','Antoine','33 rue Oberkampf, 75011 Paris','06 78 90 12 34','Mutuelle Familiale');
+insert into Client values(202901234567891,'Faure','Camille','36 rue de Turbigo, 75003 Paris','07 89 01 23 45','Mutuelle Générale de l’Education');
+insert into Client values(101012345678902,'Picard','Nathan','39 rue Faubourg du Temple, 75010 Paris','06 90 12 34 56','Mutuelle Santé Plus');
+insert into Client values(202123456789013,'Garnier','Lola','42 rue Saint-Denis, 75001 Paris','07 01 23 45 67','Mutuelle Humanis');
+insert into Client values(101234567890125,'Bernard','Mathis','14 rue de la République, 75011 Paris','06 11 22 33 44','MGEN');
+insert into Client values(202345678901236,'Petit','Anaïs','17 rue de la Roquette, 75011 Paris','07 22 33 44 55','MAIF');
+
 
 
 
@@ -572,3 +573,4 @@ INSERT INTO VENTE VALUES (31, TO_DATE('2025-12-19','YYYY-MM-DD'), NULL, 10000000
 INSERT INTO VENTE VALUES (1212, TO_DATE('2025-12-20','YYYY-MM-DD'), NULL, 10000000189, 202123456789013);  -- nouveau pharmacien
 INSERT INTO VENTE VALUES (1213, TO_DATE('2025-12-21','YYYY-MM-DD'), NULL, 10000000078, 101890123456780);  -- client déjà utilisé
 
+INSERT INTO VENTE VALUES (24, TO_DATE('2025-12-09','YYYY-MM-DD'), NULL, 10000000112, 101456789012346)
