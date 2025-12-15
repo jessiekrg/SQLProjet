@@ -434,3 +434,38 @@ INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laborat
 ('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
 
 insert into ligneordonnance 
+
+
+-- COMMANDE 
+INSERT INTO COMMANDE (id_Commande, Date_Commande, Statut, Prix_Commande, Quantite, Nom) VALUES
+(1,  TO_DATE('2025-01-05','YYYY-MM-DD'), 'En cours', 1200.50, 50, 'PharmaDis'),
+(2,  TO_DATE('2025-01-06','YYYY-MM-DD'), 'Livrée', 980.00, 40, 'MediLux'),
+(3,  TO_DATE('2025-01-07','YYYY-MM-DD'), 'Livrée', 1500.75, 60, 'BioCare'),
+(4,  TO_DATE('2025-01-08','YYYY-MM-DD'), 'En cours', 760.20, 30, 'PharmaTech'),
+(5,  TO_DATE('2025-01-09','YYYY-MM-DD'), 'Annulée', 0.00, 0, 'Medexia'),
+(6,  TO_DATE('2025-01-10','YYYY-MM-DD'), 'Livrée', 2100.00, 90, 'PharmaSud'),
+(7,  TO_DATE('2025-01-11','YYYY-MM-DD'), 'Livrée', 1340.40, 55, 'MediSud'),
+(8,  TO_DATE('2025-01-12','YYYY-MM-DD'), 'En cours', 890.00, 35, 'BioHealth'),
+(9,  TO_DATE('2025-01-13','YYYY-MM-DD'), 'Livrée', 1760.80, 70, 'PharmaPlus'),
+(10, TO_DATE('2025-01-14','YYYY-MM-DD'), 'Livrée', 990.30, 45, 'MediLog'),
+(11, TO_DATE('2025-01-15','YYYY-MM-DD'), 'En cours', 1600.00, 65, 'PharmaLyon'),
+(12, TO_DATE('2025-01-16','YYYY-MM-DD'), 'Livrée', 1420.90, 60, 'MediLyon'),
+(13, TO_DATE('2025-01-17','YYYY-MM-DD'), 'Livrée', 870.50, 30, 'BioLyon'),
+(14, TO_DATE('2025-01-18','YYYY-MM-DD'), 'En cours', 1950.00, 80, 'LyonPharma'),
+(15, TO_DATE('2025-01-19','YYYY-MM-DD'), 'Livrée', 1100.25, 48, 'HealthLyon'),
+(16, TO_DATE('2025-01-20','YYYY-MM-DD'), 'Livrée', 1300.00, 52, 'PharmaNord'),
+(17, TO_DATE('2025-01-21','YYYY-MM-DD'), 'En cours', 920.75, 38, 'MediNord'),
+(18, TO_DATE('2025-01-22','YYYY-MM-DD'), 'Livrée', 1580.60, 66, 'NordBio'),
+(19, TO_DATE('2025-01-23','YYYY-MM-DD'), 'Livrée', 1010.40, 42, 'LillePharma'),
+(20, TO_DATE('2025-01-24','YYYY-MM-DD'), 'En cours', 1875.90, 75, 'HealthNord'),
+(21, TO_DATE('2025-01-25','YYYY-MM-DD'), 'Livrée', 1430.00, 58, 'PharmaTLS'),
+(22, TO_DATE('2025-01-26','YYYY-MM-DD'), 'En cours', 980.60, 41, 'MediTLS'),
+(23, TO_DATE('2025-01-27','YYYY-MM-DD'), 'Livrée', 1675.20, 69, 'BioTLS'),
+(24, TO_DATE('2025-01-28','YYYY-MM-DD'), 'Livrée', 1120.80, 46, 'TLSPharma'),
+(25, TO_DATE('2025-01-29','YYYY-MM-DD'), 'En cours', 1890.00, 78, 'HealthTLS'),
+(26, TO_DATE('2025-01-30','YYYY-MM-DD'), 'Livrée', 1350.40, 54, 'PharmaBDX'),
+(27, TO_DATE('2025-01-31','YYYY-MM-DD'), 'Livrée', 990.90, 43, 'MediBDX'),
+(28, TO_DATE('2025-02-01','YYYY-MM-DD'), 'En cours', 1620.70, 67, 'BioBDX'),
+(29, TO_DATE('2025-02-02','YYYY-MM-DD'), 'Livrée', 1085.30, 44, 'BDXPharma'),
+(30, TO_DATE('2025-02-03','YYYY-MM-DD'), 'En cours', 1750.00, 72, 'HealthBDX');
+
