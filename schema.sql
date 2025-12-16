@@ -91,14 +91,14 @@ CREATE TABLE ORDONNANCE(
 
 
 CREATE TABLE VENTE(
-    id_Vente int primary key;
-    DateVente date;
-    PrixFinal int;
-    id_Pharmacien ;
-    id_Client;
+    id_Vente int primary key,
+    DateVente date,
+    PrixFinal int,
+    id_Pharmacien,
+    id_Client,
 
-    foreign key (id_Pharmacien) references Pharmacien(id_RPS);
-    foreign key (id_Client) references Client(NSSI);
+    foreign key (id_Pharmacien) references Pharmacien(id_RPPS),
+    foreign key (id_Client) references Client(NSSI)
 );
 
 CREATE TABLE LIGNEORDONNANCE(
@@ -230,6 +230,7 @@ insert into Client values(202345678901236,'Petit','Anaïs','17 rue de la Roquett
 
 
 
+
 -- Pharmaciens
 
 insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris")
@@ -245,14 +246,12 @@ insert into Pharmacien values (10000000090,"Émilie","Marchand","07 26 95 31 47"
 insert into Pharmacien values (10000000301,'Gabriel','Martin','06 21 43 65 87','44 rue de la Roquette, 75011 Paris');
 insert into Pharmacien values (10000000312,'Julie','Dubois','07 32 54 76 98','46 rue Oberkampf, 75011 Paris');
 insert into Pharmacien values (10000000101,'Mathieu','Benoît','06 12 34 56 78','20 rue Saint-Honoré, 75001 Paris');
-insert into Pharmacien values (10000000112,'Camille','Fournier','07 23 45 67 89','25 rue du Faubourg Saint-Honoré, 75008 Paris');
 insert into Pharmacien values (10000000123,'Lucas','Gautier','06 34 56 78 90','18 rue du Temple, 75003 Paris');
 insert into Pharmacien values (10000000134,'Clara','Renard','07 45 67 89 01','32 rue Saint-Denis, 75001 Paris');
 insert into Pharmacien values (10000000145,'Hugo','Faure','06 56 78 90 12','10 rue de la Paix, 75002 Paris');
 insert into Pharmacien values (10000000156,'Léa','Brun','07 67 89 01 23','12 rue de Rivoli, 75001 Paris');
 insert into Pharmacien values (10000000167,'Antoine','Picard','06 78 90 12 34','45 rue Oberkampf, 75011 Paris');
 insert into Pharmacien values (10000000178,'Élodie','Marchal','07 89 01 23 45','28 rue de Charonne, 75011 Paris');
-insert into Pharmacien values (10000000189,'Maxime','Lopez','06 90 12 34 56','50 rue du Faubourg Saint-Antoine, 75011 Paris');
 insert into Pharmacien values (10000000190,'Sarah','Colin','07 01 23 45 67','14 rue de la Roquette, 75011 Paris');
 insert into Pharmacien values (10000000201,'Nathan','Giraud','06 11 22 33 44','17 rue Saint-Maur, 75011 Paris');
 insert into Pharmacien values (10000000212,'Emma','Vidal','07 22 33 44 55','19 rue Saint-Jacques, 75005 Paris');
@@ -538,19 +537,18 @@ INSERT INTO VENTE VALUES (7, TO_DATE('2025-12-12','YYYY-MM-DD'), NULL, 100000000
 INSERT INTO VENTE VALUES (9, TO_DATE('2025-12-18','YYYY-MM-DD'), NULL, 10000000167, 203093145678954);
 INSERT INTO VENTE VALUES (10, TO_DATE('2025-12-15','YYYY-MM-DD'), NULL, 10000000134, 197125932198710);
 
-INSERT INTO VENTE VALUES (12, TO_DATE('2025-12-08','YYYY-MM-DD'),  NULL, 10000000101, 201117034512349);
-INSERT INTO VENTE VALUES (13, TO_DATE('2025-12-06','YYYY-MM-DD'),  NULL, 10000000023, 197034512189670);
-INSERT INTO VENTE VALUES (14, TO_DATE('2025-12-11','YYYY-MM-DD'),  NULL, 10000000212, 203098712345678);
-INSERT INTO VENTE VALUES (15, TO_DATE('2025-12-09','YYYY-MM-DD'),  NULL, 10000000301, 199056789123456);
-INSERT INTO VENTE VALUES (16, TO_DATE('2025-12-14','YYYY-MM-DD'),  NULL, 10000000134, 198031278945612);
+INSERT INTO VENTE VALUES (12, TO_DATE('2025-12-08','YYYY-MM-DD'),  NULL, 10000000101, 202123456789012);
+INSERT INTO VENTE VALUES (13, TO_DATE('2025-12-06','YYYY-MM-DD'),  NULL, 10000000023, 101890123456789);
+INSERT INTO VENTE VALUES (14, TO_DATE('2025-12-11','YYYY-MM-DD'),  NULL, 10000000212, 202901234567891);
+INSERT INTO VENTE VALUES (15, TO_DATE('2025-12-09','YYYY-MM-DD'),  NULL, 10000000301, 101234567890125);
+INSERT INTO VENTE VALUES (16, TO_DATE('2025-12-14','YYYY-MM-DD'),  NULL, 10000000134, 101456789012345);
 INSERT INTO VENTE VALUES (17, TO_DATE('2025-12-16','YYYY-MM-DD'),  NULL, 10000000167, 200073311965422);
 INSERT INTO VENTE VALUES (18, TO_DATE('2025-12-18','YYYY-MM-DD'),  NULL, 10000000245, 201116924531245);
 INSERT INTO VENTE VALUES (19, TO_DATE('2025-12-20','YYYY-MM-DD'),  NULL, 10000000012, 197125932198710);
 INSERT INTO VENTE VALUES (20, TO_DATE('2025-12-21','YYYY-MM-DD'),  NULL, 10000000067, 203093145678954);
 
-
 INSERT INTO VENTE VALUES (23, TO_DATE('2025-12-08','YYYY-MM-DD'), NULL, 10000000278, 202901234567891);
-INSERT INTO VENTE VALUES (24, TO_DATE('2025-12-09','YYYY-MM-DD'), NULL, 10000000112, 101456789012346);
+INSERT INTO VENTE VALUES (24, TO_DATE('2025-12-09','YYYY-MM-DD'), NULL, 10000000145, 101456789012346);
 INSERT INTO VENTE VALUES (25, TO_DATE('2025-12-12','YYYY-MM-DD'), NULL, 10000000101, 202567890123457);
 INSERT INTO VENTE VALUES (26, TO_DATE('2025-12-12','YYYY-MM-DD'), NULL, 10000000023, 198031340217891);  -- client déjà utilisé, pharmacien déjà utilisé
 INSERT INTO VENTE VALUES (27, TO_DATE('2025-12-13','YYYY-MM-DD'), NULL, 10000000245, 201116924531245);  -- client déjà utilisé
@@ -558,6 +556,6 @@ INSERT INTO VENTE VALUES (28, TO_DATE('2025-12-15','YYYY-MM-DD'), NULL, 10000000
 INSERT INTO VENTE VALUES (29, TO_DATE('2025-12-17','YYYY-MM-DD'), NULL, 10000000123, 101234567890125);  -- nouveau client et pharmacien
 INSERT INTO VENTE VALUES (30, TO_DATE('2025-12-18','YYYY-MM-DD'), NULL, 10000000267, 202789012345679);  -- nouveau client
 INSERT INTO VENTE VALUES (31, TO_DATE('2025-12-19','YYYY-MM-DD'), NULL, 10000000134, 101678901234568);  -- client déjà utilisé
-INSERT INTO VENTE VALUES (32, TO_DATE('2025-12-20','YYYY-MM-DD'), NULL, 10000000189, 202123456789013);  -- nouveau pharmacien
+INSERT INTO VENTE VALUES (32, TO_DATE('2025-12-20','YYYY-MM-DD'), NULL, 10000000178, 202123456789013);  -- nouveau pharmacien
 INSERT INTO VENTE VALUES (33, TO_DATE('2025-12-21','YYYY-MM-DD'), NULL, 10000000078, 101890123456780);  -- client déjà utilisé
 
