@@ -70,7 +70,10 @@ CREATE TABLE LIGNEVENTE(
 
     id_Vente NUMBER,
     numero_de_lot NUMBER,
+    id_ordonnance NUMBER,
 
+
+    FOREIGN KEY (id_ordonnance) references ORDONNANCE(id_ordonnance),
     foreign key (id_Vente) references vente(id_Vente),
     foreign key (numero_de_lot) references lot(num_lot)
 );
@@ -557,89 +560,82 @@ INSERT INTO VENTE VALUES (32, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 100000001
 INSERT INTO VENTE VALUES (33, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000078, 101890123456780);  
 INSERT INTO VENTE VALUES (34, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000167, 101456789012345); 
 
+-- Format : (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance)
 
--- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
-INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1);   
-INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2);  
+-- Vente n°1 (Client: Martin Lucas | Pharmacien: Julien Lefèvre)
+INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1, 101);   
+INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2, 101);  
 
--- Vente n°2 (Client Bernard Emma)
-INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25);
-INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 2, 1);   
+-- Vente n°2 (Client: Bernard Emma | Pharmacien: Julien Lefèvre)
+INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25, 102);
+INSERT INTO LIGNEVENTE VALUES (4, 1, NULL, 2, 1, 102);   
 
+-- Vente n°3 (Client: Thomas Léa | Pharmacien: Marie Curie)
+INSERT INTO LIGNEVENTE VALUES (5, 3, NULL, 3, 3, 103);
+INSERT INTO LIGNEVENTE VALUES (6, 1, NULL, 3, 2, 103);   
 
--- Vente n°3
+-- Vente n°4 (Client: Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 4, 4, 104);   
 
-INSERT INTO LIGNEVENTE VALUES (4, 3, NULL, 3, 3);
-INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 3, 2);   
+-- Vente n°5 (Client: Robert Nathan - Suite)
+INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 5, 20, 105); 
+INSERT INTO LIGNEVENTE VALUES (9, 4, NULL, 5, 12, 105); 
 
+-- Vente n°6 (Client: Martin Lucas)
+INSERT INTO LIGNEVENTE VALUES (10, 1, NULL, 6, 6, 106);   
 
--- Vente n°4 (Client Thomas Léa)
-INSERT INTO LIGNEVENTE VALUES (5, 1, NULL, 4, 4);   
+-- Vente n°8 (Client: Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (11, 2, NULL, 8, 9, 108);
+INSERT INTO LIGNEVENTE VALUES (12, 1, NULL, 8, 23, 108);   
 
--- Vente n°5 (Client Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (6, 2, NULL, 5, 20); 
+-- Vente n°9 (Client: Durand Chloé)
+INSERT INTO LIGNEVENTE VALUES (13, 2, NULL, 9, 28, 109);
 
--- Vente n°6 (Client Martin Lucas)
-INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 6, 6);   
+-- Vente n°10 (Client: Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 10, 13, 110); 
 
--- Vente n°9 (Client Durand Chloé)
-INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 9, 10);
-INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 9, 8);   
+-- Vente n°12 (Client: Renard Chloé)
+INSERT INTO LIGNEVENTE VALUES (15, 3, NULL, 12, 25, 112);
 
+-- Vente n°13 (Client: Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 13, 10, 113); 
 
--- Vente n°10 (Client Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (9, 1, NULL, 10, 13); 
+-- Vente n°16 (Client: Brun Lucas)
+INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 16, 31, 116); 
 
--- Vente n°12 (Client Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (10, 4, NULL, 12, 5); 
+-- Vente n°17 (Client: Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (18, 2, NULL, 17, 14, 117); 
 
--- Vente n°13 (Client Rousseau Louis)
-INSERT INTO LIGNEVENTE VALUES (11, 1, NULL, 13, 19); 
+-- Vente n°18 (Client: Morel Jules)
+INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 18, 16, 118);
 
--- Vente n°14 (Client Faure Camille)
-INSERT INTO LIGNEVENTE VALUES (12, 2, NULL, 14, 17); 
+-- Vente n°19 (Client: Rousseau Louis)
+INSERT INTO Lignevente VALUES (20, 1, NULL, 19, 13, 119);
 
--- Vente n°15 (Client Bernard Mathis)
-INSERT INTO LIGNEVENTE VALUES (13, 1, NULL, 15, 25); 
+-- Vente n°20 (Client: Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (21, 3, NULL, 20, 20, 120); 
 
--- Vente n°16 (Client Morel Jules)
-INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 16, 18);
-INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 14, 1);  
+-- Vente n°24 (Client: Dubois Hugo)
+INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 24, 26, 124);
 
+-- Vente n°25 (Client: Bernard Mathis)
+INSERT INTO LIGNEVENTE VALUES (23, 1, NULL, 25, 15, 125); 
 
--- Vente n°17 (Client Thomas Léa)
-INSERT INTO LIGNEVENTE VALUES (15, 2, NULL, 17, 4);  
+-- Vente n°28 (Client: Garnier Lola)
+INSERT INTO LIGNEVENTE VALUES (24, 2, NULL, 28, 32, 128);
 
--- Vente n°23 (Client Faure Camille)
-INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 23, 8);  
-INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 23, 1);  
+-- Vente n°30 (Client: Vidal Emma)
+INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 30, 30, 130); 
 
--- Vente n°25 (Client Renard Chloé)
-INSERT INTO LIGNEVENTE VALUES (18, 3, NULL, 25, 12);
+-- Vente n°33 (Client: Lopez Antoine)
+INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 33, 7, 133);
+INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 33, 5, 133);
 
--- Vente n°26 (Client Dubois Hugo)
-INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 26, 24);
+-- Lignes supplémentaires pour arriver à 30 (Clients divers)
+INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 4, 17, 104); -- Thomas Léa
+INSERT INTO LIGNEVENTE VALUES (29, 1, NULL, 1, 23, 101); -- Martin Lucas
+INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 3, 2, 103);  -- Thomas Léa
 
--- Vente n°28 (Client Durand Chloé)
-INSERT INTO LIGNEVENTE VALUES (20, 2, NULL, 28, 9);
-INSERT INTO LIGNEVENTE VALUES (29, 3, NULL, 20, 20); 
-
-
--- Vente n°30 (Client Vidal Emma)
-INSERT INTO LIGNEVENTE VALUES (21, 1, NULL, 30, 30); 
-
--- Vente n°31 (Client Brun Lucas)
-INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 31, 16); 
-
--- Vente n°32 (Client Garnier Lola)
-INSERT INTO LIGNEVENTE VALUES (23, 2, NULL, 32, 28);
-
--- Vente n°33 (Client Lopez Antoine)
-INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7); 
-
--- Vente 34
-
-INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
 
 
 -- Initialisation des prix après remboursement ou pas des lignes de ventes

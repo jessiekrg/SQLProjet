@@ -55,10 +55,8 @@ BEGIN
 
     -- 3. Comparaison et blocage si erreur de prélèvement
     IF :NEW.numero_de_lot != lot THEN
-        RAISE_APPLICATION_ERROR(-20005, 
-            'ERREUR FEFO : Le lot ' || lot || 
-            ' périme plus tôt (' || TO_CHAR(date, 'DD/MM/YYYY') || 
-            '). Veuillez prélever celui-ci.');
+        RAISE_APPLICATION_ERROR(-20002, 
+            'Le lot ' || lot || ' périme plus tôt (' || TO_CHAR(date, 'DD/MM/YYYY') || '). ');
     END IF;
 END;
 /
@@ -90,8 +88,6 @@ BEGIN
     WHERE num_lot = v_num_lot;
 END;
 /
-
-
 
 -- 4. Compléter la vente si le lot initial est insuffisant
 
@@ -196,5 +192,43 @@ begin
 end;
 /
 
+-- Un pharmacien ne peut pas traiter une ordonnance dont la date de péremption est passée. 
+CREATE OR REPLACE TRIGGER VALIDITE_ORDONNANCE
+BEFORE INSERT ON VENTE 
+FOR EACH ROW
+DECLARE
+    DP DATE;
+
+BEGIN
+    SELECT date_peremption INTO DP
+    FROM ORDONNANCE
+    WHERE id_ordonnance = :NEW.id_ordonnance;
+
+    IF DP < SYSDATE THEN
+        RAISE_APPLICATION_ERROR(-20001, 'ordonnance a expiré '));
+    END IF;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL;
+END;
+/
+
+-- Chaque vente et ligne de vente antérieure à la date actuelle ne peuvent être modifiée, elles sont dès lors verrouillées
+CREATE OR REPLACE TRIGGER VERROUILLAGE_LIGNE
+BEFORE UPDATE OR DELETE ON LIGNEVENTE
+FOR EACH ROW
+DECLARE
+    D DATE;
+BEGIN
+    SELECT date_vente INTO D
+    FROM VENTE
+    WHERE id_Vente = :OLD.id_Vente;
+
+    IF D < TRUNC(SYSDATE) THEN
+        RAISE_APPLICATION_ERROR(-20003, 'Modification interdite.');
+    END IF;
+END;
+/
 
 
