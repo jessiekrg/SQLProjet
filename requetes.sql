@@ -224,6 +224,23 @@ group by p.id_RPPS
 having count(distinct l.CODE_CIP) = (select count(*)
                                     from medicament);
 
+-- 20. Liste Médicaments mal remboursés (=taux de remboursement moyen des clients qui achètent ce médicament est < 50% ) 
+-- mais très vendus (= top x des médicaments vendus)  triés dans un ordre sp
+
+
+SELECT DISTINCT M.CODE_CIP, M.NOM
+FROM (
+    SELECT CL.NSSI
+    FROM COUVERTURE C 
+    JOIN CLIENT CL ON  CL.Nom_mutuelle = C.Nom_mutuelle
+    WHERE C.taux_de_remboursement < 0.5)
+    T -- client_avec_taux_de_remboursement_moyen_nul
+JOIN VENTE V ON T.NSSI = V.NSSI
+JOIN LIGNEVENTE LV ON LV.id_Vente = V.id_Vente
+JOIN LOT L ON L.CODE_CIP = LV.CODE_CIP
+JOIN MEDICAMENT M ON M.CODE_CIP = L.CODE_CIP;
+
+
 
 -- 21. Lister le fournisseur auprès duquel la pharmacie s’est procurés le plus de médicament 
 
