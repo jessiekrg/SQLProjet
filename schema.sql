@@ -1,7 +1,7 @@
 -- CREATION DE TABLES (ORDRE PAS DEFINI IL FAUT REARRANGER)
 
 CREATE TABLE MEDICAMENT(
-    code_cip NUMBER,
+    code_cip NUMBER primary key,
     nom VARCHAR(40),
     prix_public number(8,2),
     Categorie VARCHAR(40),
@@ -12,7 +12,7 @@ CREATE TABLE MEDICAMENT(
 
 
 CREATE TABLE MEDECIN(
-    Id_RPPS NUMBER,
+    Id_RPPS NUMBER primary key,
     Prenom varchar(40),
     Nom varchar(40),
     Specialite varchar(40),
