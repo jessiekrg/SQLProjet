@@ -3,13 +3,12 @@
 CREATE TABLE MEDICAMENT(
     code_cip VARCHAR(12),
     nom VARCHAR(40),
-    prix_public int,
+    prix_public number(8,2),
     Categorie VARCHAR(40),
     Statue_Vente VARCHAR(40),
     Laboratoire VARCHAR(40)
 
 );
-
 
 
 CREATE TABLE MEDECIN(
@@ -33,7 +32,7 @@ CREATE TABLE FOURNISSEUR(
 
 CREATE TABLE COUVERTURE(
     Nom_mutuelle varchar(40) primary key,
-    taux_de_remboursement int
+    taux_de_remboursement number(3,0)
 ); 
 
 
@@ -67,13 +66,13 @@ CREATE TABLE CLIENT(
 CREATE TABLE LIGNEVENTE(
     id_Lignevente int primary key,
     quantité_vendu int ,
-    prix_après_remboursement int,
+    prix_après_remboursement number(8,2),
 
     id_Vente int,
     numero_de_lot int,
 
     foreign key (id_Vente) references vente(id_Vente),
-    foreign key (numero_de_lot) reference lot(numero_de_lot),
+    foreign key (numero_de_lot) references lot(num_lot)
 );
 
 
@@ -124,6 +123,7 @@ CREATE TABLE COMMANDE(
     Prix_Commande int,
     Quantite int,
     Nom VARCHAR(40),
+
     foreign key (Nom) references Fournisseur(Nom)
 );
 
@@ -160,36 +160,36 @@ CREATE TABLE PHARMACIEN(
 
 -- Couverture :
 
-INSERT INTO COUVERTURE VALUES ('MGEN', 0.80);
-INSERT INTO COUVERTURE VALUES ('MAIF', 0.70);
+INSERT INTO COUVERTURE VALUES ('MGEN', 80);
+INSERT INTO COUVERTURE VALUES ('MAIF', 70);
 INSERT INTO COUVERTURE VALUES ('MACIF', 75);
-INSERT INTO COUVERTURE VALUES ('Harmonie Mutuelle', 0.85);
-INSERT INTO COUVERTURE VALUES ('Malakoff Humanis', 0.90);
-INSERT INTO COUVERTURE VALUES ('GMF', 0.70);
-INSERT INTO COUVERTURE VALUES ('Swiss Life', 0.80);
-INSERT INTO COUVERTURE VALUES ('MAAF', 0.75);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Générale', 0.65);
-INSERT INTO COUVERTURE VALUES ('AG2R La Mondiale', 0.85);
-INSERT INTO COUVERTURE VALUES ('Allianz', 0.80);
-INSERT INTO COUVERTURE VALUES ('AXA', 0.75);
-INSERT INTO COUVERTURE VALUES ('Groupama', 0.70);
-INSERT INTO COUVERTURE VALUES ('La Mutuelle Générale', 0.65);
-INSERT INTO COUVERTURE VALUES ('April', 0.60);
-INSERT INTO COUVERTURE VALUES ('Swisscare', 0.78);
-INSERT INTO COUVERTURE VALUES ('La Médicale', 0.72);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Bleue', 0.74);
-INSERT INTO COUVERTURE VALUES ('Santéclair', 0.68);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Saint-Christophe', 0.71);
-INSERT INTO COUVERTURE VALUES ('Mutuelle UMC', 0.69);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Familiale', 0.67);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Générale de l’Education', 0.80);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Entrain', 0.66);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Santé Plus', 0.73);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Fraternelle', 0.64);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Humanis', 0.79);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Assurance Vie', 0.62);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Prévention', 0.70);
-INSERT INTO COUVERTURE VALUES ('Mutuelle Liberté', 0.76);
+INSERT INTO COUVERTURE VALUES ('Harmonie Mutuelle', 85);
+INSERT INTO COUVERTURE VALUES ('Malakoff Humanis', 90);
+INSERT INTO COUVERTURE VALUES ('GMF', 70);
+INSERT INTO COUVERTURE VALUES ('Swiss Life', 80);
+INSERT INTO COUVERTURE VALUES ('MAAF', 75);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Générale', 65);
+INSERT INTO COUVERTURE VALUES ('AG2R La Mondiale', 85);
+INSERT INTO COUVERTURE VALUES ('Allianz', 80);
+INSERT INTO COUVERTURE VALUES ('AXA', 75);
+INSERT INTO COUVERTURE VALUES ('Groupama', 70);
+INSERT INTO COUVERTURE VALUES ('La Mutuelle Générale', 65);
+INSERT INTO COUVERTURE VALUES ('April', 60);
+INSERT INTO COUVERTURE VALUES ('Swisscare', 78);
+INSERT INTO COUVERTURE VALUES ('La Médicale', 72);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Bleue', 74);
+INSERT INTO COUVERTURE VALUES ('Santéclair', 68);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Saint-Christophe', 71);
+INSERT INTO COUVERTURE VALUES ('Mutuelle UMC', 69);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Familiale', 67);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Générale de l’Education', 80);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Entrain', 66);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Santé Plus', 73);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Fraternelle', 64);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Humanis', 79);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Assurance Vie', 62);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Prévention', 70);
+INSERT INTO COUVERTURE VALUES ('Mutuelle Liberté', 76);
 
 
 -- Client
@@ -225,11 +225,6 @@ insert into Client values(101012345678902,'Picard','Nathan','39 rue Faubourg du 
 insert into Client values(202123456789013,'Garnier','Lola','42 rue Saint-Denis 75001 Paris','07 01 23 45 67','Mutuelle Humanis');
 insert into Client values(101234567890125,'Bernard','Mathis','14 rue de la République 75011 Paris','06 11 22 33 44','MGEN');
 insert into Client values(202345678901236,'Petit','Anaïs','17 rue de la Roquette 75011 Paris','07 22 33 44 55','MAIF');
-
-
-
-
-
 
 -- Pharmaciens
 
@@ -563,3 +558,85 @@ INSERT INTO VENTE VALUES (33, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 100000000
 INSERT INTO VENTE VALUES (34, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000167, 101456789012345); 
 
 
+-- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
+INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1);   
+INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2);  
+
+-- Vente n°2 (Client Bernard Emma)
+INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25);
+INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 2, 1);   
+
+
+-- Vente n°3
+
+INSERT INTO LIGNEVENTE VALUES (4, 3, NULL, 3, 3);
+INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 3, 2);   
+
+
+-- Vente n°4 (Client Thomas Léa)
+INSERT INTO LIGNEVENTE VALUES (5, 1, NULL, 4, 4);   
+
+-- Vente n°5 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (6, 2, NULL, 5, 20); 
+
+-- Vente n°6 (Client Martin Lucas)
+INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 6, 6);   
+
+-- Vente n°9 (Client Durand Chloé)
+INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 9, 10);
+INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 9, 8);   
+
+
+-- Vente n°10 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (9, 1, NULL, 10, 13); 
+
+-- Vente n°12 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (10, 4, NULL, 12, 5); 
+
+-- Vente n°13 (Client Rousseau Louis)
+INSERT INTO LIGNEVENTE VALUES (11, 1, NULL, 13, 19); 
+
+-- Vente n°14 (Client Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (12, 2, NULL, 14, 17); 
+
+-- Vente n°15 (Client Bernard Mathis)
+INSERT INTO LIGNEVENTE VALUES (13, 1, NULL, 15, 25); 
+
+-- Vente n°16 (Client Morel Jules)
+INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 16, 18);
+INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 14, 1);  
+
+
+-- Vente n°17 (Client Thomas Léa)
+INSERT INTO LIGNEVENTE VALUES (15, 2, NULL, 17, 4);  
+
+-- Vente n°23 (Client Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 23, 8);  
+INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 23, 1);  
+
+-- Vente n°25 (Client Renard Chloé)
+INSERT INTO LIGNEVENTE VALUES (18, 3, NULL, 25, 12);
+
+-- Vente n°26 (Client Dubois Hugo)
+INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 26, 24);
+
+-- Vente n°28 (Client Durand Chloé)
+INSERT INTO LIGNEVENTE VALUES (20, 2, NULL, 28, 9);
+INSERT INTO LIGNEVENTE VALUES (29, 3, NULL, 20, 20); 
+
+
+-- Vente n°30 (Client Vidal Emma)
+INSERT INTO LIGNEVENTE VALUES (21, 1, NULL, 30, 30); 
+
+-- Vente n°31 (Client Brun Lucas)
+INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 31, 16); 
+
+-- Vente n°32 (Client Garnier Lola)
+INSERT INTO LIGNEVENTE VALUES (23, 2, NULL, 32, 28);
+
+-- Vente n°33 (Client Lopez Antoine)
+INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7); 
+
+-- Vente 34
+
+INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
