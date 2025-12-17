@@ -42,6 +42,7 @@ from medicament m
 join lot l on l.CODE_CIP = m.code_cip
 group by m.code_cip, m.nom, m.prix_public, m.Categorie, m.Statue_Vente, m.Laboratoire;
 
+
 -- COMPTABLE 
 CREATE ROLE COMPTABLE;
 GRANT SELECT ON VUE_CA_MENSUEL, Remboursement_Mutuelles, DEPENSE TO COMPTABLE;
@@ -93,3 +94,13 @@ WHERE CL.NSSI = USER;
 -- ADMIN
 CREATE ROLE ADMINISTRATEUR
 GRANT SELECT ANY TABLE, INSERT ANY TABLE, UPDATE ANY TABLE, DELETE ANY TABLE TO ADMINISTRATEUR;
+
+
+-- Gestionnaire des Commandes
+
+create role Gestionnaire_Commandes
+grant select on Stock_risque,Catalogue_Stock_medicament to Gestionnaire_Commandes;
+
+create role Pharlmacien
+grant select on Stock_risque,Catalogue_Stock_medicament to Gestionnaire_Commandes,Infos_ordonnance;
+
