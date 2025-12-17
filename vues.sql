@@ -100,7 +100,11 @@ GRANT CREATE USER, DROP USER, CREATE ROLE TO ADMINISTRATEUR;
 
 create role Gestionnaire_Commandes
 grant select on Stock_risque,Catalogue_Stock_medicament to Gestionnaire_Commandes;
+grant select,insert on LIGNEORDONNANCE,LIGNEVENTE to Gestionnaire_Commandes;
+grant select on on medicament,lot,fournisseur to Gestionnaire_Commandes;
 
-create role Pharlmacien
-grant select on Stock_risque,Catalogue_Stock_medicament to Gestionnaire_Commandes,Infos_ordonnance;
 
+create role Pharmacien
+grant select on Stock_risque,Catalogue_Stock_medicament,Infos_ordonnance to Gestionnaire_Commandes;
+grant select,insert on LIGNEORDONNANCE,LIGNEVENTE to Gestionnaire_Commandes;
+grant select on on medicament,lot,fournisseur to Gestionnaire_Commandes;
