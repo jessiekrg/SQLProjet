@@ -151,3 +151,106 @@ HAVING COUNT(M.CODE_CIP)  > ALL (
     JOIN LOT L2 ON (F2.NOM = L2.NOM) -- INCERTAINE 
     JOIN MEDICAMENT M2 ON (L2.CODE_CIP = M2.CODE_CIP)
 );
+
+
+
+
+--------
+
+
+
+
+
+
+-- 14. Afficher, pour une ordonnance donnée, le pharmacien qui l’a traitée, dans un objectif de traçabilité.
+
+SELECT P.Id_RPPS, P.Nom, P.Prenom
+FROM PHARMACIEN P
+JOIN ORDONNANCE O ON O.Id_RPPS = P.Id_RPPS
+WHERE O.id_Ordonnance = &id_ordonnance; -- on saisit l'ordonnance en question
+
+-- 10. Sélectionner les lots de médicaments dont la quantité est supérieure à 0 ET la date de péremption supérieure à celle d’aujourd’hui (dans un intérêt de gestion de la sécurité et usage des produit délivré) 
+-- a verifier 
+
+SELECT L.numero_de_lot, L.quantité
+FROM LOT L
+WHERE L.Quantite > 0 AND L.date_De_Peremption > SYSDATE;
+
+-- 8.Afficher le nom des médicaments qui ne sont pas en stock ( Aucun lot ne contient ce médicament ou quantité dans lot =0) i (dans un intérêt de gestion des approvisionnement
+
+SELECT M.nom
+FROM MEDICAMENT M
+WHERE NOT EXISTS (
+    SELECT *
+    FROM LOT L
+    WHERE L.code_cip = M.code_cip
+      AND L.quantite > 0
+);
+
+-- 9. Afficher les 5 médicaments les plus (ou moins) vendus  (dans un intérêt d'économie et statistiques)
+
+
+-- MA METHODE 
+
+SELECT M.nom
+FROM MEDICAMENT M
+JOIN LOT L ON L.code_cip = M.code_cip
+JOIN LIGNEVENTE LV ON LV.numero_de_lot = L.numero_de_lot
+GROUP BY M.nom
+HAVING SUM(LV.quantite_vendu) >= ALL (
+    SELECT SUM(LV2.quantite_vendu)
+    FROM MEDICAMENT M2
+    JOIN LOT L2 ON L2.code_cip = M2.code_cip
+    JOIN LIGNEVENTE LV2 ON LV2.numero_de_lot = L2.numero_de_lot
+    GROUP BY M2.nom
+);
+
+-- OU SOUS REQUETE 
+
+SELECT nom
+FROM (
+    SELECT M.nom, SUM(LV.quantite_vendu) AS total_vendu
+    FROM MEDICAMENT M
+    JOIN LOT L ON L.code_cip = M.code_cip
+    JOIN LIGNEVENTE LV ON LV.numero_de_lot = L.numero_de_lot
+    GROUP BY M.nom
+) 
+WHERE total_vendu = (
+    SELECT MAX(total_vendu)
+    FROM (
+        SELECT SUM(LV2.quantite_vendu) AS total_vendu
+        FROM MEDICAMENT M2
+        JOIN LOT L2 ON L2.code_cip = M2.code_cip
+        JOIN LIGNEVENTE LV2 ON LV2.numero_de_lot = L2.numero_de_lot
+        GROUP BY M2.nom
+    )
+);
+
+
+-- 15.Trouver les clients dont le taux de remboursement est supérieur à la moyenne de tous les clients
+
+SELECT CL.NSSI
+FROM CLIENT CL
+JOIN COUVERTURE C ON C.Nom_mutuelle = CL.Nom_mutuelle
+WHERE C.taux_de_remboursement > (
+    SELECT AVG(C1.taux_de_remboursement) AS moyenne
+    FROM COUVERTURE C1
+    JOIN CLIENT CL1 ON C1.Nom_mutuelle = CL1.Nom_mutuelle
+);
+
+-- 20. Liste Médicaments mal remboursés (=taux de remboursement moyen des clients qui achètent ce médicament est < 50% ) 
+-- mais très vendus (= top x des médicaments vendus)  triés dans un ordre sp
+
+
+SELECT DISTINCT M.CODE_CIP, M.NOM
+FROM (
+    SELECT CL.NSSI
+    FROM COUVERTURE C 
+    JOIN CLIENT CL ON  CL.Nom_mutuelle = C.Nom_mutuelle
+    WHERE C.taux_de_remboursement < 0.5)
+    T -- client_avec_taux_de_remboursement_moyen_nul
+JOIN VENTE V ON T.NSSI = V.NSSI
+JOIN LIGNEVENTE LV ON LV.id_Vente = V.id_Vente
+JOIN LOT L ON L.CODE_CIP = LV.CODE_CIP
+JOIN MEDICAMENT M ON M.CODE_CIP = L.CODE_CIP;
+
