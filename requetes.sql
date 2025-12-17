@@ -11,7 +11,7 @@ WHERE l.Nom = 'PharmaDis'
 
 INTERSECT
 
-SELECT m.Nom, m.Prix_Public
+SELECT m.Nom, m.Prix_Publicx
 FROM MEDICAMENT m
 JOIN LOT l ON l.Code_CIP = m.Code_CIP
 WHERE l.Nom = ' HealthNord';
