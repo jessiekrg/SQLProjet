@@ -92,7 +92,7 @@ CREATE TABLE ORDONNANCE(
 CREATE TABLE VENTE(
     id_Vente NUMBER primary key,
     DateVente date,
-    PrixFinal NUMBER,
+    PrixFinal NUMBER(8,2),
     id_Pharmacien,
     id_Client,
 
@@ -642,7 +642,7 @@ INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7);
 INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
 
 
--- Initialisation des lignes de ventes
+-- Initialisation des prix après remboursement ou pas des lignes de ventes
 UPDATE LIGNEVENTE lv
 SET lv.PRIX_APRÈS_REMBOURSEMENT = (
     SELECT (lv.quantité_vendu * m.prix_public) * (1 - (couv.taux_de_remboursement / 100))
@@ -653,3 +653,13 @@ SET lv.PRIX_APRÈS_REMBOURSEMENT = (
     JOIN COUVERTURE couv ON c.Nom_mutuelle = couv.Nom_mutuelle
     WHERE l.num_lot = lv.numero_de_lot
 );
+
+-- Initialisation du prix final des  ventes
+
+update vente v
+set v.PrixFinal = (
+    select sum(lv.prix_après_remboursement)
+    from lignevente lv
+    where lv.id_Vente = v.id_Vente
+);
+
