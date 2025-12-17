@@ -156,9 +156,9 @@ WHERE O.id_Ordonnance = &id_ordonnance; -- on saisit l'ordonnance en question
 SELECT M.CODE_CIP, SUM(LV.quantite_vendu) quantité_totale
 FROM MEDICAMENT M
 JOIN LOT L ON L.CODE_CIP = M.CODE_CIP
-JOIN LIGNEVENTE LV ON LV.numero_de_lot = L.numero_de_lot
+JOIN LIGNEVENTE LV ON LV.numero_de_lot = L.numero_de_lot ---
 JOIN VENTE V ON V.id_Vente = LV.id_Vente
-WHERE EXTRACT(MONTH FROM V.date_vente) = 9
+WHERE EXTRACT(MONTH FROM V.datevente) = 9
 GROUP BY M.CODE_CIP;
 
 -- 15.Trouver les clients dont le taux de remboursement est supérieur à la moyenne de tous les clients
