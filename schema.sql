@@ -1,7 +1,7 @@
 -- CREATION DE TABLES (ORDRE PAS DEFINI IL FAUT REARRANGER)
 
 CREATE TABLE MEDICAMENT(
-    code_cip VARCHAR(12),
+    code_cip NUMBER,
     nom VARCHAR(40),
     prix_public number(8,2),
     Categorie VARCHAR(40),
@@ -12,7 +12,7 @@ CREATE TABLE MEDICAMENT(
 
 
 CREATE TABLE MEDECIN(
-    Id_RPPS int,
+    Id_RPPS NUMBER,
     Prenom varchar(40),
     Nom varchar(40),
     Specialite varchar(40),
@@ -39,12 +39,12 @@ CREATE TABLE COUVERTURE(
 
 
 CREATE TABLE ORDONNANCE(
-    id_Ordonnance int primary key,
+    id_Ordonnance NUMBER primary key,
     date_Prescription date,
     date_De_Peremption date,
 
-    Id_RRPS int,
-    NSSI int,
+    Id_RRPS NUMBER,
+    NSSI NUMBER,
 
     foreign key (Id_RPPS) references medecin(Id_RPPS),
     foreign key (NSSI) references client(NSSI),
@@ -52,7 +52,7 @@ CREATE TABLE ORDONNANCE(
 
 
 CREATE TABLE CLIENT(
-    NSSI int primary key,
+    NSSI NUMBER primary key,
     Nom varchar(40),
     Prenom varchar(40),
     adresse varchar(40),
@@ -64,12 +64,12 @@ CREATE TABLE CLIENT(
 );
 
 CREATE TABLE LIGNEVENTE(
-    id_Lignevente int primary key,
-    quantité_vendu int ,
+    id_Lignevente NUMBER primary key,
+    quantité_vendu NUMBER ,
     prix_après_remboursement number(8,2),
 
-    id_Vente int,
-    numero_de_lot int,
+    id_Vente NUMBER,
+    numero_de_lot NUMBER,
 
     foreign key (id_Vente) references vente(id_Vente),
     foreign key (numero_de_lot) references lot(num_lot)
@@ -77,12 +77,12 @@ CREATE TABLE LIGNEVENTE(
 
 
 CREATE TABLE ORDONNANCE(
-    id_Ordonnance int primary key,
+    id_Ordonnance NUMBER primary key,
     date_Prescription date,
     date_De_Peremption date,
 
-    Id_RPPS int,
-    NSSI int,
+    Id_RPPS NUMBER,
+    NSSI NUMBER,
 
     foreign key (Id_RPPS) references medecin(Id_RPPS),
     foreign key (NSSI) references client(NSSI)
@@ -90,9 +90,9 @@ CREATE TABLE ORDONNANCE(
 
 
 CREATE TABLE VENTE(
-    id_Vente int primary key,
+    id_Vente NUMBER primary key,
     DateVente date,
-    PrixFinal int,
+    PrixFinal NUMBER,
     id_Pharmacien,
     id_Client,
 
@@ -101,13 +101,13 @@ CREATE TABLE VENTE(
 );
 
 CREATE TABLE LIGNEORDONNANCE(
-    id_ligneordonnace int primary key,
-    qt_délivré int,
-    duree_trait int,
+    id_ligneordonnace NUMBER primary key,
+    qt_délivré NUMBER,
+    duree_trait NUMBER,
     date_traitement date,
-    id_medicament int,
-    id_ordonnance int,
-    id_RPPS int,
+    id_medicament NUMBER,
+    id_ordonnance NUMBER,
+    id_RPPS NUMBER,
 
     foreign key (id_medicament) references Medicament(Code_CIP),
     foreign key (id_ordonnance) references Ordonnance(id_Ordonnance),
@@ -117,11 +117,11 @@ CREATE TABLE LIGNEORDONNANCE(
 
 
 CREATE TABLE COMMANDE(
-    id_Commande int primary key,
+    id_Commande NUMBER primary key,
     Date_Commande date,
     Statut varchar(40),
-    Prix_Commande int,
-    Quantite int,
+    Prix_Commande NUMBER,
+    Quantite NUMBER,
     Nom VARCHAR(40),
 
     foreign key (Nom) references Fournisseur(Nom)
@@ -130,13 +130,13 @@ CREATE TABLE COMMANDE(
 
 
 CREATE TABLE LOT(
-    num_lot int primary key,
-    Quantite int,
+    num_lot NUMBER primary key,
+    Quantite NUMBER,
     Date_Peremption date,
     Date_Fabrication date,
     Nom VARCHAR(40) ,
-    Id_LigneVente int,
-    Id_Commande int,
+    Id_LigneVente NUMBER,
+    Id_Commande NUMBER,
     CODE_CIP NUMBER,
 
     foreign key (Nom) references Fournisseur(Nom),
@@ -146,7 +146,7 @@ CREATE TABLE LOT(
 
 
 CREATE TABLE PHARMACIEN(
-    id_RPPS int primary key,
+    id_RPPS NUMBER primary key,
     Prenom varchar(40),
     Nom varchar(40),
     Mail varchar(40),
@@ -640,3 +640,16 @@ INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7);
 -- Vente 34
 
 INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
+
+
+-- Initialisation des lignes de ventes
+UPDATE LIGNEVENTE lv
+SET lv.PRIX_APRÈS_REMBOURSEMENT = (
+    SELECT (lv.quantité_vendu * m.prix_public) * (1 - (couv.taux_de_remboursement / 100))
+    FROM LOT l
+    JOIN MEDICAMENT m ON l.code_cip = m.code_cip
+    JOIN VENTE v ON lv.id_Vente = v.id_Vente
+    JOIN CLIENT c ON v.id_Client = c.NSSI
+    JOIN COUVERTURE couv ON c.Nom_mutuelle = couv.Nom_mutuelle
+    WHERE l.num_lot = lv.numero_de_lot
+);
