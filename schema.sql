@@ -6,8 +6,11 @@ CREATE TABLE MEDICAMENT(
     prix_public number(8,2),
     Categorie VARCHAR(40),
     Statue_Vente VARCHAR(40),
-    Laboratoire VARCHAR(40)
+    Laboratoire VARCHAR(40),
 
+    CONSTRAINT check_code_cip CHECK (LENGTH(TO_CHAR(code_cip)) = 12),
+    CONSTRAINT check_prix_public CHECK (prix_public > 0),
+    CONSTRAINT check_statut_vente CHECK (Statut_Vente IN ('Libre','Ordonnance'))
 );
 
 
@@ -16,8 +19,12 @@ CREATE TABLE MEDECIN(
     Prenom varchar(40),
     Nom varchar(40),
     Specialite varchar(40),
-    Telephone varchar(40),
-    Email varchar(40)
+    Telephone varcha varchar(40),
+    Email varchar(40),
+
+    CONSTRAINT check_Id_RPPS CHECK (LENGTH(TO_CHAR(Id_RPPS)) = 11),
+    CONSTRAINT check_Telephone CHECK (LENGTH(Telephone) = 10),
+    CONSTRAINT check_Email CHECK (Email LIKE '%_@_%._%')
 );
 
 
@@ -32,8 +39,28 @@ CREATE TABLE FOURNISSEUR(
 
 CREATE TABLE COUVERTURE(
     Nom_mutuelle varchar(40) primary key,
-    taux_de_remboursement number(3,0)
+    taux_de_remboursement number(3,0),
+
+    CONSTRAINT check_Remboursement CHECK (taux_de_remboursement BETWEEN 0 AND 100)
 ); 
+
+
+
+
+CREATE TABLE ORDONNANCE(
+    id_Ordonnance NUMBER primary key,
+    date_Prescription date,
+    date_De_Peremption date,
+
+    Id_RRPS NUMBER,
+    NSSI NUMBER,
+
+    foreign key (Id_RPPS) references medecin(Id_RPPS),
+    foreign key (NSSI) references client(NSSI),
+
+    CONSTRAINT check_id_Ordonnance CHECK (LENGTH(TO_CHAR(id_Ordonnance)) = 11),
+    CONSTRAINT check_date_ordonnance CHECK (date_Prescription < date_De_Peremption)
+);
 
 
 CREATE TABLE CLIENT(
@@ -42,31 +69,31 @@ CREATE TABLE CLIENT(
     Prenom varchar(40),
     adresse varchar(40),
     Contact varchar(40),
-
     Nom_mutuelle varchar(40),
 
-    foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle)
+    foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle),
+
+    CONSTRAINT check_NSSI CHECK (LENGTH(TO_CHAR(NSSI)) = 15),
+    CONSTRAINT check_Contact CHECK (LENGTH((Contact))= 10)
 );
 
-CREATE TABLE ORDONNANCE(
-    id_Ordonnance NUMBER primary key,
-    date_Prescription date,
-    date_De_Peremption date,
+CREATE TABLE LIGNEVENTE(
+    id_Lignevente NUMBER primary key,
+    quantité_vendu NUMBER ,
+    prix_après_remboursement number(8,2),
 
-    Id_RPPS NUMBER,
-    NSSI NUMBER,
+    id_Vente NUMBER,
+    numero_de_lot NUMBER,
+    id_ordonnance NUMBER
 
-    foreign key (Id_RPPS) references medecin(Id_RPPS),
-    foreign key (NSSI) references client(NSSI)
+    foreign key (id_Vente) references vente(id_Vente),
+    foreign key (numero_de_lot) references lot(num_lot),
+    foreign key (id_ordonnance) references ordonnance(id_Ordonnance),
+
+    CONSTRAINT check_quantite_vendu CHECK (quantite_vendu >= 0),
+    CONSTRAINT check_prix_apres_remboursement CHECK (prix_apres_remboursement >= 0)
 );
 
-CREATE TABLE PHARMACIEN(
-    id_RPPS NUMBER primary key,
-    Prenom varchar(40),
-    Nom varchar(40),
-    Mail varchar(40),
-    Adresse varchar(40)
-);
 
 CREATE TABLE VENTE(
     id_Vente NUMBER primary key,
@@ -76,8 +103,31 @@ CREATE TABLE VENTE(
     id_Client,
 
     foreign key (id_Pharmacien) references Pharmacien(id_RPPS),
-    foreign key (id_Client) references Client(NSSI)
+    foreign key (id_Client) references Client(NSSI),
+
+    CONSTRAINT check_prixfinal CHECK (PrixFinal >= 0),
+    CONSTRAINT check_datevente CHECK (DateVente <= SYSDATE)
 );
+
+CREATE TABLE LIGNEORDONNANCE(
+    id_ligneordonnace NUMBER primary key,
+    qt_délivré NUMBER,
+    duree_trait NUMBER,
+    date_traitement date,
+    id_medicament NUMBER,
+    id_ordonnance NUMBER,
+    id_RPPS NUMBER,
+
+    foreign key (id_medicament) references Medicament(Code_CIP),
+    foreign key (id_ordonnance) references Ordonnance(id_Ordonnance),
+    foreign key (id_RPPS) references Pharmacien(id_RPPS),
+
+    CONSTRAINT check_qt_delivre CHECK (qt_delivre > 0),
+    CONSTRAINT check_duree_trait CHECK (duree_trait > 0),
+    CONSTRAINT check_date_traitement CHECK (date_traitement <= SYSDATE)
+);
+
+
 
 CREATE TABLE COMMANDE(
     id_Commande NUMBER primary key,
@@ -89,6 +139,7 @@ CREATE TABLE COMMANDE(
 
     foreign key (Nom) references Fournisseur(Nom)
 );
+
 
 
 CREATE TABLE LOT(
@@ -106,60 +157,14 @@ CREATE TABLE LOT(
     foreign key (Id_Commande) references Commande(id_Commande)
 );
 
-CREATE TABLE LIGNEVENTE(
-    id_Lignevente NUMBER primary key,
-    quantité_vendu NUMBER ,
-    prix_après_remboursement number(8,2),
 
-    id_Vente NUMBER,
-    numero_de_lot NUMBER,
-    id_ordonnance NUMBER,
-
-
-    FOREIGN KEY (id_ordonnance) references ORDONNANCE(id_ordonnance),
-    foreign key (id_Vente) references vente(id_Vente),
-    foreign key (numero_de_lot) references lot(num_lot)
+CREATE TABLE PHARMACIEN(
+    id_RPPS NUMBER primary key,
+    Prenom varchar(40),
+    Nom varchar(40),
+    Mail varchar(40),
+    Adresse varchar(40)
 );
-
--- doublon
-CREATE TABLE ORDONNANCE(
-    id_Ordonnance NUMBER primary key,
-    date_Prescription date,
-    date_De_Peremption date,
-
-    Id_RPPS NUMBER,
-    NSSI NUMBER,
-
-    foreign key (Id_RPPS) references medecin(Id_RPPS),
-    foreign key (NSSI) references client(NSSI)
-);
-
-
-
-CREATE TABLE LIGNEORDONNANCE(
-    id_ligneordonnace NUMBER primary key,
-    qt_délivré NUMBER,
-    duree_trait NUMBER,
-    date_traitement date,
-    id_medicament NUMBER,
-    id_ordonnance NUMBER,
-    id_RPPS NUMBER,
-
-    foreign key (id_medicament) references Medicament(Code_CIP),
-    foreign key (id_ordonnance) references Ordonnance(id_Ordonnance),
-    foreign key (id_RPPS) references Pharmacien(id_RPPS)
-);
-
-
-
-
-
-
-
-
-
-
-
 
 -- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
 
@@ -198,7 +203,7 @@ INSERT INTO COUVERTURE VALUES ('Mutuelle Prévention', 70);
 INSERT INTO COUVERTURE VALUES ('Mutuelle Liberté', 76);
 
 
--- Client --le client 'Robert','Nathan' a une adresse trop longue (CLIENT"."ADRESSE" (actual: 42, maximum: 40))
+-- Client
 insert into Client values(199057512345678,'Martin','Lucas','12 rue de Rivoli 75001 Paris','06 12 34 56 78','MGEN');
 insert into Client values(201116924531245,'Bernard','Emma','45 boulevard Saint-Germain, 75005 Paris','06 23 45 67 89','MAIF');
 insert into Client values(198031340217891,'Dubois','Hugo','8 avenue de Opéra, 75002 Paris','06 34 56 78 90','MACIF');
@@ -232,7 +237,7 @@ insert into Client values(202123456789013,'Garnier','Lola','42 rue Saint-Denis 7
 insert into Client values(101234567890125,'Bernard','Mathis','14 rue de la République 75011 Paris','06 11 22 33 44','MGEN');
 insert into Client values(202345678901236,'Petit','Anaïs','17 rue de la Roquette 75011 Paris','07 22 33 44 55','MAIF');
 
--- Pharmaciens -- il y a des insertion qui ne fonctionne pas, pk on  passe de "" à '
+-- Pharmaciens
 
 insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris")
 insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris")
@@ -265,9 +270,9 @@ insert into Pharmacien values (10000000278,'Lola','Renault','07 88 99 00 11','37
 insert into Pharmacien values (10000000289,'Vincent','Leclerc','06 99 00 11 22','40 rue Saint-Denis, 75001 Paris');
 insert into Pharmacien values (10000000290,'Émilie','Roux','07 00 11 22 33','42 rue de Rivoli, 75001 Paris');
 
--- Médecins
+-- Médecinss
 
-/* INSERT INTO MEDECIN
+INSERT INTO MEDECIN
 (Id_RPPS, Prenom, Nom, Specialite, Telephone, Email)
 VALUES
 ('10101234567', 'Alice', 'Martin', 'Cardiologie', '0612345678', 'alice.martin@hopital.fr'),
@@ -299,60 +304,11 @@ VALUES
 ('10127890123', 'Laura', 'Benoit', 'Allergologie', '0670123456', 'laura.benoit@hopital.fr'),
 ('10128901234', 'Hamza', 'Saidi', 'Infectiologie', '0681234567', 'hamza.saidi@hopital.fr'),
 ('10130000001', 'Paul', 'Dumont', 'Médecine générale', '0692345678', 'paul.dumont@hopital.fr'),
-('10130000002', 'Noura', 'Aziz', 'Cardiologie', '0673456789', 'noura.aziz@hopital.fr'); */
+('10130000002', 'Noura', 'Aziz', 'Cardiologie', '0673456789', 'noura.aziz@hopital.fr');
 
-INSERT INTO MEDECIN (Id_RPPS, Prenom, Nom, Specialite, Telephone, Email) VALUES 
-(10101234567, 'Alice', 'Martin', 'Cardiologie', '0612345678', 'alice.martin@hopital.fr'),
-(10102345678, 'Karim', 'Benali', 'Dermatologie', '0623456789', 'karim.benali@hopital.fr'),
-(10103456789, 'Fatou', 'Diallo', 'Pédiatrie', '0634567890', 'fatou.diallo@hopital.fr'),
-(10104567890, 'Lucas', 'Dupont', 'Médecine générale', '0645678901', 'lucas.dupont@hopital.fr'),
-(10105678901, 'Leila', 'Haddad', 'Gynécologie', '0656789012', 'leila.haddad@hopital.fr'),
-(10106789012, 'Thomas', 'Bernard', 'Neurologie', '0667890123', 'thomas.bernard@hopital.fr'),
-(10107890123, 'Aissata', 'Kone', 'Ophtalmologie', '0678901234', 'aissata.kone@hopital.fr'),
-(10108901234, 'Youssef', 'Omar', 'Radiologie', '0689012345', 'youssef.omar@hopital.fr'),
-(10109012345, 'Nadia', 'Lefevre', 'Endocrinologie', '0690123456', 'nadia.lefevre@hopital.fr'),
-(10110123456, 'Julien', 'Moreau', 'Chirurgie', '0601234567', 'julien.moreau@hopital.fr'),
-(10111234567, 'Samira', 'Boukari', 'Psychiatrie', '0613456789', 'samira.boukari@hopital.fr'),
-(10112345678, 'Antoine', 'Renaud', 'ORL', '0624567890', 'antoine.renaud@hopital.fr'),
-(10113456789, 'Mariam', 'Sow', 'Oncologie', '0635678901', 'mariam.sow@hopital.fr'),
-(10114567890, 'Pierre', 'Lambert', 'Urologie', '0646789012', 'pierre.lambert@hopital.fr'),
-(10115678901, 'Imane', 'El Amrani', 'Néphrologie', '0657890123', 'imane.elamrani@hopital.fr'),
-(10116789012, 'Nicolas', 'Faure', 'Rhumatologie', '0668901234', 'nicolas.faure@hopital.fr'),
-(10117890123, 'Amina', 'Cherif', 'Hématologie', '0679012345', 'amina.cherif@hopital.fr'),
-(10118901234, 'Maxime', 'Giraud', 'Gastro-entérologie', '0680123456', 'maxime.giraud@hopital.fr'),
-(10119012345, 'Rania', 'Hassan', 'Pneumologie', '0691234567', 'rania.hassan@hopital.fr'),
-(10120123456, 'David', 'Cohen', 'Anesthésie', '0602345678', 'david.cohen@hopital.fr'),
-(10121234567, 'Sofia', 'Alves', 'Médecine interne', '0614567890', 'sofia.alves@hopital.fr'),
-(10122345678, 'Mehdi', 'Zaoui', 'Urgences', '0625678901', 'mehdi.zaoui@hopital.fr'),
-(10123456789, 'Claire', 'Perrin', 'Immunologie', '0636789012', 'claire.perrin@hopital.fr'),
-(10124567890, 'Omar', 'Belkacem', 'Gériatrie', '0647890123', 'omar.belkacem@hopital.fr'),
-(10125678901, 'Élodie', 'Marchand', 'Nutrition', '0658901234', 'elodie.marchand@hopital.fr'),
-(10126789012, 'Ibrahim', 'Keita', 'Médecine du sport', '0669012345', 'ibrahim.keita@hopital.fr'),
-(10127890123, 'Laura', 'Benoit', 'Allergologie', '0670123456', 'laura.benoit@hopital.fr'),
-(10128901234, 'Hamza', 'Saidi', 'Infectiologie', '0681234567', 'hamza.saidi@hopital.fr'),
-(10130000001, 'Paul', 'Dumont', 'Médecine générale', '0692345678', 'paul.dumont@hopital.fr'),
-(10130000002, 'Noura', 'Aziz', 'Cardiologie', '0673456789', 'noura.aziz@hopital.fr');
+
 
 UPDATE MEDECIN
-SET Specialite = 'Médecine générale'
-WHERE Id_RPPS IN (
-  10101234567,
-  10102345678,
-  10103456789,
-  10104567890,
-  10105678901,
-  10106789012,
-  10107890123,
-  10108901234,
-  10109012345,
-  10110123456,
-  10111234567,
-  10112345678,
-  10113456789,
-  10114567890
-);
-
-/* UPDATE MEDECIN
 SET Specialite = 'Médecine générale'
 WHERE Id_RPPS IN (
   '10101234567',
@@ -369,8 +325,7 @@ WHERE Id_RPPS IN (
   '10112345678',
   '10113456789',
   '10114567890'
-); */
-
+);
 
 -- FOURNISSEURS 
 
@@ -439,39 +394,8 @@ insert into ORDONNANCE values (10000000030, TO_DATE('2025-12-30','YYYY-MM-DD'), 
 
 -- MEDICAMENT
 
-INSERT INTO MEDICAMENT (code_cip, nom, prix_public, Categorie, Statue_Vente, Laboratoire) VALUES
-(340093000001, 'Doliprane 500mg', 1.95, 'Antalgique', 'Libre', 'Sanofi'),
-(340093000002, 'Doliprane 1000mg', 2.50, 'Antalgique', 'Libre', 'Sanofi'),
-(340093000003, 'Efferalgan 500mg', 2.10, 'Antalgique', 'Libre', 'UPSA'),
-(340093000004, 'Efferalgan 1000mg', 2.90, 'Antalgique', 'Libre', 'UPSA'),
-(340093000005, 'Paracetamol Biogaran', 1.60, 'Antalgique', 'Libre', 'Biogaran'),
-(340093000006, 'Ibuprofene 200mg', 2.30, 'Anti-inflammatoire', 'Libre', 'Mylan'),
-(340093000007, 'Ibuprofene 400mg', 3.10, 'Anti-inflammatoire', 'Libre', 'Mylan'),
-(340093000008, 'Spasfon', 3.50, 'Antispasmodique', 'Libre', 'Teva'),
-(340093000009, 'Smecta', 3.80, 'Gastro', 'Libre', 'Ipsen'),
-(340093000010, 'Gaviscon', 4.20, 'Gastro', 'Libre', 'Reckitt'),
-(340093000011, 'Augmentin 1g', 7.20, 'Antibiotique', 'Ordonnance', 'GSK'),
-(340093000012, 'Amoxicilline 500mg', 5.10, 'Antibiotique', 'Ordonnance', 'Biogaran'),
-(340093000013, 'Azithromycine', 6.40, 'Antibiotique', 'Ordonnance', 'Pfizer'),
-(340093000014, 'Ventoline', 4.30, 'Respiratoire', 'Ordonnance', 'GSK'),
-(340093000015, 'Seretide', 18.90, 'Respiratoire', 'Ordonnance', 'GSK'),
-(340093000016, 'Levothyrox', 2.10, 'Hormonal', 'Ordonnance', 'Merck'),
-(340093000017, 'Aerius', 3.90, 'Antihistaminique', 'Libre', 'MSD'),
-(340093000018, 'Zyrtec', 4.10, 'Antihistaminique', 'Libre', 'UCB'),
-(340093000019, 'Xanax', 2.80, 'Anxiolytique', 'Ordonnance', 'Pfizer'),
-(340093000020, 'Lexomil', 2.60, 'Anxiolytique', 'Ordonnance', 'Roche'),
-(340093000021, 'Imodium', 3.20, 'Gastro', 'Libre', 'Janssen'),
-(340093000022, 'Dafalgan', 2.00, 'Antalgique', 'Libre', 'UPSA'),
-(340093000023, 'Forlax', 5.50, 'Laxatif', 'Libre', 'Ipsen'),
-(340093000024, 'Maalox', 3.70, 'Gastro', 'Libre', 'Sanofi'),
-(340093000025, 'Inexium', 8.90, 'Gastro', 'Ordonnance', 'AstraZeneca'),
-(340093000026, 'Omeprazole', 4.60, 'Gastro', 'Ordonnance', 'Teva'),
-(340093000027, 'Plavix', 21.00, 'Cardiologie', 'Ordonnance', 'Sanofi'),
-(340093000028, 'Kardegic', 3.40, 'Cardiologie', 'Libre', 'Sanofi'),
-(340093000029, 'Lovenox', 12.80, 'Anticoagulant', 'Ordonnance', 'Sanofi'),
-(340093000030, 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
 
-/* INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laboratoire) VALUES
+INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laboratoire) VALUES
 ('340093000001', 'Doliprane 500mg', 1.95, 'Antalgique', 'Libre', 'Sanofi'),
 ('340093000002', 'Doliprane 1000mg', 2.50, 'Antalgique', 'Libre', 'Sanofi'),
 ('340093000003', 'Efferalgan 500mg', 2.10, 'Antalgique', 'Libre', 'UPSA'),
@@ -501,8 +425,9 @@ INSERT INTO MEDICAMENT (code_cip, nom, prix_public, Categorie, Statue_Vente, Lab
 ('340093000027', 'Plavix', 21.00, 'Cardiologie', 'Ordonnance', 'Sanofi'),
 ('340093000028', 'Kardegic', 3.40, 'Cardiologie', 'Libre', 'Sanofi'),
 ('340093000029', 'Lovenox', 12.80, 'Anticoagulant', 'Ordonnance', 'Sanofi'),
-('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');*/
+('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
 
+insert into ligneordonnance 
 
 
 -- COMMANDE 
@@ -574,40 +499,6 @@ insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD
 
 -- LOT 
 
-
-INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_Commande, CODE_CIP) VALUES
-(1, 200, TO_DATE('2027-06-30','YYYY-MM-DD'), TO_DATE('2024-06-30','YYYY-MM-DD'), 'PharmaDis', 1, 340093000001),
-(2, 180, TO_DATE('2027-07-31','YYYY-MM-DD'), TO_DATE('2024-07-31','YYYY-MM-DD'), 'MediLux', 2, 340093000006),
-(3, 150, TO_DATE('2026-12-31','YYYY-MM-DD'), TO_DATE('2024-01-01','YYYY-MM-DD'), 'BioCare', 3, 340093000006),
-(4, 140, TO_DATE('2026-11-30','YYYY-MM-DD'), TO_DATE('2024-02-01','YYYY-MM-DD'), 'PharmaTech', 4, 340093000004),
-(5, 300, TO_DATE('2027-03-31','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'HealthNord', 5, 340093000005),
-(6, 220, TO_DATE('2026-08-31','YYYY-MM-DD'), TO_DATE('2024-04-15','YYYY-MM-DD'), 'PharmaDis', 6, 340093000001),
-(7, 210, TO_DATE('2026-09-30','YYYY-MM-DD'), TO_DATE('2024-04-20','YYYY-MM-DD'), 'MediSud', 7, 340093000007),
-(8, 160, TO_DATE('2026-10-31','YYYY-MM-DD'), TO_DATE('2024-05-01','YYYY-MM-DD'), 'BioHealth', 8, 340093000008),
-(9, 190, TO_DATE('2026-12-15','YYYY-MM-DD'), TO_DATE('2024-05-10','YYYY-MM-DD'), 'LillePharma', 9, 340093000009),
-(10, 170, TO_DATE('2026-11-15','YYYY-MM-DD'), TO_DATE('2024-05-15','YYYY-MM-DD'), 'BioHealth', 10, 340093000008),
-(11, 120, TO_DATE('2026-04-30','YYYY-MM-DD'), TO_DATE('2024-01-20','YYYY-MM-DD'), 'PharmaLyon', 11, 340093000011),
-(12, 130, TO_DATE('2026-05-31','YYYY-MM-DD'), TO_DATE('2024-02-10','YYYY-MM-DD'), 'MediLyon', 12, 340093000020),
-(13, 110, TO_DATE('2026-06-30','YYYY-MM-DD'), TO_DATE('2024-02-15','YYYY-MM-DD'), 'PharmaDis', 13, 340093000009),
-(14, 100, TO_DATE('2026-07-31','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'LyonPharma', 14, 340093000005),
-(15, 90,  TO_DATE('2026-08-31','YYYY-MM-DD'), TO_DATE('2024-03-05','YYYY-MM-DD'), 'HealthLyon', 15, 340093000009),
-(16, 200, TO_DATE('2027-01-31','YYYY-MM-DD'), TO_DATE('2024-04-01','YYYY-MM-DD'), 'PharmaNord', 16, 340093000016),
-(17, 210, TO_DATE('2027-02-28','YYYY-MM-DD'), TO_DATE('2024-04-05','YYYY-MM-DD'), 'LillePharma', 17, 340093000017),
-(18, 220, TO_DATE('2027-03-31','YYYY-MM-DD'), TO_DATE('2024-04-10','YYYY-MM-DD'), 'LyonPharma', 18, 340093000014),
-(19, 80,  TO_DATE('2026-01-31','YYYY-MM-DD'), TO_DATE('2024-01-10','YYYY-MM-DD'), 'LillePharma', 19, 340093000019),
-(20, 85,  TO_DATE('2026-02-28','YYYY-MM-DD'), TO_DATE('2024-01-15','YYYY-MM-DD'), 'HealthNord', 20, 340093000020),
-(21, 160, TO_DATE('2026-09-30','YYYY-MM-DD'), TO_DATE('2024-05-20','YYYY-MM-DD'), 'PharmaTLS', 21, 340093000021),
-(22, 180, TO_DATE('2026-10-31','YYYY-MM-DD'), TO_DATE('2024-06-01','YYYY-MM-DD'), 'MediTLS', 22, 340093000009),
-(23, 140, TO_DATE('2026-11-30','YYYY-MM-DD'), TO_DATE('2024-06-05','YYYY-MM-DD'), 'BioHealth', 23, 340093000008),
-(24, 150, TO_DATE('2026-12-31','YYYY-MM-DD'), TO_DATE('2024-06-10','YYYY-MM-DD'), 'LyonPharma', 24, 340093000005),
-(25, 95,  TO_DATE('2026-03-31','YYYY-MM-DD'), TO_DATE('2024-02-01','YYYY-MM-DD'), 'PharmaDis', 25, 340093000002),
-(26, 160, TO_DATE('2026-04-30','YYYY-MM-DD'), TO_DATE('2024-02-05','YYYY-MM-DD'), 'PharmaBDX', 26, 340093000014),
-(27, 70,  TO_DATE('2026-05-31','YYYY-MM-DD'), TO_DATE('2024-02-10','YYYY-MM-DD'), 'HealthNord', 27, 340093000027),
-(28, 130, TO_DATE('2026-06-30','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'BioBDX', 28, 340093000020),
-(29, 60,  TO_DATE('2026-07-31','YYYY-MM-DD'), TO_DATE('2024-03-05','YYYY-MM-DD'), 'MediSud', 29, 340093000029),
-(30, 190, TO_DATE('2027-04-30','YYYY-MM-DD'), TO_DATE('2024-07-01','YYYY-MM-DD'), 'MediSud', 30, 340093000014);
-
-/*
 INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_Commande, CODE_CIP) VALUES
 (1, 200, TO_DATE('2027-06-30','YYYY-MM-DD'), TO_DATE('2024-06-30','YYYY-MM-DD'), 'PharmaDis', 1, '340093000001'),
 (2, 180, TO_DATE('2027-07-31','YYYY-MM-DD'), TO_DATE('2024-07-31','YYYY-MM-DD'), 'MediLux', 2, '340093000006'),
@@ -639,8 +530,6 @@ INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_C
 (28,130, TO_DATE('2026-06-30','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'BioBDX', 28, '340093000020'),
 (29,60,  TO_DATE('2026-07-31','YYYY-MM-DD'), TO_DATE('2024-03-05','YYYY-MM-DD'), 'MediSud', 29, '340093000029'),
 (30,190, TO_DATE('2027-04-30','YYYY-MM-DD'), TO_DATE('2024-07-01','YYYY-MM-DD'), 'MediSud', 30, '340093000014');
-*/
-
 
 
 
@@ -679,82 +568,89 @@ INSERT INTO VENTE VALUES (32, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 100000001
 INSERT INTO VENTE VALUES (33, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000078, 101890123456780);  
 INSERT INTO VENTE VALUES (34, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000167, 101456789012345); 
 
--- Format : (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance)
 
--- Vente n°1 (Client: Martin Lucas | Pharmacien: Julien Lefèvre)
-INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1, 101);   
-INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2, 101);  
+-- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
+INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1);   
+INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2);  
 
--- Vente n°2 (Client: Bernard Emma | Pharmacien: Julien Lefèvre)
-INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25, 102);
-INSERT INTO LIGNEVENTE VALUES (4, 1, NULL, 2, 1, 102);   
+-- Vente n°2 (Client Bernard Emma)
+INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25);
+INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 2, 1);   
 
--- Vente n°3 (Client: Thomas Léa | Pharmacien: Marie Curie)
-INSERT INTO LIGNEVENTE VALUES (5, 3, NULL, 3, 3, 103);
-INSERT INTO LIGNEVENTE VALUES (6, 1, NULL, 3, 2, 103);   
 
--- Vente n°4 (Client: Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 4, 4, 104);   
+-- Vente n°3
 
--- Vente n°5 (Client: Robert Nathan - Suite)
-INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 5, 20, 105); 
-INSERT INTO LIGNEVENTE VALUES (9, 4, NULL, 5, 12, 105); 
+INSERT INTO LIGNEVENTE VALUES (4, 3, NULL, 3, 3);
+INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 3, 2);   
 
--- Vente n°6 (Client: Martin Lucas)
-INSERT INTO LIGNEVENTE VALUES (10, 1, NULL, 6, 6, 106);   
 
--- Vente n°8 (Client: Faure Camille)
-INSERT INTO LIGNEVENTE VALUES (11, 2, NULL, 8, 9, 108);
-INSERT INTO LIGNEVENTE VALUES (12, 1, NULL, 8, 23, 108);   
+-- Vente n°4 (Client Thomas Léa)
+INSERT INTO LIGNEVENTE VALUES (5, 1, NULL, 4, 4);   
 
--- Vente n°9 (Client: Durand Chloé)
-INSERT INTO LIGNEVENTE VALUES (13, 2, NULL, 9, 28, 109);
+-- Vente n°5 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (6, 2, NULL, 5, 20); 
 
--- Vente n°10 (Client: Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 10, 13, 110); 
+-- Vente n°6 (Client Martin Lucas)
+INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 6, 6);   
 
--- Vente n°12 (Client: Renard Chloé)
-INSERT INTO LIGNEVENTE VALUES (15, 3, NULL, 12, 25, 112);
+-- Vente n°9 (Client Durand Chloé)
+INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 9, 10);
+INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 9, 8);   
 
--- Vente n°13 (Client: Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 13, 10, 113); 
 
--- Vente n°16 (Client: Brun Lucas)
-INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 16, 31, 116); 
+-- Vente n°10 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (9, 1, NULL, 10, 13); 
 
--- Vente n°17 (Client: Faure Camille)
-INSERT INTO LIGNEVENTE VALUES (18, 2, NULL, 17, 14, 117); 
+-- Vente n°12 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (10, 4, NULL, 12, 5); 
 
--- Vente n°18 (Client: Morel Jules)
-INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 18, 16, 118);
+-- Vente n°13 (Client Rousseau Louis)
+INSERT INTO LIGNEVENTE VALUES (11, 1, NULL, 13, 19); 
 
--- Vente n°19 (Client: Rousseau Louis)
-INSERT INTO Lignevente VALUES (20, 1, NULL, 19, 13, 119);
+-- Vente n°14 (Client Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (12, 2, NULL, 14, 17); 
 
--- Vente n°20 (Client: Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (21, 3, NULL, 20, 20, 120); 
+-- Vente n°15 (Client Bernard Mathis)
+INSERT INTO LIGNEVENTE VALUES (13, 1, NULL, 15, 25); 
 
--- Vente n°24 (Client: Dubois Hugo)
-INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 24, 26, 124);
+-- Vente n°16 (Client Morel Jules)
+INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 16, 18);
+INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 14, 1);  
 
--- Vente n°25 (Client: Bernard Mathis)
-INSERT INTO LIGNEVENTE VALUES (23, 1, NULL, 25, 15, 125); 
 
--- Vente n°28 (Client: Garnier Lola)
-INSERT INTO LIGNEVENTE VALUES (24, 2, NULL, 28, 32, 128);
+-- Vente n°17 (Client Thomas Léa)
+INSERT INTO LIGNEVENTE VALUES (15, 2, NULL, 17, 4);  
 
--- Vente n°30 (Client: Vidal Emma)
-INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 30, 30, 130); 
+-- Vente n°23 (Client Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 23, 8);  
+INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 23, 1);  
 
--- Vente n°33 (Client: Lopez Antoine)
-INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 33, 7, 133);
-INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 33, 5, 133);
+-- Vente n°25 (Client Renard Chloé)
+INSERT INTO LIGNEVENTE VALUES (18, 3, NULL, 25, 12);
 
--- Lignes supplémentaires pour arriver à 30 (Clients divers)
-INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 4, 17, 104); -- Thomas Léa
-INSERT INTO LIGNEVENTE VALUES (29, 1, NULL, 1, 23, 101); -- Martin Lucas
-INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 3, 2, 103);  -- Thomas Léa
+-- Vente n°26 (Client Dubois Hugo)
+INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 26, 24);
 
+-- Vente n°28 (Client Durand Chloé)
+INSERT INTO LIGNEVENTE VALUES (20, 2, NULL, 28, 9);
+INSERT INTO LIGNEVENTE VALUES (29, 3, NULL, 20, 20); 
+
+
+-- Vente n°30 (Client Vidal Emma)
+INSERT INTO LIGNEVENTE VALUES (21, 1, NULL, 30, 30); 
+
+-- Vente n°31 (Client Brun Lucas)
+INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 31, 16); 
+
+-- Vente n°32 (Client Garnier Lola)
+INSERT INTO LIGNEVENTE VALUES (23, 2, NULL, 32, 28);
+
+-- Vente n°33 (Client Lopez Antoine)
+INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7); 
+
+-- Vente 34
+
+INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
 
 
 -- Initialisation des prix après remboursement ou pas des lignes de ventes
