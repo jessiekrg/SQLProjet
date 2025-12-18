@@ -53,35 +53,6 @@ CREATE TABLE ORDONNANCE(
     date_Prescription date,
     date_De_Peremption date,
 
-    Id_RRPS NUMBER,
-    NSSI NUMBER,
-
-    foreign key (Id_RPPS) references medecin(Id_RPPS),
-    foreign key (NSSI) references client(NSSI)
-);
-
-
-CREATE TABLE LIGNEVENTE(
-    id_Lignevente NUMBER primary key,
-    quantité_vendu NUMBER ,
-    prix_après_remboursement number(8,2),
-
-    id_Vente NUMBER,
-    numero_de_lot NUMBER,
-    id_ordonnance NUMBER,
-
-
-    FOREIGN KEY (id_ordonnance) references ORDONNANCE(id_ordonnance),
-    foreign key (id_Vente) references vente(id_Vente),
-    foreign key (numero_de_lot) references lot(num_lot)
-);
-
-
-CREATE TABLE ORDONNANCE(
-    id_Ordonnance NUMBER primary key,
-    date_Prescription date,
-    date_De_Peremption date,
-
     Id_RPPS NUMBER,
     NSSI NUMBER,
 
@@ -89,6 +60,13 @@ CREATE TABLE ORDONNANCE(
     foreign key (NSSI) references client(NSSI)
 );
 
+CREATE TABLE PHARMACIEN(
+    id_RPPS NUMBER primary key,
+    Prenom varchar(40),
+    Nom varchar(40),
+    Mail varchar(40),
+    Adresse varchar(40)
+);
 
 CREATE TABLE VENTE(
     id_Vente NUMBER primary key,
@@ -101,22 +79,6 @@ CREATE TABLE VENTE(
     foreign key (id_Client) references Client(NSSI)
 );
 
-CREATE TABLE LIGNEORDONNANCE(
-    id_ligneordonnace NUMBER primary key,
-    qt_délivré NUMBER,
-    duree_trait NUMBER,
-    date_traitement date,
-    id_medicament NUMBER,
-    id_ordonnance NUMBER,
-    id_RPPS NUMBER,
-
-    foreign key (id_medicament) references Medicament(Code_CIP),
-    foreign key (id_ordonnance) references Ordonnance(id_Ordonnance),
-    foreign key (id_RPPS) references Pharmacien(id_RPPS)
-);
-
-
-
 CREATE TABLE COMMANDE(
     id_Commande NUMBER primary key,
     Date_Commande date,
@@ -127,7 +89,6 @@ CREATE TABLE COMMANDE(
 
     foreign key (Nom) references Fournisseur(Nom)
 );
-
 
 
 CREATE TABLE LOT(
@@ -145,14 +106,58 @@ CREATE TABLE LOT(
     foreign key (Id_Commande) references Commande(id_Commande)
 );
 
+CREATE TABLE LIGNEVENTE(
+    id_Lignevente NUMBER primary key,
+    quantité_vendu NUMBER ,
+    prix_après_remboursement number(8,2),
 
-CREATE TABLE PHARMACIEN(
-    id_RPPS NUMBER primary key,
-    Prenom varchar(40),
-    Nom varchar(40),
-    Mail varchar(40),
-    Adresse varchar(40)
+    id_Vente NUMBER,
+    numero_de_lot NUMBER,
+    id_ordonnance NUMBER,
+
+
+    FOREIGN KEY (id_ordonnance) references ORDONNANCE(id_ordonnance),
+    foreign key (id_Vente) references vente(id_Vente),
+    foreign key (numero_de_lot) references lot(num_lot)
 );
+
+-- doublon
+CREATE TABLE ORDONNANCE(
+    id_Ordonnance NUMBER primary key,
+    date_Prescription date,
+    date_De_Peremption date,
+
+    Id_RPPS NUMBER,
+    NSSI NUMBER,
+
+    foreign key (Id_RPPS) references medecin(Id_RPPS),
+    foreign key (NSSI) references client(NSSI)
+);
+
+
+
+CREATE TABLE LIGNEORDONNANCE(
+    id_ligneordonnace NUMBER primary key,
+    qt_délivré NUMBER,
+    duree_trait NUMBER,
+    date_traitement date,
+    id_medicament NUMBER,
+    id_ordonnance NUMBER,
+    id_RPPS NUMBER,
+
+    foreign key (id_medicament) references Medicament(Code_CIP),
+    foreign key (id_ordonnance) references Ordonnance(id_Ordonnance),
+    foreign key (id_RPPS) references Pharmacien(id_RPPS)
+);
+
+
+
+
+
+
+
+
+
 
 
 
