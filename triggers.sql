@@ -14,8 +14,9 @@ BEGIN
     JOIN LOT L ON L.code_cip = M.code_cip
     WHERE L.num_lot = :NEW.numero_de_lot;
 
-    SELECT id_Client INTO nssi
-    FROM VENTE
+    SELECT CL.id_Client INTO nssi
+    FROM VENTE V
+    JOIN CLIENT CL ON CL.NSSI = V.id_Client
     WHERE id_Vente = :NEW.id_Vente;
 
     SELECT C.taux_de_remboursement INTO tr
@@ -187,7 +188,7 @@ begin
     where id_ligneordonnace = :NEW.id_ordonnance;
 
     if :NEW.quantité_vendu >  v_qt_prescrite then
-        AISE_APPLICATION_ERROR(-20002, 'Erreur : la quantité vendue dépasse la quantité prescrite sur l''ordonnance.');
+        RAISE_APPLICATION_ERROR(-20002, 'Erreur : la quantité vendue dépasse la quantité prescrite sur l''ordonnance.');
     end if;
 end;
 /
@@ -205,7 +206,7 @@ BEGIN
     WHERE id_ordonnance = :NEW.id_ordonnance;
 
     IF DP < SYSDATE THEN
-        RAISE_APPLICATION_ERROR(-20001, 'ordonnance a expiré '));
+        RAISE_APPLICATION_ERROR(-20001, 'ordonnance a expiré ');
     END IF;
 
 EXCEPTION

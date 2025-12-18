@@ -16,7 +16,7 @@ CREATE TABLE MEDECIN(
     Prenom varchar(40),
     Nom varchar(40),
     Specialite varchar(40),
-    Telephone varcha varchar(40),
+    Telephone varchar(40),
     Email varchar(40),
 );
 
@@ -36,21 +36,6 @@ CREATE TABLE COUVERTURE(
 ); 
 
 
-
-
-CREATE TABLE ORDONNANCE(
-    id_Ordonnance NUMBER primary key,
-    date_Prescription date,
-    date_De_Peremption date,
-
-    Id_RRPS NUMBER,
-    NSSI NUMBER,
-
-    foreign key (Id_RPPS) references medecin(Id_RPPS),
-    foreign key (NSSI) references client(NSSI),
-);
-
-
 CREATE TABLE CLIENT(
     NSSI NUMBER primary key,
     Nom varchar(40),
@@ -62,6 +47,19 @@ CREATE TABLE CLIENT(
 
     foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle),
 );
+
+CREATE TABLE ORDONNANCE(
+    id_Ordonnance NUMBER primary key,
+    date_Prescription date,
+    date_De_Peremption date,
+
+    Id_RRPS NUMBER,
+    NSSI NUMBER,
+
+    foreign key (Id_RPPS) references medecin(Id_RPPS),
+    foreign key (NSSI) references client(NSSI)
+);
+
 
 CREATE TABLE LIGNEVENTE(
     id_Lignevente NUMBER primary key,
