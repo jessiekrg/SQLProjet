@@ -17,7 +17,7 @@ CREATE TABLE MEDECIN(
     Nom varchar(40),
     Specialite varchar(40),
     Telephone varchar(40),
-    Email varchar(40),
+    Email varchar(40)
 );
 
 
@@ -45,7 +45,7 @@ CREATE TABLE CLIENT(
 
     Nom_mutuelle varchar(40),
 
-    foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle),
+    foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle)
 );
 
 CREATE TABLE ORDONNANCE(
