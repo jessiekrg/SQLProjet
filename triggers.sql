@@ -233,3 +233,5 @@ END;
 /
 
 
+-- Il faut faire une contrainte d'integrité en mode quand quantité lot = 0 il est supprimé
+-- On peut prendre d'un lot en cours de livraison

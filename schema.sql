@@ -106,12 +106,11 @@ CREATE TABLE VENTE(
     foreign key (id_Client) references Client(NSSI),
 
     CONSTRAINT check_prixfinal CHECK (PrixFinal >= 0),
-    CONSTRAINT check_datevente CHECK (DateVente <= SYSDATE)
 );
 
 CREATE TABLE LIGNEORDONNANCE(
     id_ligneordonnace NUMBER primary key,
-    qt_délivré NUMBER,
+    qt_delivre NUMBER,
     duree_trait NUMBER,
     date_traitement date,
     id_medicament NUMBER,
@@ -123,10 +122,8 @@ CREATE TABLE LIGNEORDONNANCE(
     foreign key (id_RPPS) references Pharmacien(id_RPPS),
 
     CONSTRAINT check_qt_delivre CHECK (qt_delivre > 0),
-    CONSTRAINT check_duree_trait CHECK (duree_trait > 0),
-    CONSTRAINT check_date_traitement CHECK (date_traitement <= SYSDATE)
+    CONSTRAINT check_duree_trait CHECK (duree_trait > 0)
 );
-
 
 
 CREATE TABLE COMMANDE(
@@ -427,10 +424,15 @@ INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laborat
 ('340093000029', 'Lovenox', 12.80, 'Anticoagulant', 'Ordonnance', 'Sanofi'),
 ('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
 
-insert into ligneordonnance 
 
 
 -- COMMANDE 
+
+-- Pour résultat requete 4  bruh j'ai fait ça pour rien
+INSERT INTO COMMANDE VALUES (61, TO_DATE('2024-02-10','YYYY-MM-DD'), 'Livrée', 760, 50, 'MediNord');
+INSERT INTO COMMANDE VALUES (62, TO_DATE('2024-05-18','YYYY-MM-DD'), 'Livrée', 700, 50, 'MediNord');
+
+
 INSERT INTO COMMANDE (id_Commande, Date_Commande, Statut, Prix_Commande, Quantite, Nom) VALUES
 (1,  TO_DATE('2025-01-05','YYYY-MM-DD'), 'En cours', 1200.50, 50, 'PharmaDis'),
 (2,  TO_DATE('2025-01-06','YYYY-MM-DD'), 'Livrée', 980.00, 40, 'MediLux'),
@@ -463,41 +465,78 @@ INSERT INTO COMMANDE (id_Commande, Date_Commande, Statut, Prix_Commande, Quantit
 (29, TO_DATE('2025-02-02','YYYY-MM-DD'), 'Livrée', 1085.30, 44, 'MediSud'),
 (30, TO_DATE('2025-02-03','YYYY-MM-DD'), 'En cours', 1750.00, 72, 'MediSud');
 
+-- Création des commandes pour MediNord POUR FAIRE REQUETE 2
+INSERT INTO COMMANDE (id_Commande, Date_Commande, Statut, Prix_Commande, Quantite, Nom) VALUES
+(31, TO_DATE('2025-01-05','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(32, TO_DATE('2025-02-01','YYYY-MM-DD'), 'reçu', 900, 400, 'MediNord'),
+(33, TO_DATE('2025-03-10','YYYY-MM-DD'), 'reçu', 950, 450, 'MediNord'),
+(34, TO_DATE('2025-01-20','YYYY-MM-DD'), 'reçu', 980, 480, 'MediNord'),
+(35, TO_DATE('2025-04-12','YYYY-MM-DD'), 'reçu', 1020, 520, 'MediNord'),
+(36, TO_DATE('2025-05-18','YYYY-MM-DD'), 'reçu', 970, 470, 'MediNord'),
+(37, TO_DATE('2025-06-08','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(38, TO_DATE('2025-07-01','YYYY-MM-DD'), 'reçu', 930, 430, 'MediNord'),
+(39, TO_DATE('2025-08-15','YYYY-MM-DD'), 'reçu', 960, 460, 'MediNord'),
+(40, TO_DATE('2025-09-05','YYYY-MM-DD'), 'reçu', 980, 480, 'MediNord'),
+(41, TO_DATE('2025-10-10','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(42, TO_DATE('2025-11-12','YYYY-MM-DD'), 'reçu', 950, 450, 'MediNord'),
+(43, TO_DATE('2025-12-01','YYYY-MM-DD'), 'reçu', 970, 470, 'MediNord'),
+(44, TO_DATE('2025-01-28','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(45, TO_DATE('2025-02-18','YYYY-MM-DD'), 'reçu', 1020, 520, 'MediNord'),
+(46, TO_DATE('2025-03-15','YYYY-MM-DD'), 'reçu', 980, 480, 'MediNord'),
+(47, TO_DATE('2025-04-05','YYYY-MM-DD'), 'reçu', 950, 450, 'MediNord'),
+(48, TO_DATE('2025-05-12','YYYY-MM-DD'), 'reçu', 970, 470, 'MediNord'),
+(49, TO_DATE('2025-06-01','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(50, TO_DATE('2025-07-15','YYYY-MM-DD'), 'reçu', 980, 480, 'MediNord'),
+(51, TO_DATE('2025-08-20','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(52, TO_DATE('2025-09-05','YYYY-MM-DD'), 'reçu', 970, 470, 'MediNord'),
+(53, TO_DATE('2025-10-10','YYYY-MM-DD'), 'reçu', 950, 450, 'MediNord'),
+(54, TO_DATE('2025-11-20','YYYY-MM-DD'), 'reçu', 980, 480, 'MediNord'),
+(55, TO_DATE('2025-12-15','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(56, TO_DATE('2025-01-18','YYYY-MM-DD'), 'reçu', 970, 470, 'MediNord'),
+(57, TO_DATE('2025-02-12','YYYY-MM-DD'), 'reçu', 950, 450, 'MediNord'),
+(58, TO_DATE('2025-03-25','YYYY-MM-DD'), 'reçu', 980, 480, 'MediNord'),
+(59, TO_DATE('2025-04-18','YYYY-MM-DD'), 'reçu', 1000, 500, 'MediNord'),
+(60, TO_DATE('2025-05-10','YYYY-MM-DD'), 'reçu', 970, 470, 'MediNord');
 
-insert into LigneOrdonnance values (101, 10, 5, TO_DATE('2025-12-01','YYYY-MM-DD'), 340093000001, 10000000001, 10000000001);
+
+insert into LigneOrdonnance values (101, 10, 5, TO_DATE('2025-12-01','YYYY-MM-DD'), 340093000001, 10000000001, 10000000290);
 insert into LigneOrdonnance values (102, 5, 7, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000002, 10000000002, 10000000012);
-insert into LigneOrdonnance values (103, 8, 10, TO_DATE('2025-12-03','YYYY-MM-DD'), 340093000003, 10000000003, 10000000023);
+insert into LigneOrdonnance values (103, 8, 10, TO_DATE('2025-12-03','YYYY-MM-DD'), 340093000003, 10000000003, 10000000134);
 insert into LigneOrdonnance values (104, 6, 14, TO_DATE('2025-12-03','YYYY-MM-DD'), 340093000004, 10000000003, 10000000034);
 insert into LigneOrdonnance values (105, 12, 7, TO_DATE('2025-12-04','YYYY-MM-DD'), 340093000005, 10000000004, 10000000045);
-insert into LigneOrdonnance values (106, 15, 10, TO_DATE('2025-12-05','YYYY-MM-DD'), 340093000006, 10000000005, 10000000056);
+insert into LigneOrdonnance values (106, 15, 10, TO_DATE('2025-12-05','YYYY-MM-DD'), 340093000006, 10000000005,10000000101);
 insert into LigneOrdonnance values (107, 10, 5, TO_DATE('2025-12-06','YYYY-MM-DD'), 340093000007, 10000000006, 10000000067);
 insert into LigneOrdonnance values (108, 8, 7, TO_DATE('2025-12-07','YYYY-MM-DD'), 340093000008, 10000000007, 10000000078);
 insert into LigneOrdonnance values (109, 6, 10, TO_DATE('2025-12-08','YYYY-MM-DD'), 340093000009, 10000000008, 10000000089);
-insert into LigneOrdonnance values (110, 12, 14, TO_DATE('2025-12-09','YYYY-MM-DD'), 340093000010, 10000000009, 10000000090);
+insert into LigneOrdonnance values (110, 12, 14, TO_DATE('2025-12-09','YYYY-MM-DD'), 340093000010, 10000000009, 10000000212);
 insert into LigneOrdonnance values (111, 5, 7, TO_DATE('2025-12-10','YYYY-MM-DD'), 340093000001, 10000000010, 10000000301);
 insert into LigneOrdonnance values (112, 10, 5, TO_DATE('2025-12-11','YYYY-MM-DD'), 340093000002, 10000000011, 10000000312);
-insert into LigneOrdonnance values (113, 6, 10, TO_DATE('2025-12-12','YYYY-MM-DD'), 340093000003, 10000000012, 10000000101);
-insert into LigneOrdonnance values (114, 8, 7, TO_DATE('2025-12-13','YYYY-MM-DD'), 340093000004, 10000000013, 10000000112);
+insert into LigneOrdonnance values (113, 6, 10, TO_DATE('2025-12-12','YYYY-MM-DD'), 340093000003, 10000000012, 10000000089);
+insert into LigneOrdonnance values (114, 8, 7, TO_DATE('2025-12-13','YYYY-MM-DD'), 340093000004, 10000000013, 10000000145);
 insert into LigneOrdonnance values (115, 12, 14, TO_DATE('2025-12-14','YYYY-MM-DD'), 340093000005, 10000000014, 10000000123);
 insert into LigneOrdonnance values (116, 5, 10, TO_DATE('2025-12-15','YYYY-MM-DD'), 340093000006, 10000000015, 10000000134);
 insert into LigneOrdonnance values (117, 10, 5, TO_DATE('2025-12-16','YYYY-MM-DD'), 340093000007, 10000000016, 10000000145);
-insert into LigneOrdonnance values (118, 6, 7, TO_DATE('2025-12-17','YYYY-MM-DD'), 340093000008, 10000000017, 10000000156);
+insert into LigneOrdonnance values (118, 6, 7, TO_DATE('2025-12-17','YYYY-MM-DD'), 340093000008, 10000000017, 10000000089);
 insert into LigneOrdonnance values (119, 8, 10, TO_DATE('2025-12-18','YYYY-MM-DD'), 340093000009, 10000000018, 10000000167);
-insert into LigneOrdonnance values (120, 12, 14, TO_DATE('2025-12-19','YYYY-MM-DD'), 340093000010, 10000000019, 10000000178);
-insert into LigneOrdonnance values (121, 5, 5, TO_DATE('2025-12-20','YYYY-MM-DD'), 340093000011, 10000000020, 10000000189);
-insert into LigneOrdonnance values (122, 8, 7, TO_DATE('2025-12-21','YYYY-MM-DD'), 340093000012, 10000000021, 10000000190);
+insert into LigneOrdonnance values (120, 12, 14, TO_DATE('2025-12-19','YYYY-MM-DD'), 340093000010, 10000000019, 10000000212);
+insert into LigneOrdonnance values (121, 5, 5, TO_DATE('2025-12-20','YYYY-MM-DD'), 340093000011, 10000000020, 10000000178);
+insert into LigneOrdonnance values (122, 8, 7, TO_DATE('2025-12-21','YYYY-MM-DD'), 340093000012, 10000000021, 10000000101);
 insert into LigneOrdonnance values (123, 10, 10, TO_DATE('2025-12-22','YYYY-MM-DD'), 340093000013, 10000000022, 10000000201);
 insert into LigneOrdonnance values (124, 6, 14, TO_DATE('2025-12-23','YYYY-MM-DD'), 340093000014, 10000000023, 10000000212);
 insert into LigneOrdonnance values (125, 12, 7, TO_DATE('2025-12-24','YYYY-MM-DD'), 340093000015, 10000000024, 10000000223);
 insert into LigneOrdonnance values (126, 5, 10, TO_DATE('2025-12-25','YYYY-MM-DD'), 340093000016, 10000000025, 10000000234);
 insert into LigneOrdonnance values (127, 8, 5, TO_DATE('2025-12-26','YYYY-MM-DD'), 340093000017, 10000000026, 10000000245);
 insert into LigneOrdonnance values (128, 10, 7, TO_DATE('2025-12-27','YYYY-MM-DD'), 340093000018, 10000000027, 10000000256);
-insert into LigneOrdonnance values (129, 6, 10, TO_DATE('2025-12-28','YYYY-MM-DD'), 340093000019, 10000000028, 10000000267);
-insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-DD'), 340093000020, 10000000029, 10000000278);
+insert into LigneOrdonnance values (129, 6, 10, TO_DATE('2025-12-28','YYYY-MM-DD'), 340093000019, 10000000028, 10000000290);
+insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-DD'), 340093000020, 10000000029, 10000000134);
 insert into LigneOrdonnance values (131, 7, 10, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000021, 10000000030, 10000000289);
 insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000022, 10000000030, 10000000290);
 
 -- LOT 
+
+-- Pour résultat requete 4 bruh j'ai fait ça pour rien
+INSERT INTO LOT VALUES (61, 0, TO_DATE('2026-11-30','YYYY-MM-DD'), TO_DATE('2024-01-15','YYYY-MM-DD'), 'MediNord', 61,340093000001);
+INSERT INTO LOT VALUES (62, 0, TO_DATE('2027-04-30','YYYY-MM-DD'), TO_DATE('2024-03-20','YYYY-MM-DD'), 'MediNord', 62, 34009300000);
 
 INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_Commande, CODE_CIP) VALUES
 (1, 200, TO_DATE('2027-06-30','YYYY-MM-DD'), TO_DATE('2024-06-30','YYYY-MM-DD'), 'PharmaDis', 1, '340093000001'),
@@ -532,6 +571,39 @@ INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_C
 (30,190, TO_DATE('2027-04-30','YYYY-MM-DD'), TO_DATE('2024-07-01','YYYY-MM-DD'), 'MediSud', 30, '340093000014');
 
 
+--  POUR FAIRE REQUETE 2
+
+INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_Commande, CODE_CIP) VALUES
+(31, 500, TO_DATE('2027-08-15','YYYY-MM-DD'), TO_DATE('2025-01-10','YYYY-MM-DD'), 'MediNord', 31, '340093000001'),
+(32, 400, TO_DATE('2027-09-10','YYYY-MM-DD'), TO_DATE('2025-02-05','YYYY-MM-DD'), 'MediNord', 32, '340093000002'),
+(33, 450, TO_DATE('2027-07-20','YYYY-MM-DD'), TO_DATE('2025-03-12','YYYY-MM-DD'), 'MediNord', 33, '340093000003'),
+(34, 480, TO_DATE('2027-10-05','YYYY-MM-DD'), TO_DATE('2025-01-25','YYYY-MM-DD'), 'MediNord', 34, '340093000004'),
+(35, 520, TO_DATE('2027-11-18','YYYY-MM-DD'), TO_DATE('2025-04-15','YYYY-MM-DD'), 'MediNord', 35, '340093000005'),
+(36, 470, TO_DATE('2027-12-02','YYYY-MM-DD'), TO_DATE('2025-05-20','YYYY-MM-DD'), 'MediNord', 36, '340093000006'),
+(37, 500, TO_DATE('2027-08-30','YYYY-MM-DD'), TO_DATE('2025-06-10','YYYY-MM-DD'), 'MediNord', 37, '340093000007'),
+(38, 430, TO_DATE('2027-09-25','YYYY-MM-DD'), TO_DATE('2025-07-05','YYYY-MM-DD'), 'MediNord', 38, '340093000008'),
+(39, 460, TO_DATE('2027-10-30','YYYY-MM-DD'), TO_DATE('2025-08-15','YYYY-MM-DD'), 'MediNord', 39, '340093000009'),
+(40, 480, TO_DATE('2027-11-12','YYYY-MM-DD'), TO_DATE('2025-09-01','YYYY-MM-DD'), 'MediNord', 40, '340093000010'),
+(41, 500, TO_DATE('2027-12-20','YYYY-MM-DD'), TO_DATE('2025-10-05','YYYY-MM-DD'), 'MediNord', 41, '340093000011'),
+(42, 450, TO_DATE('2027-08-18','YYYY-MM-DD'), TO_DATE('2025-11-15','YYYY-MM-DD'), 'MediNord', 42, '340093000012'),
+(43, 470, TO_DATE('2027-09-22','YYYY-MM-DD'), TO_DATE('2025-12-10','YYYY-MM-DD'), 'MediNord', 43, '340093000013'),
+(44, 500, TO_DATE('2027-10-18','YYYY-MM-DD'), TO_DATE('2025-01-30','YYYY-MM-DD'), 'MediNord', 44, '340093000014'),
+(45, 520, TO_DATE('2027-11-05','YYYY-MM-DD'), TO_DATE('2025-02-20','YYYY-MM-DD'), 'MediNord', 45, '340093000015'),
+(46, 480, TO_DATE('2027-12-15','YYYY-MM-DD'), TO_DATE('2025-03-12','YYYY-MM-DD'), 'MediNord', 46, '340093000016'),
+(47, 450, TO_DATE('2027-08-25','YYYY-MM-DD'), TO_DATE('2025-04-05','YYYY-MM-DD'), 'MediNord', 47, '340093000017'),
+(48, 470, TO_DATE('2027-09-30','YYYY-MM-DD'), TO_DATE('2025-05-10','YYYY-MM-DD'), 'MediNord', 48, '340093000018'),
+(49, 500, TO_DATE('2027-10-28','YYYY-MM-DD'), TO_DATE('2025-06-01','YYYY-MM-DD'), 'MediNord', 49, '340093000019'),
+(50, 480, TO_DATE('2027-11-22','YYYY-MM-DD'), TO_DATE('2025-07-15','YYYY-MM-DD'), 'MediNord', 50, '340093000020'),
+(51, 500, TO_DATE('2027-12-30','YYYY-MM-DD'), TO_DATE('2025-08-20','YYYY-MM-DD'), 'MediNord', 51, '340093000021'),
+(52, 470, TO_DATE('2027-08-12','YYYY-MM-DD'), TO_DATE('2025-09-05','YYYY-MM-DD'), 'MediNord', 52, '340093000022'),
+(53, 450, TO_DATE('2027-09-18','YYYY-MM-DD'), TO_DATE('2025-10-10','YYYY-MM-DD'), 'MediNord', 53, '340093000023'),
+(54, 480, TO_DATE('2027-10-25','YYYY-MM-DD'), TO_DATE('2025-11-20','YYYY-MM-DD'), 'MediNord', 54, '340093000024'),
+(55, 500, TO_DATE('2027-11-30','YYYY-MM-DD'), TO_DATE('2025-12-15','YYYY-MM-DD'), 'MediNord', 55, '340093000025'),
+(56, 470, TO_DATE('2027-12-10','YYYY-MM-DD'), TO_DATE('2025-01-18','YYYY-MM-DD'), 'MediNord', 56, '340093000026'),
+(57, 450, TO_DATE('2027-08-28','YYYY-MM-DD'), TO_DATE('2025-02-12','YYYY-MM-DD'), 'MediNord', 57, '340093000027'),
+(58, 480, TO_DATE('2027-09-29','YYYY-MM-DD'), TO_DATE('2025-03-25','YYYY-MM-DD'), 'MediNord', 58, '340093000028'),
+(59, 500, TO_DATE('2027-10-31','YYYY-MM-DD'), TO_DATE('2025-04-18','YYYY-MM-DD'), 'MediNord', 59, '340093000029'),
+(60, 470, TO_DATE('2027-12-05','YYYY-MM-DD'), TO_DATE('2025-05-10','YYYY-MM-DD'), 'MediNord', 60, '340093000030');
 
 
 
