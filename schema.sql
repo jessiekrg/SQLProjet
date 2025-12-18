@@ -198,7 +198,7 @@ INSERT INTO COUVERTURE VALUES ('Mutuelle Prévention', 70);
 INSERT INTO COUVERTURE VALUES ('Mutuelle Liberté', 76);
 
 
--- Client
+-- Client --le client 'Robert','Nathan' a une adresse trop longue (CLIENT"."ADRESSE" (actual: 42, maximum: 40))
 insert into Client values(199057512345678,'Martin','Lucas','12 rue de Rivoli 75001 Paris','06 12 34 56 78','MGEN');
 insert into Client values(201116924531245,'Bernard','Emma','45 boulevard Saint-Germain, 75005 Paris','06 23 45 67 89','MAIF');
 insert into Client values(198031340217891,'Dubois','Hugo','8 avenue de Opéra, 75002 Paris','06 34 56 78 90','MACIF');
@@ -232,7 +232,7 @@ insert into Client values(202123456789013,'Garnier','Lola','42 rue Saint-Denis 7
 insert into Client values(101234567890125,'Bernard','Mathis','14 rue de la République 75011 Paris','06 11 22 33 44','MGEN');
 insert into Client values(202345678901236,'Petit','Anaïs','17 rue de la Roquette 75011 Paris','07 22 33 44 55','MAIF');
 
--- Pharmaciens
+-- Pharmaciens -- il y a des insertion qui ne fonctionne pas, pk on  passe de "" à '
 
 insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris")
 insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris")
@@ -265,9 +265,9 @@ insert into Pharmacien values (10000000278,'Lola','Renault','07 88 99 00 11','37
 insert into Pharmacien values (10000000289,'Vincent','Leclerc','06 99 00 11 22','40 rue Saint-Denis, 75001 Paris');
 insert into Pharmacien values (10000000290,'Émilie','Roux','07 00 11 22 33','42 rue de Rivoli, 75001 Paris');
 
--- Médecinss
+-- Médecins
 
-INSERT INTO MEDECIN
+/* INSERT INTO MEDECIN
 (Id_RPPS, Prenom, Nom, Specialite, Telephone, Email)
 VALUES
 ('10101234567', 'Alice', 'Martin', 'Cardiologie', '0612345678', 'alice.martin@hopital.fr'),
@@ -299,11 +299,60 @@ VALUES
 ('10127890123', 'Laura', 'Benoit', 'Allergologie', '0670123456', 'laura.benoit@hopital.fr'),
 ('10128901234', 'Hamza', 'Saidi', 'Infectiologie', '0681234567', 'hamza.saidi@hopital.fr'),
 ('10130000001', 'Paul', 'Dumont', 'Médecine générale', '0692345678', 'paul.dumont@hopital.fr'),
-('10130000002', 'Noura', 'Aziz', 'Cardiologie', '0673456789', 'noura.aziz@hopital.fr');
+('10130000002', 'Noura', 'Aziz', 'Cardiologie', '0673456789', 'noura.aziz@hopital.fr'); */
 
-
+INSERT INTO MEDECIN (Id_RPPS, Prenom, Nom, Specialite, Telephone, Email) VALUES 
+(10101234567, 'Alice', 'Martin', 'Cardiologie', '0612345678', 'alice.martin@hopital.fr'),
+(10102345678, 'Karim', 'Benali', 'Dermatologie', '0623456789', 'karim.benali@hopital.fr'),
+(10103456789, 'Fatou', 'Diallo', 'Pédiatrie', '0634567890', 'fatou.diallo@hopital.fr'),
+(10104567890, 'Lucas', 'Dupont', 'Médecine générale', '0645678901', 'lucas.dupont@hopital.fr'),
+(10105678901, 'Leila', 'Haddad', 'Gynécologie', '0656789012', 'leila.haddad@hopital.fr'),
+(10106789012, 'Thomas', 'Bernard', 'Neurologie', '0667890123', 'thomas.bernard@hopital.fr'),
+(10107890123, 'Aissata', 'Kone', 'Ophtalmologie', '0678901234', 'aissata.kone@hopital.fr'),
+(10108901234, 'Youssef', 'Omar', 'Radiologie', '0689012345', 'youssef.omar@hopital.fr'),
+(10109012345, 'Nadia', 'Lefevre', 'Endocrinologie', '0690123456', 'nadia.lefevre@hopital.fr'),
+(10110123456, 'Julien', 'Moreau', 'Chirurgie', '0601234567', 'julien.moreau@hopital.fr'),
+(10111234567, 'Samira', 'Boukari', 'Psychiatrie', '0613456789', 'samira.boukari@hopital.fr'),
+(10112345678, 'Antoine', 'Renaud', 'ORL', '0624567890', 'antoine.renaud@hopital.fr'),
+(10113456789, 'Mariam', 'Sow', 'Oncologie', '0635678901', 'mariam.sow@hopital.fr'),
+(10114567890, 'Pierre', 'Lambert', 'Urologie', '0646789012', 'pierre.lambert@hopital.fr'),
+(10115678901, 'Imane', 'El Amrani', 'Néphrologie', '0657890123', 'imane.elamrani@hopital.fr'),
+(10116789012, 'Nicolas', 'Faure', 'Rhumatologie', '0668901234', 'nicolas.faure@hopital.fr'),
+(10117890123, 'Amina', 'Cherif', 'Hématologie', '0679012345', 'amina.cherif@hopital.fr'),
+(10118901234, 'Maxime', 'Giraud', 'Gastro-entérologie', '0680123456', 'maxime.giraud@hopital.fr'),
+(10119012345, 'Rania', 'Hassan', 'Pneumologie', '0691234567', 'rania.hassan@hopital.fr'),
+(10120123456, 'David', 'Cohen', 'Anesthésie', '0602345678', 'david.cohen@hopital.fr'),
+(10121234567, 'Sofia', 'Alves', 'Médecine interne', '0614567890', 'sofia.alves@hopital.fr'),
+(10122345678, 'Mehdi', 'Zaoui', 'Urgences', '0625678901', 'mehdi.zaoui@hopital.fr'),
+(10123456789, 'Claire', 'Perrin', 'Immunologie', '0636789012', 'claire.perrin@hopital.fr'),
+(10124567890, 'Omar', 'Belkacem', 'Gériatrie', '0647890123', 'omar.belkacem@hopital.fr'),
+(10125678901, 'Élodie', 'Marchand', 'Nutrition', '0658901234', 'elodie.marchand@hopital.fr'),
+(10126789012, 'Ibrahim', 'Keita', 'Médecine du sport', '0669012345', 'ibrahim.keita@hopital.fr'),
+(10127890123, 'Laura', 'Benoit', 'Allergologie', '0670123456', 'laura.benoit@hopital.fr'),
+(10128901234, 'Hamza', 'Saidi', 'Infectiologie', '0681234567', 'hamza.saidi@hopital.fr'),
+(10130000001, 'Paul', 'Dumont', 'Médecine générale', '0692345678', 'paul.dumont@hopital.fr'),
+(10130000002, 'Noura', 'Aziz', 'Cardiologie', '0673456789', 'noura.aziz@hopital.fr');
 
 UPDATE MEDECIN
+SET Specialite = 'Médecine générale'
+WHERE Id_RPPS IN (
+  10101234567,
+  10102345678,
+  10103456789,
+  10104567890,
+  10105678901,
+  10106789012,
+  10107890123,
+  10108901234,
+  10109012345,
+  10110123456,
+  10111234567,
+  10112345678,
+  10113456789,
+  10114567890
+);
+
+/* UPDATE MEDECIN
 SET Specialite = 'Médecine générale'
 WHERE Id_RPPS IN (
   '10101234567',
@@ -320,7 +369,8 @@ WHERE Id_RPPS IN (
   '10112345678',
   '10113456789',
   '10114567890'
-);
+); */
+
 
 -- FOURNISSEURS 
 
@@ -389,8 +439,39 @@ insert into ORDONNANCE values (10000000030, TO_DATE('2025-12-30','YYYY-MM-DD'), 
 
 -- MEDICAMENT
 
+INSERT INTO MEDICAMENT (code_cip, nom, prix_public, Categorie, Statue_Vente, Laboratoire) VALUES
+(340093000001, 'Doliprane 500mg', 1.95, 'Antalgique', 'Libre', 'Sanofi'),
+(340093000002, 'Doliprane 1000mg', 2.50, 'Antalgique', 'Libre', 'Sanofi'),
+(340093000003, 'Efferalgan 500mg', 2.10, 'Antalgique', 'Libre', 'UPSA'),
+(340093000004, 'Efferalgan 1000mg', 2.90, 'Antalgique', 'Libre', 'UPSA'),
+(340093000005, 'Paracetamol Biogaran', 1.60, 'Antalgique', 'Libre', 'Biogaran'),
+(340093000006, 'Ibuprofene 200mg', 2.30, 'Anti-inflammatoire', 'Libre', 'Mylan'),
+(340093000007, 'Ibuprofene 400mg', 3.10, 'Anti-inflammatoire', 'Libre', 'Mylan'),
+(340093000008, 'Spasfon', 3.50, 'Antispasmodique', 'Libre', 'Teva'),
+(340093000009, 'Smecta', 3.80, 'Gastro', 'Libre', 'Ipsen'),
+(340093000010, 'Gaviscon', 4.20, 'Gastro', 'Libre', 'Reckitt'),
+(340093000011, 'Augmentin 1g', 7.20, 'Antibiotique', 'Ordonnance', 'GSK'),
+(340093000012, 'Amoxicilline 500mg', 5.10, 'Antibiotique', 'Ordonnance', 'Biogaran'),
+(340093000013, 'Azithromycine', 6.40, 'Antibiotique', 'Ordonnance', 'Pfizer'),
+(340093000014, 'Ventoline', 4.30, 'Respiratoire', 'Ordonnance', 'GSK'),
+(340093000015, 'Seretide', 18.90, 'Respiratoire', 'Ordonnance', 'GSK'),
+(340093000016, 'Levothyrox', 2.10, 'Hormonal', 'Ordonnance', 'Merck'),
+(340093000017, 'Aerius', 3.90, 'Antihistaminique', 'Libre', 'MSD'),
+(340093000018, 'Zyrtec', 4.10, 'Antihistaminique', 'Libre', 'UCB'),
+(340093000019, 'Xanax', 2.80, 'Anxiolytique', 'Ordonnance', 'Pfizer'),
+(340093000020, 'Lexomil', 2.60, 'Anxiolytique', 'Ordonnance', 'Roche'),
+(340093000021, 'Imodium', 3.20, 'Gastro', 'Libre', 'Janssen'),
+(340093000022, 'Dafalgan', 2.00, 'Antalgique', 'Libre', 'UPSA'),
+(340093000023, 'Forlax', 5.50, 'Laxatif', 'Libre', 'Ipsen'),
+(340093000024, 'Maalox', 3.70, 'Gastro', 'Libre', 'Sanofi'),
+(340093000025, 'Inexium', 8.90, 'Gastro', 'Ordonnance', 'AstraZeneca'),
+(340093000026, 'Omeprazole', 4.60, 'Gastro', 'Ordonnance', 'Teva'),
+(340093000027, 'Plavix', 21.00, 'Cardiologie', 'Ordonnance', 'Sanofi'),
+(340093000028, 'Kardegic', 3.40, 'Cardiologie', 'Libre', 'Sanofi'),
+(340093000029, 'Lovenox', 12.80, 'Anticoagulant', 'Ordonnance', 'Sanofi'),
+(340093000030, 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
 
-INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laboratoire) VALUES
+/* INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laboratoire) VALUES
 ('340093000001', 'Doliprane 500mg', 1.95, 'Antalgique', 'Libre', 'Sanofi'),
 ('340093000002', 'Doliprane 1000mg', 2.50, 'Antalgique', 'Libre', 'Sanofi'),
 ('340093000003', 'Efferalgan 500mg', 2.10, 'Antalgique', 'Libre', 'UPSA'),
@@ -420,9 +501,8 @@ INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laborat
 ('340093000027', 'Plavix', 21.00, 'Cardiologie', 'Ordonnance', 'Sanofi'),
 ('340093000028', 'Kardegic', 3.40, 'Cardiologie', 'Libre', 'Sanofi'),
 ('340093000029', 'Lovenox', 12.80, 'Anticoagulant', 'Ordonnance', 'Sanofi'),
-('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');
+('340093000030', 'Doliprane Pediatrique', 2.20, 'Antalgique', 'Libre', 'Sanofi');*/
 
-insert into ligneordonnance 
 
 
 -- COMMANDE 
@@ -494,6 +574,40 @@ insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD
 
 -- LOT 
 
+
+INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_Commande, CODE_CIP) VALUES
+(1, 200, TO_DATE('2027-06-30','YYYY-MM-DD'), TO_DATE('2024-06-30','YYYY-MM-DD'), 'PharmaDis', 1, 340093000001),
+(2, 180, TO_DATE('2027-07-31','YYYY-MM-DD'), TO_DATE('2024-07-31','YYYY-MM-DD'), 'MediLux', 2, 340093000006),
+(3, 150, TO_DATE('2026-12-31','YYYY-MM-DD'), TO_DATE('2024-01-01','YYYY-MM-DD'), 'BioCare', 3, 340093000006),
+(4, 140, TO_DATE('2026-11-30','YYYY-MM-DD'), TO_DATE('2024-02-01','YYYY-MM-DD'), 'PharmaTech', 4, 340093000004),
+(5, 300, TO_DATE('2027-03-31','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'HealthNord', 5, 340093000005),
+(6, 220, TO_DATE('2026-08-31','YYYY-MM-DD'), TO_DATE('2024-04-15','YYYY-MM-DD'), 'PharmaDis', 6, 340093000001),
+(7, 210, TO_DATE('2026-09-30','YYYY-MM-DD'), TO_DATE('2024-04-20','YYYY-MM-DD'), 'MediSud', 7, 340093000007),
+(8, 160, TO_DATE('2026-10-31','YYYY-MM-DD'), TO_DATE('2024-05-01','YYYY-MM-DD'), 'BioHealth', 8, 340093000008),
+(9, 190, TO_DATE('2026-12-15','YYYY-MM-DD'), TO_DATE('2024-05-10','YYYY-MM-DD'), 'LillePharma', 9, 340093000009),
+(10, 170, TO_DATE('2026-11-15','YYYY-MM-DD'), TO_DATE('2024-05-15','YYYY-MM-DD'), 'BioHealth', 10, 340093000008),
+(11, 120, TO_DATE('2026-04-30','YYYY-MM-DD'), TO_DATE('2024-01-20','YYYY-MM-DD'), 'PharmaLyon', 11, 340093000011),
+(12, 130, TO_DATE('2026-05-31','YYYY-MM-DD'), TO_DATE('2024-02-10','YYYY-MM-DD'), 'MediLyon', 12, 340093000020),
+(13, 110, TO_DATE('2026-06-30','YYYY-MM-DD'), TO_DATE('2024-02-15','YYYY-MM-DD'), 'PharmaDis', 13, 340093000009),
+(14, 100, TO_DATE('2026-07-31','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'LyonPharma', 14, 340093000005),
+(15, 90,  TO_DATE('2026-08-31','YYYY-MM-DD'), TO_DATE('2024-03-05','YYYY-MM-DD'), 'HealthLyon', 15, 340093000009),
+(16, 200, TO_DATE('2027-01-31','YYYY-MM-DD'), TO_DATE('2024-04-01','YYYY-MM-DD'), 'PharmaNord', 16, 340093000016),
+(17, 210, TO_DATE('2027-02-28','YYYY-MM-DD'), TO_DATE('2024-04-05','YYYY-MM-DD'), 'LillePharma', 17, 340093000017),
+(18, 220, TO_DATE('2027-03-31','YYYY-MM-DD'), TO_DATE('2024-04-10','YYYY-MM-DD'), 'LyonPharma', 18, 340093000014),
+(19, 80,  TO_DATE('2026-01-31','YYYY-MM-DD'), TO_DATE('2024-01-10','YYYY-MM-DD'), 'LillePharma', 19, 340093000019),
+(20, 85,  TO_DATE('2026-02-28','YYYY-MM-DD'), TO_DATE('2024-01-15','YYYY-MM-DD'), 'HealthNord', 20, 340093000020),
+(21, 160, TO_DATE('2026-09-30','YYYY-MM-DD'), TO_DATE('2024-05-20','YYYY-MM-DD'), 'PharmaTLS', 21, 340093000021),
+(22, 180, TO_DATE('2026-10-31','YYYY-MM-DD'), TO_DATE('2024-06-01','YYYY-MM-DD'), 'MediTLS', 22, 340093000009),
+(23, 140, TO_DATE('2026-11-30','YYYY-MM-DD'), TO_DATE('2024-06-05','YYYY-MM-DD'), 'BioHealth', 23, 340093000008),
+(24, 150, TO_DATE('2026-12-31','YYYY-MM-DD'), TO_DATE('2024-06-10','YYYY-MM-DD'), 'LyonPharma', 24, 340093000005),
+(25, 95,  TO_DATE('2026-03-31','YYYY-MM-DD'), TO_DATE('2024-02-01','YYYY-MM-DD'), 'PharmaDis', 25, 340093000002),
+(26, 160, TO_DATE('2026-04-30','YYYY-MM-DD'), TO_DATE('2024-02-05','YYYY-MM-DD'), 'PharmaBDX', 26, 340093000014),
+(27, 70,  TO_DATE('2026-05-31','YYYY-MM-DD'), TO_DATE('2024-02-10','YYYY-MM-DD'), 'HealthNord', 27, 340093000027),
+(28, 130, TO_DATE('2026-06-30','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'BioBDX', 28, 340093000020),
+(29, 60,  TO_DATE('2026-07-31','YYYY-MM-DD'), TO_DATE('2024-03-05','YYYY-MM-DD'), 'MediSud', 29, 340093000029),
+(30, 190, TO_DATE('2027-04-30','YYYY-MM-DD'), TO_DATE('2024-07-01','YYYY-MM-DD'), 'MediSud', 30, 340093000014);
+
+/*
 INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_Commande, CODE_CIP) VALUES
 (1, 200, TO_DATE('2027-06-30','YYYY-MM-DD'), TO_DATE('2024-06-30','YYYY-MM-DD'), 'PharmaDis', 1, '340093000001'),
 (2, 180, TO_DATE('2027-07-31','YYYY-MM-DD'), TO_DATE('2024-07-31','YYYY-MM-DD'), 'MediLux', 2, '340093000006'),
@@ -525,6 +639,8 @@ INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_C
 (28,130, TO_DATE('2026-06-30','YYYY-MM-DD'), TO_DATE('2024-03-01','YYYY-MM-DD'), 'BioBDX', 28, '340093000020'),
 (29,60,  TO_DATE('2026-07-31','YYYY-MM-DD'), TO_DATE('2024-03-05','YYYY-MM-DD'), 'MediSud', 29, '340093000029'),
 (30,190, TO_DATE('2027-04-30','YYYY-MM-DD'), TO_DATE('2024-07-01','YYYY-MM-DD'), 'MediSud', 30, '340093000014');
+*/
+
 
 
 
