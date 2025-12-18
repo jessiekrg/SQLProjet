@@ -30,4 +30,16 @@ SELECT
     NUM_ROWS AS "LIGNES"
 FROM USER_TABLES;
 
--- Script : d’interrogation pertinents 2 (évaluer la validité de nos jointures ?? occupation disque??, date_creation_tables...;)
+-- Script : Afficher toutes les relations entre tables via les clés étrangères en listant la table fille, la table parent et le nom de la contrainte
+
+--  liste_relation.sql
+
+SELECT
+    C.TABLE_NAME   AS TABLE_FILLE,
+    R.TABLE_NAME   AS TABLE_PARENT,
+    C.CONSTRAINT_NAME
+FROM USER_CONSTRAINTS C
+JOIN USER_CONSTRAINTS R
+    ON C.R_CONSTRAINT_NAME = R.CONSTRAINT_NAME
+WHERE C.CONSTRAINT_TYPE = 'R';
+
