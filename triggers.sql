@@ -260,33 +260,45 @@ CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_1_AUTO_LOT
 BEFORE INSERT OR UPDATE ON LIGNEVENTE
 FOR EACH ROW
 DECLARE
-    v_cip_prescrit NUMBER;
+    v_cip          NUMBER;
     v_lot_fefo     NUMBER;
+    v_date_fefo    DATE;
+    v_date_saisie  DATE;
 BEGIN
-    -- Si le lot n'est pas saisi, on l'identifie automatiquement
-    IF :NEW.numero_de_lot IS NULL THEN     
-        -- 1. Trouver le médicament associé à l'ordonnance
-        SELECT id_medicament INTO v_cip_prescrit
+    -- CAS 1 : Le pharmacien a laissé le lot vide mais il y a une ordonnance 
+    IF :NEW.numero_de_lot IS NULL AND :NEW.id_ordonnance IS NOT NULL THEN
+        -- On trouve le médicament via l'ordonnance
+        SELECT id_medicament INTO v_cip
         FROM LIGNEORDONNANCE
         WHERE id_ordonnance = :NEW.id_ordonnance
-        AND ROWNUM = 1; 
-
-        -- 2. Trouver le lot de ce médicament qui périme le plus tôt avec du stock
-        SELECT num_lot INTO v_lot_fefo
-        FROM (
-            SELECT num_lot
-            FROM LOT
-            WHERE code_cip = v_cip_prescrit
-            AND Quantite >= :NEW.quantité_vendu 
-            ORDER BY Date_Peremption ASC
-        ) WHERE ROWNUM = 1;
-
-        -- 3. Attribution automatique
-        :NEW.numero_de_lot := v_lot_fefo;   
+        AND ROWNUM = 1;
+    -- CAS 2 : Le pharmacien a saisi un numéro de lot 
+    ELSIF :NEW.numero_de_lot IS NOT NULL THEN
+        -- On identifie le médicament
+        SELECT code_cip, Date_Peremption INTO v_cip, v_date_saisie
+        FROM LOT 
+        WHERE num_lot = :NEW.numero_de_lot;
+    ELSE
+        -- Si ni lot ni ordonnance, on ne peut rien faire
+        RAISE_APPLICATION_ERROR(-20010, 'saisir soit un lot ou une ordonnance.');
+    END IF;
+    -- RECHERCHE DU LOT OPTIMAL (Le plus proche de la péremption avec du stock)
+    SELECT num_lot, Date_Peremption INTO v_lot_fefo, v_date_fefo
+    FROM (
+        SELECT num_lot, Date_Peremption
+        FROM LOT
+        WHERE code_cip = v_cip 
+          AND Quantite >= :NEW.quantité_vendu
+        ORDER BY Date_Peremption ASC
+    ) WHERE ROWNUM = 1;
+    --CORRECTION
+    --  Si c'était saisi mais qu'il y a plus récent, on remplace.
+    IF v_date_saisie > v_date_fefo THEN
+        :NEW.numero_de_lot := v_lot_fefo;
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        RAISE_APPLICATION_ERROR(-20005, 'ERREUR : Aucun lot disponible pour ce médicament ou ordonnance invalide.');
+        RAISE_APPLICATION_ERROR(-20005, 'Erreur : Aucun stock disponible pour ce médicament ou ordonnance invalide.');
 END;
 /
 
