@@ -1,19 +1,5 @@
 -- CREATION DE TABLES 
 
-DROP TABLE LIGNEVENTE CASCADE CONSTRAINTS;
-DROP TABLE VENTE CASCADE CONSTRAINTS;
-DROP TABLE ORDONNANCE CASCADE CONSTRAINTS;
-DROP TABLE LOT CASCADE CONSTRAINTS;
-DROP TABLE MEDICAMENT CASCADE CONSTRAINTS;
-DROP TABLE CLIENT CASCADE CONSTRAINTS;
-DROP TABLE COUVERTURE CASCADE CONSTRAINTS;
-DROP TABLE PHARMACIEN CASCADE CONSTRAINTS;
-DROP TABLE LIGNEORDONNANCE CASCADE CONSTRAINTS;
-DROP TABLE MEDECIN CASCADE CONSTRAINTS;
-DROP TABLE FOURNISSEUR CASCADE CONSTRAINTS;
-DROP TABLE COMMANDE CASCADE CONSTRAINTS;
-
-
 CREATE TABLE MEDICAMENT(
     code_cip NUMBER primary key,
     nom VARCHAR(40),
@@ -177,11 +163,6 @@ CREATE TABLE LIGNEORDONNANCE(
 );
 
 
-
-
-
-
-
 -- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
 
 
@@ -218,8 +199,6 @@ INSERT INTO COUVERTURE VALUES ('Mutuelle Assurance Vie', 62);
 INSERT INTO COUVERTURE VALUES ('Mutuelle Prévention', 70);
 INSERT INTO COUVERTURE VALUES ('Mutuelle Liberté', 76);
 
-select * 
-from couverture;
 
 -- Client
 
@@ -450,7 +429,6 @@ INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statut_Vente,Laborat
 
 -- COMMANDE 
 
--- Pour résultat requete 4  bruh j'ai fait ça pour rien
 INSERT INTO COMMANDE VALUES (61, TO_DATE('2024-02-10','YYYY-MM-DD'), 'Livrée', 760, 50, 'MediNord');
 INSERT INTO COMMANDE VALUES (62, TO_DATE('2024-05-18','YYYY-MM-DD'), 'Livrée', 700, 50, 'MediNord');
 
@@ -554,11 +532,12 @@ insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-D
 insert into LigneOrdonnance values (131, 7, 10, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000021, 10000000030, 10000000289);
 insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000022, 10000000030, 10000000290);
 
+-- Tous les pharmaciens ne traite pas des ordonnances le moi de décembre pour avoir des résulats à la requete 3
+-- Il n y'a pas des insert pour chaque médicament dans ligne ordonnance pour avoir résultats à la requete 4
 
 
 -- INSERTION LOT 
 
--- Pour résultat requete 4 bruh j'ai fait ça pour rien
 INSERT INTO LOT VALUES (61, 0, TO_DATE('2026-11-30','YYYY-MM-DD'), TO_DATE('2024-01-15','YYYY-MM-DD'), 'MediNord', 61,340093000001);
 INSERT INTO LOT VALUES (62, 0, TO_DATE('2027-04-30','YYYY-MM-DD'), TO_DATE('2024-03-20','YYYY-MM-DD'), 'MediNord', 62, 34009300000);
 
