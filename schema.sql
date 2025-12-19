@@ -65,7 +65,7 @@ CREATE TABLE CLIENT(
     NSSI NUMBER primary key,
     Nom varchar(40),
     Prenom varchar(40),
-    adresse varchar(40),
+    adresse varchar(100),
     Contact varchar(40),
     Nom_mutuelle varchar(40),
 
@@ -232,7 +232,7 @@ insert into Client values(197125932198710,'Robert','Nathan','1102 avenue de la R
 insert into Client values(202019221034566,'Richard','Camille','5 rue Mouffetard 75005 Paris','0698765432','GMF');
 insert into Client values(196064411122233,'Petit','Thomas','60 boulevard Haussmann, 75009 Paris','0765432109','Swiss Life');
 insert into Client values(203093145678954,'Durand','Chloé','18 rue de Belleville 75020 Paris','0655667788','MAAF');
-insert into Client values(195108433344481,'Leroy','Maxime','33 avenue des Champs-Élysées, 75008 Paris','0788776655','Mutuelle Générale');
+insert into Client values(195108433344481,'Leroy','Maxime','17 rue de Belleville 75020 Paris, 75008 Paris','0788776655','Mutuelle Générale');
 insert into Client values(204026755566609,'Moreau','Sarah','14 rue Lecourbe 75015 Paris','0644332211','AG2R La Mondiale');
 insert into Client values(101234567890123,'Durand','Alexandre','11 rue de Rivoli 75001 Paris','0612345678','MGEN');
 insert into Client values(202345678901234,'Lemoine','Clara','22 rue Saint-Honoré 75001 Paris','0623456789','MAIF');
