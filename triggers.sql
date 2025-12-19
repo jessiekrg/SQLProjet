@@ -6,29 +6,26 @@ CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_1_AUTO_LOT
 BEFORE INSERT OR UPDATE ON LIGNEVENTE
 FOR EACH ROW
 DECLARE
-    v_cip          NUMBER;
-    v_lot_p     NUMBER;
-    v_date_p    DATE;
-    v_date_saisie  DATE;
+    v_cip NUMBER;
+    v_lot_p NUMBER;
+    v_date_p DATE;
+    v_date_saisie DATE;
 BEGIN
-    -- CAS 1 : Le pharmacien a laissé le lot vide mais il y a une ordonnance 
     IF :NEW.numero_de_lot IS NULL AND :NEW.id_ordonnance IS NOT NULL THEN
-        -- On trouve le médicament via l'ordonnance
         SELECT id_medicament INTO v_cip
         FROM LIGNEORDONNANCE
         WHERE id_ordonnance = :NEW.id_ordonnance
         AND ROWNUM = 1;
-    -- CAS 2 : Le pharmacien a saisi un numéro de lot 
+
     ELSIF :NEW.numero_de_lot IS NOT NULL THEN
-        -- On identifie le médicament
         SELECT code_cip, Date_Peremption INTO v_cip, v_date_saisie
         FROM LOT 
         WHERE num_lot = :NEW.numero_de_lot;
+
     ELSE
-        -- Si ni lot ni ordonnance on peut rien faire
-        RAISE_APPLICATION_ERROR(-20010, 'saisir soit un lot ou une ordonnance');
+    RAISE_APPLICATION_ERROR(-20010, 'saisir soit un lot ou une ordonnance');
     END IF;
-    -- RECHERCHE DU LOT OPTIMAL (Le plus proche de la péremption avec du stock)
+
     SELECT num_lot, Date_Peremption INTO v_lot_p, v_date_p
     FROM (
         SELECT num_lot, Date_Peremption
@@ -37,11 +34,11 @@ BEGIN
           AND Quantite >= :NEW.quantité_vendu
         ORDER BY Date_Peremption ASC
     ) WHERE ROWNUM = 1;
-    --CORRECTION
-    --  Si c'était saisi mais qu'il y a plus récent, on emplace.
+
     IF v_date_saisie > v_date_p THEN
         :NEW.numero_de_lot := v_lot_p;
     END IF;
+
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20005, '0 stock disponible pour ce médicament ou ordonnance invalide');
@@ -213,55 +210,3 @@ BEGIN
     END IF;
 END;
 /
-
-
---- Insertion test trigger 
-
--- 1. On crée la couverture (la mutuelle)
-INSERT INTO COUVERTURE (Nom_mutuelle, taux_de_remboursement) 
-VALUES ('MAIF Santé', 75); -- Un remboursement de 75%
-
--- 2. On crée le client associé
-INSERT INTO CLIENT (NSSI, Nom, Prenom, Adresse, contact, Nom_mutuelle) 
-VALUES (195017512345678, 'DUPONT', 'Jean', '12 Rue de la Paix' , '0601020304','MAIF Santé');
-
--- 3. On crée une vente vide pour ce client (pour pouvoir y attacher des lignes de vente)
-INSERT INTO VENTE (id_Vente, Date_Vente, id_Client, id_Pharmacien) 
-VALUES (600, SYSDATE, 195017512345678, 1); -- On suppose que le pharmacien ID 1 existe
-
--- Création de l'ordonnance (id_Ordonnance doit faire 11 chiffres selon vos contraintes)
-INSERT INTO ORDONNANCE (id_Ordonnance, date_Prescription, date_De_Peremption, Id_RPPS, NSSI) 
-VALUES (
-    20000000001, 
-    TO_DATE('2024-05-20', 'YYYY-MM-DD'), 
-    TO_DATE('2024-11-20', 'YYYY-MM-DD'), 
-    10101234567, -- ID RPPS du Dr Alice Martin
-    195017512345678 -- NSSI de Jean Dupont
-);
-
-
--- Ajout de Doliprane 500mg (CIP: 340093000001) à l'ordonnance
-INSERT INTO LIGNEORDONNANCE (id_ligneordonnace, qt_delivre, duree_trait, date_traitement, id_medicament, id_ordonnance, id_RPPS)
-VALUES (
-    1, 
-    3,              -- Quantité prescrite
-    5,              -- Durée du traitement 
-    SYSDATE, 
-    340093000001,   -- Code CIP du Doliprane
-    20000000001,   -- Liaison avec l'ID Ordonnance créé ci-dessus
-    10000000001    -- ID RPPS du Pharmacien Julien Lefèvre
-);
-
-INSERT INTO VENTE (id_Vente, DateVente, prixfinal, id_Pharmacien,  id_Client) 
-VALUES (600, SYSDATE,NULL,10000000001, 195017512345678); -- (Julien)
-
--- Insertion d'une ligne de vente --(On laisse prix_après_remboursement à NULL POUR LE CALCUL)
-INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance)
-VALUES (999, 2, NULL, 600, NULL, 20000000001), -- num lot null car le pharmacien a l'ordonnance 
-VALUES (1000, 1, NULL, 600, 1, NULL); --- bon bah le pharmacien il n'a pas d'ordonnace mais il sait exactement quel medicamanent, on part du postulat que qu'il a une idée du lot des médicaments mais pas necessairement de la date de peremption la plus proche, le trigger s'en chargera  
-
-INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance)
-
-
-
--- ON OBTIENT NORMALEMENT UNE LIGNE DE VENTE QUI EXTRAIT LE MEDICAMENT DU LOT 6 ET UN PRIX APRES REMBOURSEMENT DE 0.98 OUIIII (l'autre et valide aussi ) et la somme est bonne.

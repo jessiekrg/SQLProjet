@@ -61,7 +61,7 @@ ORDER BY MIN(datevente);
 GRANT SELECT ON VUE_CA_MENSUEL TO COMPTABLE;
 
 
--- VUE REMBOURSEMENT   
+-- VUE REMBOURSEMENT DES MUTUELLES  
 CREATE OR REPLACE VIEW Remboursement_Mutuelles AS
 SELECT MU.NOM , SUM( (M.prix_public * Lv.quantité_vendu) - LV.PRIX_APRÈS_REMBOURSEMENT) as Total_Recouvrer
 FROM MEDICAMENT M 
@@ -109,7 +109,6 @@ JOIN client cl ON cl.nssi = v.id_client;
 SELECT *
 FROM historique
 WHERE nssi = &nssi;
-
 
 
 
