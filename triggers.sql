@@ -287,7 +287,7 @@ BEGIN
     EXCEPTION WHEN NO_DATA_FOUND THEN v_taux := 0;
     END;
 
-    -- 3. Injection du prix calculé
+    -- 3. Injection du prix calcul
     :NEW.prix_après_remboursement := (v_prix_pub * :NEW.quantité_vendu) * (1 - (v_taux / 100));
 END;
 /
