@@ -38,7 +38,7 @@ BEGIN
         ORDER BY Date_Peremption ASC
     ) WHERE ROWNUM = 1;
     --CORRECTION
-    --  Si c'était saisi mais qu'il y a plus récent, on remplace.
+    --  Si c'était saisi mais qu'il y a plus récent, on emplace.
     IF v_date_saisie > v_date_p THEN
         :NEW.numero_de_lot := v_lot_p;
     END IF;
