@@ -84,7 +84,7 @@ CREATE TABLE LIGNEVENTE(
 
     id_Vente NUMBER,
     numero_de_lot NUMBER,
-    id_ordonnance NUMBER
+    id_ordonnance NUMBER,
 
     foreign key (id_Vente) references vente(id_Vente),
     foreign key (numero_de_lot) references lot(num_lot),
@@ -532,6 +532,8 @@ insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-D
 insert into LigneOrdonnance values (131, 7, 10, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000021, 10000000030, 10000000289);
 insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000022, 10000000030, 10000000290);
 
+
+
 -- LOT 
 
 -- Pour résultat requete 4 bruh j'ai fait ça pour rien
@@ -607,7 +609,7 @@ INSERT INTO LOT (num_lot, Quantite, Date_Peremption, Date_Fabrication, Nom, Id_C
 
 
 
--- Ventes
+
 
 INSERT INTO VENTE VALUES (1, TO_DATE('2025-12-01','YYYY-MM-DD'), NULL, 10000000001, 199057512345678);
 INSERT INTO VENTE VALUES (2, TO_DATE('2025-12-02','YYYY-MM-DD'), NULL, 10000000012, 201116924531245);
@@ -638,12 +640,48 @@ INSERT INTO VENTE VALUES (30, TO_DATE('2025-12-15','YYYY-MM-DD'),NULL, 100000002
 INSERT INTO VENTE VALUES (31, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000245, 101678901234568); 
 INSERT INTO VENTE VALUES (32, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000178, 202123456789013);  
 INSERT INTO VENTE VALUES (33, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000078, 101890123456780);  
-INSERT INTO VENTE VALUES (34, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000167, 101456789012345); 
+INSERT INTO VENTE VALUES (34, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000167, 101456789012345);
+
+
+
+insert into LigneOrdonnance values (101, 10, 5, TO_DATE('2025-12-01','YYYY-MM-DD'), 340093000001, 10000000001, 10000000290);
+insert into LigneOrdonnance values (102, 5, 7, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000002, 10000000002, 10000000012);
+insert into LigneOrdonnance values (103, 8, 10, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000003, 10000000003, 10000000134);
+insert into LigneOrdonnance values (104, 6, 14, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000004, 10000000003, 10000000034);
+insert into LigneOrdonnance values (105, 12, 7, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000005, 10000000004, 10000000045);
+insert into LigneOrdonnance values (106, 15, 10, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000006, 10000000005,10000000101);
+insert into LigneOrdonnance values (107, 10, 5, TO_DATE('2025-12-05','YYYY-MM-DD'), 340093000007, 10000000006, 10000000067);
+insert into LigneOrdonnance values (108, 8, 7, TO_DATE('2025-12-05','YYYY-MM-DD'), 340093000008, 10000000007, 10000000078);
+insert into LigneOrdonnance values (109, 6, 10, TO_DATE('2025-12-08','YYYY-MM-DD'), 340093000009, 10000000008, 10000000089);
+insert into LigneOrdonnance values (110, 12, 14, TO_DATE('2025-12-08','YYYY-MM-DD'), 340093000010, 10000000009, 10000000212);
+insert into LigneOrdonnance values (111, 5, 7, TO_DATE('2025-12-08','YYYY-MM-DD'), 340093000001, 10000000010, 10000000301);
+insert into LigneOrdonnance values (112, 10, 5, TO_DATE('2025-12-10','YYYY-MM-DD'), 340093000002, 10000000011, 10000000312);
+insert into LigneOrdonnance values (113, 6, 10, TO_DATE('2025-12-12','YYYY-MM-DD'), 340093000003, 10000000012, 10000000089);
+insert into LigneOrdonnance values (114, 8, 7, TO_DATE('2025-12-13','YYYY-MM-DD'), 340093000004, 10000000013, 10000000145);
+insert into LigneOrdonnance values (115, 12, 14, TO_DATE('2025-12-14','YYYY-MM-DD'), 340093000005, 10000000014, 10000000123);
+insert into LigneOrdonnance values (116, 5, 10, TO_DATE('2025-12-15','YYYY-MM-DD'), 340093000006, 10000000015, 10000000134);
+insert into LigneOrdonnance values (117, 10, 5, TO_DATE('2025-12-20','YYYY-MM-DD'), 340093000007, 10000000016, 10000000145);
+insert into LigneOrdonnance values (118, 6, 7, TO_DATE('2025-12-17','YYYY-MM-DD'), 340093000008, 10000000017, 10000000089);
+insert into LigneOrdonnance values (119, 8, 10, TO_DATE('2025-12-20','YYYY-MM-DD'), 340093000009, 10000000018, 10000000167);
+insert into LigneOrdonnance values (120, 12, 14, TO_DATE('2025-12-13','YYYY-MM-DD'), 340093000010, 10000000019, 10000000212);
+insert into LigneOrdonnance values (121, 5, 5, TO_DATE('2025-12-20','YYYY-MM-DD'), 340093000011, 10000000020, 10000000178);
+insert into LigneOrdonnance values (122, 8, 7, TO_DATE('2025-12-13','YYYY-MM-DD'), 340093000012, 10000000021, 10000000101);
+insert into LigneOrdonnance values (123, 10, 10, TO_DATE('2025-12-22','YYYY-MM-DD'), 340093000013, 10000000022, 10000000201);
+insert into LigneOrdonnance values (124, 6, 14, TO_DATE('2025-12-14','YYYY-MM-DD'), 340093000014, 10000000023, 10000000212);
+insert into LigneOrdonnance values (125, 12, 7, TO_DATE('2025-12-13','YYYY-MM-DD'), 340093000015, 10000000024, 10000000223);
+insert into LigneOrdonnance values (126, 5, 10, TO_DATE('2025-12-15','YYYY-MM-DD'), 340093000016, 10000000025, 10000000234);
+insert into LigneOrdonnance values (127, 8, 5, TO_DATE('2025-12-14','YYYY-MM-DD'), 340093000017, 10000000026, 10000000245);
+insert into LigneOrdonnance values (128, 10, 7, TO_DATE('2025-12-27','YYYY-MM-DD'), 340093000018, 10000000027, 10000000256);
+insert into LigneOrdonnance values (129, 6, 10, TO_DATE('2025-12-28','YYYY-MM-DD'), 340093000019, 10000000028, 10000000290);
+insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-DD'), 340093000020, 10000000029, 10000000134);
+insert into LigneOrdonnance values (131, 7, 10, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000021, 10000000030, 10000000289);
+insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000022, 10000000030, 10000000290);
+
 
 
 -- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
-INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1);   
-INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2);  
+INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1,10000000001);   
+INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2,NULL );  
 
 -- Vente n°2 (Client Bernard Emma)
 INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25);
@@ -725,6 +763,85 @@ INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7);
 INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
 
 
+
+-- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
+INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1, 10000000001);   
+INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2, NULL);  
+
+-- Vente n°2 (Client Bernard Emma)
+INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25, 10000000002);
+INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 2, 1, 10000000002);   
+
+-- Vente n°3
+INSERT INTO LIGNEVENTE VALUES (4, 3, NULL, 3, 3, 10000000003);
+INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 3, 2, NULL);   
+
+-- Vente n°4 (Client Thomas Léa)
+INSERT INTO LIGNEVENTE VALUES (5, 1, NULL, 4, 4, NULL);   
+
+-- Vente n°5 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (6, 2, NULL, 5, 20, 10000000005); 
+
+-- Vente n°6 (Client Martin Lucas)
+INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 6, 6, 10000000006);   
+
+-- Vente n°9 (Client Durand Chloé)
+INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 9, 10, 10000000009);
+INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 9, 8, 10000000009);   
+
+-- Vente n°10 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (9, 1, NULL, 10, 13, 10000000010); 
+
+-- Vente n°12 (Client Robert Nathan)
+INSERT INTO LIGNEVENTE VALUES (10, 4, NULL, 12, 5, NULL); 
+
+-- Vente n°13 (Client Rousseau Louis)
+INSERT INTO LIGNEVENTE VALUES (11, 1, NULL, 13, 19, 10000000013); 
+
+-- Vente n°14 (Client Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (12, 2, NULL, 14, 17, 10000000014); 
+
+-- Vente n°15 (Client Bernard Mathis)
+INSERT INTO LIGNEVENTE VALUES (13, 1, NULL, 15, 25, 10000000015); 
+
+-- Vente n°16 (Client Morel Jules)
+INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 16, 18, 10000000016);
+INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 14, 1, 10000000014);   
+
+-- Vente n°17 (Client Thomas Léa)
+INSERT INTO LIGNEVENTE VALUES (15, 2, NULL, 17, 4, 10000000017);  
+
+-- Vente n°23 (Client Faure Camille)
+INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 23, 8, 10000000023);  
+INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 23, 1, 10000000023);  
+
+-- Vente n°25 (Client Renard Chloé)
+INSERT INTO LIGNEVENTE VALUES (18, 3, NULL, 25, 12, 10000000025);
+
+-- Vente n°26 (Client Dubois Hugo)
+INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 26, 24, NULL);
+
+-- Vente n°28 (Client Durand Chloé)
+INSERT INTO LIGNEVENTE VALUES (20, 2, NULL, 28, 9, 10000000028);
+INSERT INTO LIGNEVENTE VALUES (29, 3, NULL, 20, 20, NULL);   
+
+-- Vente n°30 (Client Vidal Emma)
+INSERT INTO LIGNEVENTE VALUES (21, 1, NULL, 30, 30, 10000000030); 
+
+-- Vente n°31 (Client Brun Lucas)
+INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 31, 16, 10000000022); 
+
+-- Vente n°32 (Client Garnier Lola)
+INSERT INTO LIGNEVENTE VALUES (23, 2, NULL, 32, 28, 10000000032);  
+
+-- Vente n°33 (Client Lopez Antoine)
+INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7, 10000000033); 
+
+-- Vente 34
+INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4, 10000000034);  
+
+
+
 -- Initialisation des prix après remboursement ou pas des lignes de ventes
 UPDATE LIGNEVENTE lv
 SET lv.PRIX_APRÈS_REMBOURSEMENT = (
@@ -735,7 +852,34 @@ SET lv.PRIX_APRÈS_REMBOURSEMENT = (
     JOIN CLIENT c ON v.id_Client = c.NSSI
     JOIN COUVERTURE couv ON c.Nom_mutuelle = couv.Nom_mutuelle
     WHERE l.num_lot = lv.numero_de_lot
-);
+); -- PAS COMPLET, on ne prend  pas en compte la cas où pas ordonnance
+
+--SOLUTION:
+
+UPDATE LIGNEVENTE lv
+SET lv.prix_après_remboursement =
+    CASE
+        WHEN lv.id_ordonnance IS NOT NULL THEN
+            (
+                SELECT lv.quantité_vendu * m.prix_public
+                       * (1 - couv.taux_de_remboursement / 100)
+                FROM LOT l
+                JOIN MEDICAMENT m ON l.code_cip = m.code_cip
+                JOIN VENTE v ON lv.id_Vente = v.id_Vente
+                JOIN CLIENT c ON v.id_Client = c.NSSI
+                JOIN COUVERTURE couv ON c.Nom_mutuelle = couv.Nom_mutuelle
+                WHERE l.num_lot = lv.numero_de_lot
+            )
+        ELSE
+            (
+                SELECT lv.quantité_vendu * m.prix_public
+                FROM LOT l
+                JOIN MEDICAMENT m ON l.code_cip = m.code_cip
+                WHERE l.num_lot = lv.numero_de_lot
+            )
+    END;
+
+
 
 -- Initialisation du prix final des  ventes
 
