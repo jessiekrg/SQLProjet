@@ -1,5 +1,3 @@
---  la question en langage naturel, suivi du script SQL.
---  la question en langage naturel, suivi du script SQL.
 
 
 -- 1. Accéder aux infos des médicaments qui sont fournis à la fois par PharmaDis et par HealthNord
@@ -209,9 +207,6 @@ HAVING COUNT(DISTINCT M.CODE_CIP) >= ALL (
 );
 
 
-
--- je change intitulé : pq on doit compter s'assurer que la quantité commander = quantité reçu FLM
-
 -- 17  : Requête qui retourne le fournisseur à qui la pharmacie a passé le plus de commandes, ainsi que le nombre de commandes passées
 
 SELECT Nom, COUNT(id_Commande) AS nb_commandes  --FONCTIONNE
@@ -273,58 +268,5 @@ WHERE NOT EXISTS (
 
 
 
-
-
-
-
-
-
-
--- NULL
-
--- 10. Sélectionner les lots de médicaments dont la quantité est supérieure à 0 ET la date de péremption supérieure à celle d’aujourd’hui (dans un intérêt de gestion de la sécurité et usage des produit délivré) 
--- a verifier 
-
-SELECT L.numero_de_lot, L.quantité    -- pour cette parrtie de la question " la quantité est supérieure à 0 " on  a déjà fait  BRUH ENCORE QUESTION 5
-FROM LOT L
-WHERE L.Quantite > 0 AND L.date_De_Peremption > SYSDATE;
-
-
-
--- 12.Afficher les fournisseurs qui fournissent des médicaments d’une même description trié selon un ordre spécifié comme le prix (dans un intérêt d'économie)
-
-SELECT DISTINCT   -- 
-    F.Nom
-FROM FOURNISSEUR F
-JOIN LOT L ON L.NOM = F.NOM
-WHERE 
-
-
--- 15. Liste des médicaments qui n’ont jamais été vendus 
-
-select m.nom    --> NUL CA RESSEMBLE BCP à QU 4 BRUH 
-from medicament m
-where not exists(
-    select *
-    from lignevente lv
-    join lot l  on l.num_lot = lv.numero_de_lot
-    where l.CODE_CIP = m.code_cip
-);
-
-
--- 16. Liste Médicaments mal remboursés (=taux de remboursement moyen des clients qui achètent ce médicament est < 50% ) 
-
--- Pour cette requete jsp trop ça sert à quoi, y'a pas de médicament mal remboursé ou pas. Ca dépend pas du medicament mais du client
-SELECT DISTINCT M.CODE_CIP, M.NOM
-FROM (
-    SELECT CL.NSSI
-    FROM COUVERTURE C 
-    JOIN CLIENT CL ON  CL.Nom_mutuelle = C.Nom_mutuelle
-    WHERE C.taux_de_remboursement < 0.5)
-    T -- client_avec_taux_de_remboursement_moyen_nul
-JOIN VENTE V ON T.NSSI = V.NSSI
-JOIN LIGNEVENTE LV ON LV.id_Vente = V.id_Vente
-JOIN LOT L ON L.CODE_CIP = LV.CODE_CIP
-JOIN MEDICAMENT M ON M.CODE_CIP = L.CODE_CIP;
 
 
