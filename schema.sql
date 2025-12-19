@@ -259,36 +259,36 @@ insert into Client values(202345678901236,'Petit','Anaïs','17 rue de la Roquett
 
 -- Pharmaciens
 
-insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris");
-insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris");
-insert into Pharmacien values (10000000023,"Antoine","Girard","06 78 34 12 56","9 rue Mouffetard, 75005 Paris");
-insert into Pharmacien values (10000000034,"Claire","Fontaine","07 61 90 45 28","27 rue Monge, 75005 Paris");
-insert into Pharmacien values (10000000045,"Nicolas","Roux","06 25 87 49 63","65 rue de Vaugirard, 75006 Paris");
-insert into Pharmacien values (10000000056,"Sophie","Lambert","07 38 56 71 04","12 rue Monsieur-le-Prince, 75006 Paris");
-insert into Pharmacien values (10000000067,"Paul","Blanchard","006 93 12 40 85","88 rue de Belleville, 75020 Paris");
-insert into Pharmacien values (10000000078,"Laura","Chevalier","07 44 68 29 51","15 rue des Pyrénées, 75020 Paris");
-insert into Pharmacien values (10000000089,"Vincent","Perrin","06 59 73 84 12","31 boulevard Voltaire, 75011 Paris");
-insert into Pharmacien values (10000000090,"Émilie","Marchand","07 26 95 31 47","7 rue Saint-Jacques, 75005 Paris");
-insert into Pharmacien values (10000000301,'Gabriel','Martin','06 21 43 65 87','44 rue de la Roquette, 75011 Paris');
-insert into Pharmacien values (10000000312,'Julie','Dubois','07 32 54 76 98','46 rue Oberkampf, 75011 Paris');
-insert into Pharmacien values (10000000101,'Mathieu','Benoît','06 12 34 56 78','20 rue Saint-Honoré, 75001 Paris');
-insert into Pharmacien values (10000000123,'Lucas','Gautier','06 34 56 78 90','18 rue du Temple, 75003 Paris');
-insert into Pharmacien values (10000000134,'Clara','Renard','07 45 67 89 01','32 rue Saint-Denis, 75001 Paris');
-insert into Pharmacien values (10000000145,'Hugo','Faure','06 56 78 90 12','10 rue de la Paix, 75002 Paris');
-insert into Pharmacien values (10000000156,'Léa','Brun','07 67 89 01 23','12 rue de Rivoli, 75001 Paris');
-insert into Pharmacien values (10000000167,'Antoine','Picard','06 78 90 12 34','45 rue Oberkampf, 75011 Paris');
-insert into Pharmacien values (10000000178,'Élodie','Marchal','07 89 01 23 45','28 rue de Charonne, 75011 Paris');
-insert into Pharmacien values (10000000190,'Sarah','Colin','07 01 23 45 67','14 rue de la Roquette, 75011 Paris');
-insert into Pharmacien values (10000000201,'Nathan','Giraud','06 11 22 33 44','17 rue Saint-Maur, 75011 Paris');
-insert into Pharmacien values (10000000212,'Emma','Vidal','07 22 33 44 55','19 rue Saint-Jacques, 75005 Paris');
-insert into Pharmacien values (10000000223,'Théo','Fournier','06 33 44 55 66','22 rue de Belleville, 75020 Paris');
-insert into Pharmacien values (10000000234,'Manon','Bernard','07 44 55 66 77','24 rue des Pyrénées, 75020 Paris');
-insert into Pharmacien values (10000000245,'Louis','Durand','06 55 66 77 88','30 boulevard Voltaire, 75011 Paris');
-insert into Pharmacien values (10000000256,'Chloé','Faure','07 66 77 88 99','33 rue Oberkampf, 75011 Paris');
-insert into Pharmacien values (10000000267,'Alexandre','Petit','06 77 88 99 00','35 rue de la Roquette, 75011 Paris');
-insert into Pharmacien values (10000000278,'Lola','Renault','07 88 99 00 11','37 rue de Charonne, 75011 Paris');
-insert into Pharmacien values (10000000289,'Vincent','Leclerc','06 99 00 11 22','40 rue Saint-Denis, 75001 Paris');
-insert into Pharmacien values (10000000290,'Émilie','Roux','07 00 11 22 33','42 rue de Rivoli, 75001 Paris');
+insert into Pharmacien values (10000000001,'Julien','Lefèvre','0641235891','18 rue de la Roquette, 75011 Paris');
+insert into Pharmacien values (10000000012,'Marie','Morel','0752146930','42 rue Oberkampf, 75011 Paris');
+insert into Pharmacien values (10000000023,'Antoine','Girard','0678341256','9 rue Mouffetard, 75005 Paris');
+insert into Pharmacien values (10000000034,'Claire','Fontaine','0761904528','27 rue Monge, 75005 Paris');
+insert into Pharmacien values (10000000045,'Nicolas','Roux','0625874963','65 rue de Vaugirard, 75006 Paris');
+insert into Pharmacien values (10000000056,'Sophie','Lambert','0738567104','12 rue Monsieur-le-Prince, 75006 Paris');
+insert into Pharmacien values (10000000067,'Paul','Blanchard','00693124085','88 rue de Belleville, 75020 Paris');
+insert into Pharmacien values (10000000078,'Laura','Chevalier','0744682951','15 rue des Pyrénées, 75020 Paris');
+insert into Pharmacien values (10000000089,'Vincent','Perrin','0659738412','31 boulevard Voltaire, 75011 Paris');
+insert into Pharmacien values (10000000090,'Émilie','Marchand','0726953147','7 rue Saint-Jacques, 75005 Paris');
+insert into Pharmacien values (10000000301,'Gabriel','Martin','0621436587','44 rue de la Roquette, 75011 Paris');
+insert into Pharmacien values (10000000312,'Julie','Dubois','0732547698','46 rue Oberkampf, 75011 Paris');
+insert into Pharmacien values (10000000101,'Mathieu','Benoît','0612345678','20 rue Saint-Honoré, 75001 Paris');
+insert into Pharmacien values (10000000123,'Lucas','Gautier','0634567890','18 rue du Temple, 75003 Paris');
+insert into Pharmacien values (10000000134,'Clara','Renard','0745678901','32 rue Saint-Denis, 75001 Paris');
+insert into Pharmacien values (10000000145,'Hugo','Faure','0656789012','10 rue de la Paix, 75002 Paris');
+insert into Pharmacien values (10000000156,'Léa','Brun','0767890123','12 rue de Rivoli, 75001 Paris');
+insert into Pharmacien values (10000000167,'Antoine','Picard','0678901234','45 rue Oberkampf, 75011 Paris');
+insert into Pharmacien values (10000000178,'Élodie','Marchal','0789012345','28 rue de Charonne, 75011 Paris');
+insert into Pharmacien values (10000000190,'Sarah','Colin','0701234567','14 rue de la Roquette, 75011 Paris');
+insert into Pharmacien values (10000000201,'Nathan','Giraud','0611223344','17 rue Saint-Maur, 75011 Paris');
+insert into Pharmacien values (10000000212,'Emma','Vidal','0722334455','19 rue Saint-Jacques, 75005 Paris');
+insert into Pharmacien values (10000000223,'Théo','Fournier','0633445566','22 rue de Belleville, 75020 Paris');
+insert into Pharmacien values (10000000234,'Manon','Bernard','0744556677','24 rue des Pyrénées, 75020 Paris');
+insert into Pharmacien values (10000000245,'Louis','Durand','0655667788','30 boulevard Voltaire, 75011 Paris');
+insert into Pharmacien values (10000000256,'Chloé','Faure','0766778899','33 rue Oberkampf, 75011 Paris');
+insert into Pharmacien values (10000000267,'Alexandre','Petit','0677889900','35 rue de la Roquette, 75011 Paris');
+insert into Pharmacien values (10000000278,'Lola','Renault','0788990011','37 rue de Charonne, 75011 Paris');
+insert into Pharmacien values (10000000289,'Vincent','Leclerc','0699001122','40 rue Saint-Denis, 75001 Paris');
+insert into Pharmacien values (10000000290,'Émilie','Roux','0700112233','42 rue de Rivoli, 75001 Paris');
 
 -- Médecinss
 
