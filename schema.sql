@@ -52,7 +52,7 @@ CREATE TABLE ORDONNANCE(
     date_Prescription date,
     date_De_Peremption date,
 
-    Id_RRPS NUMBER,
+    Id_RPPS NUMBER,
     NSSI NUMBER,
 
     foreign key (Id_RPPS) references medecin(Id_RPPS),
