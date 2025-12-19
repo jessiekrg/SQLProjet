@@ -311,3 +311,17 @@ BEGIN
     END IF;
 END;
 /
+
+CREATE OR REPLACE TRIGGER Calcule_Prix_Vente
+AFTER INSERT OR UPDATE ON LIGNEVENTE
+FOR EACH ROW
+BEGIN
+    UPDATE VENTE
+    SET prixfinal = (
+        SELECT SUM(lv.prix_après_remboursement)
+        FROM LIGNEVENTE lv
+        WHERE lv.id_vente = :NEW.id_vente
+    )
+    WHERE id_vente = :NEW.id_vente;
+END;
+/
