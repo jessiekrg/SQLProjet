@@ -732,106 +732,78 @@ insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-D
 insert into LigneOrdonnance values (131, 7, 10, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000021, 10000000030, 10000000289);
 insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000022, 10000000030, 10000000290);
 
--- Insertion ligne de ventes basées sur les 32 lignes d'ordonnances
+
+
 INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance) VALUES
--- Vente 501 (Client: 199057512345678)
-(801, 10, NULL, 501, 6, 10000000001),  -- Ordo 1 : CIP ...001 (Doliprane) -> Lot 6 (Doliprane)
 
--- Vente 502 (Client: 201116924531245)
-(802, 5, NULL, 502, 25, 10000000002), -- Ordo 2 : CIP ...002 (Amoxicilline) -> Lot 25 (Amoxicilline)
+(801, 10, NULL, 501, 6, 10000000001), 
 
--- Vente 503 (Client: 198031340217891) - Ordonnance multiple (2 médicaments)
-(803, 8, NULL, 503, 4, 10000000003),  -- Ordo 3 : CIP ...003 (Ibuprofène) -> Lot 4 (Ibuprofène)
-(804, 6, NULL, 503, 4, 10000000003),  -- Ordo 3 : CIP ...004 (Spasfon) -> Lot 4 (Spasfon)
+(802, 5, NULL, 502, 25, 10000000002), -
 
--- Vente 504 (Client: 200073311965422)
-(805, 12, NULL, 504, 14, 10000000004), -- Ordo 4 : CIP ...005 (Gaviscon) -> Lot 14 (Gaviscon)
+(803, 8, NULL, 503, 4, 10000000003),  
+(804, 6, NULL, 503, 4, 10000000003),  
 
--- Vente 505 (Client: 197125932198710)
-(806, 15, NULL, 505, 3, 10000000005),  -- Ordo 5 : CIP ...006 (Ventoline) -> Lot 3 (Ventoline)
+(805, 12, NULL, 504, 14, 10000000004),
 
--- Vente 506 (Client: 202019221034566)
-(807, 10, NULL, 506, 7, 10000000006),  -- Ordo 6 : CIP ...007 (Aerius) -> Lot 7 (Aerius)
+(806, 15, NULL, 505, 3, 10000000005),  
 
--- Vente 507 (Client: 196064411122233)
-(808, 8, NULL, 507, 8, 10000000007),   -- Ordo 7 : CIP ...008 (Kestine) -> Lot 8 (Kestine)
+(807, 10, NULL, 506, 7, 10000000006), 
 
--- Vente 508 (Client: 203093145678954)
-(809, 6, NULL, 508, 13, 10000000008),  -- Ordo 8 : CIP ...009 (Imodium) -> Lot 13 (Imodium)
+(808, 8, NULL, 507, 8, 10000000007),  
 
--- Vente 509 (Client: 195108433344481)
-(810, 12, NULL, 509, 13, 10000000009), -- Ordo 9 : CIP ...010 (Dafalgan Codeiné) -> Lot 13
+(809, 6, NULL, 508, 13, 10000000008),  
 
--- Vente 510 (Client: 204026755566609)
-(811, 5, NULL, 510, 6, 10000000010),   -- Ordo 10 : CIP ...001 (Doliprane) -> Lot 6
+(810, 12, NULL, 509, 13, 10000000009), 
 
--- Vente 511 (Client: 199057512345678)
-(812, 10, NULL, 511, 25, 10000000011), -- Ordo 11 : CIP ...002 (Amoxicilline) -> Lot 25
+(811, 5, NULL, 510, 6, 10000000010),  
 
--- Vente 512 (Client: 201116924531245)
-(813, 6, NULL, 512, 4, 10000000012),   -- Ordo 12 : CIP ...003 (Ibuprofène) -> Lot 4
+(812, 10, NULL, 511, 25, 10000000011), 
 
--- Vente 513 (Client: 198031340217891)
-(814, 8, NULL, 513, 4, 10000000013),   -- Ordo 13 : CIP ...004 (Spasfon) -> Lot 4
+(813, 6, NULL, 512, 4, 10000000012),  
 
--- Vente 514 (Client: 200073311965422)
-(815, 12, NULL, 514, 14, 10000000014), -- Ordo 14 : CIP ...005 (Gaviscon) -> Lot 14
+(814, 8, NULL, 513, 4, 10000000013),  
 
--- Vente 515 (Client: 197125932198710)
-(816, 5, NULL, 515, 3, 10000000015),   -- Ordo 15 : CIP ...006 (Ventoline) -> Lot 3
+(815, 12, NULL, 514, 14, 10000000014), 
 
--- Vente 516 (Client: 202019221034566)
-(817, 10, NULL, 516, 7, 10000000016),  -- Ordo 16 : CIP ...007 (Aerius) -> Lot 7
+(816, 5, NULL, 515, 3, 10000000015),  
 
--- Vente 517 (Client: 196064411122233)
-(818, 6, NULL, 517, 8, 10000000017),   -- Ordo 17 : CIP ...008 (Kestine) -> Lot 8
+(817, 10, NULL, 516, 7, 10000000016), 
 
--- Vente 518 (Client: 203093145678954)
-(819, 8, NULL, 518, 13, 10000000018),  -- Ordo 18 : CIP ...009 (Imodium) -> Lot 13
+(818, 6, NULL, 517, 8, 10000000017),  
 
--- Vente 519 (Client: 195108433344481)
-(820, 12, NULL, 519, 13, 10000000019), -- Ordo 19 : CIP ...010 (Dafalgan Codeiné) -> Lot 13
+(819, 8, NULL, 518, 13, 10000000018),  
 
--- Vente 520 (Client: 204026755566609)
-(821, 5, NULL, 520, 11, 10000000020),  -- Ordo 20 : CIP ...011 (Tramadol) -> Lot 11
+(820, 12, NULL, 519, 13, 10000000019), 
 
--- Vente 521 (Client: 199057512345678)
-(822, 8, NULL, 521, 21, 10000000021),  -- Ordo 21 : CIP ...012 (Levothyrox) -> Lot 21
+(821, 5, NULL, 520, 11, 10000000020), 
 
--- Vente 522 (Client: 201116924531245)
-(823, 10, NULL, 522, 21, 10000000022), -- Ordo 22 : CIP ...013 (Mopral) -> Lot 21
+(822, 8, NULL, 521, 21, 10000000021),  
 
--- Vente 523 (Client: 198031340217891)
-(824, 6, NULL, 523, 26, 10000000023),  -- Ordo 23 : CIP ...014 (Zyrtec) -> Lot 26
+(823, 10, NULL, 522, 21, 10000000022), 
 
--- Vente 524 (Client: 200073311965422)
-(825, 12, NULL, 524, 26, 10000000024), -- Ordo 24 : CIP ...015 (Efferalgan) -> Lot 26
+(824, 6, NULL, 523, 26, 10000000023), 
 
--- Vente 525 (Client: 197125932198710)
-(826, 5, NULL, 525, 16, 10000000025),  -- Ordo 25 : CIP ...016 (Metformine) -> Lot 16
+(825, 12, NULL, 524, 26, 10000000024), 
 
--- Vente 526 (Client: 202019221034566)
-(827, 8, NULL, 526, 17, 10000000026),  -- Ordo 26 : CIP ...017 (Vogalib) -> Lot 17
+(826, 5, NULL, 525, 16, 10000000025),  
 
--- Vente 527 (Client: 196064411122233)
-(828, 10, NULL, 527, 17, 10000000027), -- Ordo 27 : CIP ...018 (Forlax) -> Lot 17
+(827, 8, NULL, 526, 17, 10000000026), 
 
--- Vente 528 (Client: 203093145678954)
-(829, 6, NULL, 528, 19, 10000000028),  -- Ordo 28 : CIP ...019 (Spasfon Lyoc) -> Lot 19
+(828, 10, NULL, 527, 17, 10000000027), 
 
--- Vente 529 (Client: 195108433344481)
-(830, 12, NULL, 529, 20, 10000000029), -- Ordo 29 : CIP ...020 (Smecta) -> Lot 20
+(829, 6, NULL, 528, 19, 10000000028),  
 
--- Vente 530 (Client: 204026755566609) - Ordonnance multiple
-(831, 7, NULL, 530, 21, 10000000030),  -- Ordo 30 : CIP ...021 (Maalox) -> Lot 21
-(832, 9, NULL, 530, 21, 10000000030);  -- Ordo 30 : CIP ...022 (Nurofen) -> Lot 21
+(830, 12, NULL, 529, 20, 10000000029),
 
--- faut supprimer les lignnes avec ordonnances
--- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
+(831, 7, NULL, 530, 21, 10000000030), 
+(832, 9, NULL, 530, 21, 10000000030); 
+
+
+-- Vente n°1 
 INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1, 10000000001);   
 INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2, NULL);  
 
--- Vente n°2 (Client Bernard Emma)
+-- Vente n°2 
 INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25, 10000000002);
 INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 2, 1, 10000000002);   
 
@@ -839,62 +811,62 @@ INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 2, 1, 10000000002);
 INSERT INTO LIGNEVENTE VALUES (4, 3, NULL, 3, 3, 10000000003);
 INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 3, 2, NULL);   
 
--- Vente n°4 (Client Thomas Léa)
+-- Vente n°4 
 INSERT INTO LIGNEVENTE VALUES (5, 1, NULL, 4, 4, NULL);   
 
--- Vente n°5 (Client Robert Nathan)
+-- Vente n°5 
 INSERT INTO LIGNEVENTE VALUES (6, 2, NULL, 5, 20, 10000000005); 
 
--- Vente n°6 (Client Martin Lucas)
+-- Vente n°6
 INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 6, 6, 10000000006);   
 
--- Vente n°9 (Client Durand Chloé)
+-- Vente n°9 
 INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 9, 10, 10000000009);
 INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 9, 8, 10000000009);   
 
--- Vente n°10 (Client Robert Nathan)
+-- Vente n°10
 INSERT INTO LIGNEVENTE VALUES (9, 1, NULL, 10, 13, 10000000010); 
 
--- Vente n°12 (Client Robert Nathan)
+-- Vente n°12 
 INSERT INTO LIGNEVENTE VALUES (10, 4, NULL, 12, 5, NULL); 
 
--- Vente n°13 (Client Rousseau Louis)
+-- Vente n°13
 INSERT INTO LIGNEVENTE VALUES (11, 1, NULL, 13, 19, 10000000013); 
 
--- Vente n°14 (Client Faure Camille)
+-- Vente n°14 
 INSERT INTO LIGNEVENTE VALUES (12, 2, NULL, 14, 17, 10000000014); 
 
--- Vente n°15 (Client Bernard Mathis)
+-- Vente n°15 
 INSERT INTO LIGNEVENTE VALUES (13, 1, NULL, 15, 25, 10000000015); 
 
--- Vente n°16 (Client Morel Jules)
+-- Vente n°16 
 INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 16, 18, 10000000016);
 INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 14, 1, 10000000014);   
 
--- Vente n°17 (Client Thomas Léa)
+-- Vente n°17 
 INSERT INTO LIGNEVENTE VALUES (15, 2, NULL, 17, 4, 10000000017);  
 
--- Vente n°23 (Client Faure Camille)
+-- Vente n°23 
 INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 23, 8, 10000000023);  
 INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 23, 1, 10000000023);  
 
--- Vente n°25 (Client Renard Chloé)
+-- Vente n°25 
 INSERT INTO LIGNEVENTE VALUES (18, 3, NULL, 25, 12, 10000000025);
 
--- Vente n°26 (Client Dubois Hugo)
+-- Vente n°26 
 INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 26, 24, NULL);
 
--- Vente n°28 (Client Durand Chloé)
+-- Vente n°28 
 INSERT INTO LIGNEVENTE VALUES (20, 2, NULL, 28, 9, 10000000028);
 INSERT INTO LIGNEVENTE VALUES (29, 3, NULL, 20, 20, NULL);   
 
--- Vente n°30 (Client Vidal Emma)
+-- Vente n°30 
 INSERT INTO LIGNEVENTE VALUES (21, 1, NULL, 30, 30, 10000000030); 
 
--- Vente n°31 (Client Brun Lucas)
+-- Vente n°31 
 INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 31, 16, 10000000022); 
 
--- Vente n°32 (Client Garnier Lola)
+-- Vente n°32 
 INSERT INTO LIGNEVENTE VALUES (23, 2, NULL, 32, 28, 10000000032);  
 
 -- Vente n°33 (Client Lopez Antoine)
