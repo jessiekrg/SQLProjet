@@ -23,7 +23,7 @@ CREATE TABLE MEDICAMENT(
     Statut_Vente VARCHAR(40), 
     Laboratoire VARCHAR(40),
 
-    CONSTRAINT check_code_cip CHECK (LENGTH(TO_CHAR(code_cip)) = 15),
+    CONSTRAINT check_code_cip CHECK (LENGTH(TO_CHAR(code_cip)) = 12),
     CONSTRAINT check_prix_public CHECK (prix_public > 0),
     CONSTRAINT check_statut_vente CHECK (Statut_Vente IN ('Libre','Ordonnance'))
 );
