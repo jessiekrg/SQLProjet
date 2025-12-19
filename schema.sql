@@ -5,7 +5,7 @@ CREATE TABLE MEDICAMENT(
     nom VARCHAR(40),
     prix_public number(8,2),
     Categorie VARCHAR(40),
-    Statue_Vente VARCHAR(40),
+    Statut_Vente VARCHAR(40), 
     Laboratoire VARCHAR(40),
 
     CONSTRAINT check_code_cip CHECK (LENGTH(TO_CHAR(code_cip)) = 12),
