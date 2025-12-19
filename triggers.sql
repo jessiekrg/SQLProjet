@@ -156,23 +156,24 @@ END;
 
 -- 5. Ce trigger vérifie, avant toute modification d’un lot, que la quantité et le médicament correspondent à ceux spécifiés dans la commande associée
 
-create or replace trigger verif_lot_avant_vente
-before update on lot
-for each row
-declare 
-    v_quantite_commande number;
-begin
-    select Quantite
-    into v_quantite_commande
-    from COMMANDE
-    where id_Commande = :NEW.Id_Commande
-
-    if v_quantite_commande != :NEW.Quantite then
-        DBMS_OUTPUT.PUT_LINE('Attention : la quantité du lot ne correspond pas à la commande.');
-    end if;
-end;
+CREATE OR REPLACE TRIGGER verif_lot_avant_vente
+BEFORE INSERT ON LOT
+FOR EACH ROW
+DECLARE 
+    v_quantite_attendue NUMBER;
+BEGIN
+    SELECT Quantite
+    INTO v_quantite_attendue
+    FROM COMMANDE
+    WHERE id_Commande = :NEW.id_Commande;
+    IF :NEW.Quantite != v_quantite_attendue THEN
+        RAISE_APPLICATION_ERROR(-20008,'Quantité livrée (' || :NEW.Quantite || ') différente de la quantité commandée (' || v_quantite_attendue || ')');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20009, 'Le numéro de commande ' || :NEW.id_Commande || ' n''existe pas.');
+END;
 /
-    
 
 -- 6. Contrôle des sur-délivrance (= la quantité vendus doit correspondre à la quantité prescrite mentionnées sur une ligne d’ordonnance)
 
