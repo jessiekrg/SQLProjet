@@ -154,8 +154,8 @@ CREATE TABLE LIGNEVENTE(
     foreign key (numero_de_lot) references lot(num_lot),
     foreign key (id_ordonnance) references ordonnance(id_Ordonnance),
 
-    CONSTRAINT check_quantite_vendu CHECK (quantite_vendu >= 0),
-    CONSTRAINT check_prix_apres_remboursement CHECK (prix_apres_remboursement >= 0)
+    CONSTRAINT check_quantite_vendu CHECK (quantité_vendu >= 0),
+    CONSTRAINT check_prix_apres_remboursement CHECK (prix_après_remboursement >= 0)
 );
 
 
