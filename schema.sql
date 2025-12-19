@@ -415,7 +415,7 @@ insert into ORDONNANCE values (10000000030, TO_DATE('2025-12-30','YYYY-MM-DD'), 
 -- MEDICAMENT
 
 
-INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statue_Vente,Laboratoire) VALUES
+INSERT INTO MEDICAMENT (code_cip,nom,prix_public ,Categorie,Statut_Vente,Laboratoire) VALUES
 ('340093000001', 'Doliprane 500mg', 1.95, 'Antalgique', 'Libre', 'Sanofi'),
 ('340093000002', 'Doliprane 1000mg', 2.50, 'Antalgique', 'Libre', 'Sanofi'),
 ('340093000003', 'Efferalgan 500mg', 2.10, 'Antalgique', 'Libre', 'UPSA'),
