@@ -23,7 +23,7 @@ CREATE TABLE MEDICAMENT(
     Statut_Vente VARCHAR(40), 
     Laboratoire VARCHAR(40),
 
-    CONSTRAINT check_code_cip CHECK (LENGTH(TO_CHAR(code_cip)) = 12),
+    CONSTRAINT check_code_cip CHECK (LENGTH(TO_CHAR(code_cip)) = 15),
     CONSTRAINT check_prix_public CHECK (prix_public > 0),
     CONSTRAINT check_statut_vente CHECK (Statut_Vente IN ('Libre','Ordonnance'))
 );
@@ -219,6 +219,8 @@ INSERT INTO COUVERTURE VALUES ('Mutuelle Assurance Vie', 62);
 INSERT INTO COUVERTURE VALUES ('Mutuelle Prévention', 70);
 INSERT INTO COUVERTURE VALUES ('Mutuelle Liberté', 76);
 
+select * 
+from couverture;
 
 -- Client
 insert into Client values(199057512345678,'Martin','Lucas','12 rue de Rivoli 75001 Paris','06 12 34 56 78','MGEN');
