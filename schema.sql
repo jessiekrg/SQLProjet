@@ -95,7 +95,7 @@ CREATE TABLE PHARMACIEN(
     Prenom varchar(40),
     Nom varchar(40),
     Mail varchar(40),
-    Adresse varchar(40)
+    Adresse varchar(100)
 );
 
 
