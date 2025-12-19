@@ -19,7 +19,7 @@ CREATE TABLE MEDECIN(
     Prenom varchar(40),
     Nom varchar(40),
     Specialite varchar(40),
-    Telephone varcha varchar(40),
+    Telephone varchar(40),
     Email varchar(40),
 
     CONSTRAINT check_Id_RPPS CHECK (LENGTH(TO_CHAR(Id_RPPS)) = 11),
