@@ -1,8 +1,8 @@
 -- Les scripts de création des vues, ainsi qu’une description en langage naturel de chacune, ainsi que la définition des droits d’accès : groupes utilisateurs, droits…
 
 
--- 1. : Vue des médicaments dont le stock est faible et présente un risque de rupture
-create view Stock_risque as     -- FONCTIONNE
+-- Vue 1. : Vue des médicaments dont le stock est faible et présente un risque de rupture
+create view Stock_risque as    
 select m.nom
 from medicament m
 join lot l on l.CODE_CIP = m.code_cip
@@ -10,9 +10,9 @@ group by m.nom
 having sum(l.Quantite) <= 500;
 
 
--- 2. : Vue affichant les informations détaillées des ordonnances actuellement en cours de traitement, incluant les patients, les médicaments prescrits et les quantités à délivrer
+-- Vue 2. : Vue affichant les informations détaillées des ordonnances actuellement en cours de traitement, incluant les patients, les médicaments prescrits et les quantités à délivrer
 
-create or replace view infos_ordonnance as      -- FONCTIONNE
+create or replace view infos_ordonnance as      
 select o.id_ordonnance,
        o.date_prescription as date_ordonnance,
        o.date_de_peremption,
@@ -31,10 +31,10 @@ join ligneordonnance lo on o.id_ordonnance = lo.id_ordonnance
 where lo.date_traitement >= sysdate - 2;
 
 
--- 3. : Vue centralisée du catalogue des médicaments, incluant caractéristiques et disponibilité en stock
+-- Vue 3. : Vue centralisée du catalogue des médicaments, incluant caractéristiques et disponibilité en stock
 
 create view Catalogue_Stock_medicament as
-SELECT m.code_cip,              -- FONCTIONNE
+SELECT m.code_cip,              
        m.nom,
        m.prix_public,
        m.Categorie,
@@ -48,10 +48,10 @@ join lot l on l.CODE_CIP = m.code_cip
 group by m.code_cip, m.nom, m.prix_public, m.Categorie, m.Statue_Vente, m.Laboratoire;
 
 
--- 4. : Vue des ventes et du chiffre d’affaires mensuel
+-- Vue 4. : Vue des ventes et du chiffre d’affaires mensuel
 CREATE OR REPLACE VIEW VUE_CA_MENSUEL AS      
 SELECT 
-    TO_CHAR(datevente, 'MM-YYYY') AS MOIS,   -- FONCTIONNE
+    TO_CHAR(datevente, 'MM-YYYY') AS MOIS,   
     COUNT(id_Vente) AS NB_VENTES,          
     SUM(PrixFinal) AS TOTAL_REVENUS        
 FROM VENTE
@@ -61,28 +61,17 @@ ORDER BY MIN(datevente);
 GRANT SELECT ON VUE_CA_MENSUEL TO COMPTABLE;
 
 
--- VUE REMBOURSEMENT DES MUTUELLES  
-CREATE OR REPLACE VIEW Remboursement_Mutuelles AS
-SELECT MU.NOM , SUM( (M.prix_public * Lv.quantité_vendu) - LV.PRIX_APRÈS_REMBOURSEMENT) as Total_Recouvrer
-FROM MEDICAMENT M 
-JOIN LOT L ON L.CODE_CIP = M.CODE_CIP
-JOIN LIGNEVENTE LV ON LV.numero_de_lot = L.numero_de_lot 
-JOIN VENTE V ON V.id_Vente = LV.id_Vente
-JOIN CLIENT CL ON CL.id_Client = V.id_Client
-JOIN COUVERTURE MU ON MU.Nom_mutuelle = CL.Nom_mutuelle
-GROUP BY MU.NOM;
-
--- 5. : Vue des dépenses mensuelles des commandes de la pharmacie
+-- Vue 5. : Vue des dépenses mensuelles des commandes de la pharmacie
 CREATE OR REPLACE VIEW DEPENSE AS 
-SELECT TO_CHAR(C.Date_Commande, 'MM-YYYY') AS MOIS, SUM(C.Prix_Commande) AS DEPENSE     -- FONCTIONNE
+SELECT TO_CHAR(C.Date_Commande, 'MM-YYYY') AS MOIS, SUM(C.Prix_Commande) AS DEPENSE    
 FROM COMMANDE C
 GROUP BY TO_CHAR(C.Date_Commande, 'MM-YYYY')
 ORDER BY MIN(C.Date_Commande);
 
 
--- 6 : Vue qui permet à un client de consulter son historique personnel de ventes
+-- Vue 6 : Vue qui permet à un client de consulter son historique personnel de ventes
 CREATE OR REPLACE VIEW HISTORIQUE AS
-SELECT M.NOM, M.Categorie, LV.quantité_vendu, LV.PRIX_APRÈS_REMBOURSEMENT, V.dateVente  -- FONCTIONNE
+SELECT M.NOM, M.Categorie, LV.quantité_vendu, LV.PRIX_APRÈS_REMBOURSEMENT, V.dateVente 
 FROM MEDICAMENT M 
 JOIN LOT L on l.code_cip = m.code_cip
 JOIN LIGNEVENTE LV on lv.numero_de_lot =  l.num_lot
@@ -109,6 +98,18 @@ JOIN client cl ON cl.nssi = v.id_client;
 SELECT *
 FROM historique
 WHERE nssi = &nssi;
+
+-- Vue 7 : Montant total des remboursements dus par chaque mutuelle à la pharmacie
+
+CREATE OR REPLACE VIEW Remboursement_Mutuelles AS
+SELECT C.Nom_mutuelle , SUM( (M.prix_public * Lv.quantité_vendu) - LV.PRIX_APRÈS_REMBOURSEMENT) as Total_Recouvrer
+FROM MEDICAMENT M 
+JOIN LOT L ON L.CODE_CIP = M.CODE_CIP
+JOIN LIGNEVENTE LV ON LV.numero_de_lot = L.num_lot 
+JOIN VENTE V ON V.id_Vente = LV.id_Vente
+JOIN CLIENT CL ON CL.NSSI = V.id_Client
+JOIN COUVERTURE C ON C.Nom_mutuelle = CL.Nom_mutuelle
+GROUP BY C.Nom_mutuelle; 
 
 
 
