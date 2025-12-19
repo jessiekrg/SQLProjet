@@ -259,16 +259,16 @@ insert into Client values(202345678901236,'Petit','Anaïs','17 rue de la Roquett
 
 -- Pharmaciens
 
-insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris")
-insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris")
-insert into Pharmacien values (10000000023,"Antoine","Girard","06 78 34 12 56","9 rue Mouffetard, 75005 Paris")
-insert into Pharmacien values (10000000034,"Claire","Fontaine","07 61 90 45 28","27 rue Monge, 75005 Paris")
-insert into Pharmacien values (10000000045,"Nicolas","Roux","06 25 87 49 63","65 rue de Vaugirard, 75006 Paris")
-insert into Pharmacien values (10000000056,"Sophie","Lambert","07 38 56 71 04","12 rue Monsieur-le-Prince, 75006 Paris")
-insert into Pharmacien values (10000000067,"Paul","Blanchard","006 93 12 40 85","88 rue de Belleville, 75020 Paris")
-insert into Pharmacien values (10000000078,"Laura","Chevalier","07 44 68 29 51","15 rue des Pyrénées, 75020 Paris")
-insert into Pharmacien values (10000000089,"Vincent","Perrin","06 59 73 84 12","31 boulevard Voltaire, 75011 Paris")
-insert into Pharmacien values (10000000090,"Émilie","Marchand","07 26 95 31 47","7 rue Saint-Jacques, 75005 Paris")
+insert into Pharmacien values (10000000001,"Julien","Lefèvre","06 41 23 58 91","18 rue de la Roquette, 75011 Paris");
+insert into Pharmacien values (10000000012,"Marie","Morel","07 52 14 69 30","42 rue Oberkampf, 75011 Paris");
+insert into Pharmacien values (10000000023,"Antoine","Girard","06 78 34 12 56","9 rue Mouffetard, 75005 Paris");
+insert into Pharmacien values (10000000034,"Claire","Fontaine","07 61 90 45 28","27 rue Monge, 75005 Paris");
+insert into Pharmacien values (10000000045,"Nicolas","Roux","06 25 87 49 63","65 rue de Vaugirard, 75006 Paris");
+insert into Pharmacien values (10000000056,"Sophie","Lambert","07 38 56 71 04","12 rue Monsieur-le-Prince, 75006 Paris");
+insert into Pharmacien values (10000000067,"Paul","Blanchard","006 93 12 40 85","88 rue de Belleville, 75020 Paris");
+insert into Pharmacien values (10000000078,"Laura","Chevalier","07 44 68 29 51","15 rue des Pyrénées, 75020 Paris");
+insert into Pharmacien values (10000000089,"Vincent","Perrin","06 59 73 84 12","31 boulevard Voltaire, 75011 Paris");
+insert into Pharmacien values (10000000090,"Émilie","Marchand","07 26 95 31 47","7 rue Saint-Jacques, 75005 Paris");
 insert into Pharmacien values (10000000301,'Gabriel','Martin','06 21 43 65 87','44 rue de la Roquette, 75011 Paris');
 insert into Pharmacien values (10000000312,'Julie','Dubois','07 32 54 76 98','46 rue Oberkampf, 75011 Paris');
 insert into Pharmacien values (10000000101,'Mathieu','Benoît','06 12 34 56 78','20 rue Saint-Honoré, 75001 Paris');
