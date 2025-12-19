@@ -241,54 +241,76 @@ END;
 
 --- les trigger corrigé du copain
 
-CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_1_SECURITE_LOT
-BEFORE INSERT ON LIGNEVENTE
+CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_1_AUTO_LOT
+BEFORE INSERT OR UPDATE ON LIGNEVENTE
 FOR EACH ROW
 DECLARE
-    v_lot_fefo NUMBER;
+    v_cip_prescrit NUMBER;
+    v_lot_fefo     NUMBER;
 BEGIN
-    -- On cherche le numéro du lot qui périme le plus tôt pour ce même médicament
-    SELECT num_lot INTO v_lot_fefo
-    FROM (
-        SELECT num_lot
-        FROM LOT
-        WHERE code_cip = (SELECT code_cip FROM LOT WHERE num_lot = :NEW.numero_de_lot)
-        ORDER BY Date_Peremption ASC
-    ) WHERE ROWNUM = 1;
+    -- Si le lot n'est pas saisi, on l'identifie automatiquement
+    IF :NEW.numero_de_lot IS NULL THEN     
+        -- 1. Trouver le médicament associé à l'ordonnance
+        SELECT id_medicament INTO v_cip_prescrit
+        FROM LIGNEORDONNANCE
+        WHERE id_ordonnance = :NEW.id_ordonnance
+        AND ROWNUM = 1; 
 
-    -- Si le lot choisi n'est pas le plus ancien, on bloque
-    IF :NEW.numero_de_lot != v_lot_fefo THEN
-        RAISE_APPLICATION_ERROR(-20002, 'ERREUR SECURITE : Le lot ' || v_lot_fefo || ' périme plus tôt. Veuillez utiliser celui-ci.');
+        -- 2. Trouver le lot de ce médicament qui périme le plus tôt avec du stock
+        SELECT num_lot INTO v_lot_fefo
+        FROM (
+            SELECT num_lot
+            FROM LOT
+            WHERE code_cip = v_cip_prescrit
+            AND Quantite >= :NEW.quantité_vendu 
+            ORDER BY Date_Peremption ASC
+        ) WHERE ROWNUM = 1;
+
+        -- 3. Attribution automatique
+        :NEW.numero_de_lot := v_lot_fefo;   
     END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20005, 'ERREUR : Aucun lot disponible pour ce médicament ou ordonnance invalide.');
 END;
 /
 
 CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_2_CALCUL_PRIX
-BEFORE INSERT ON LIGNEVENTE
+BEFORE INSERT OR UPDATE ON LIGNEVENTE
 FOR EACH ROW
-FOLLOWS TRG_LIGNEVENTE_1_SECURITE_LOT
+FOLLOWS TRG_LIGNEVENTE_1_AUTO_LOT
 DECLARE
-    v_prix_pub NUMBER;
-    v_taux     NUMBER := 0;
+    v_prix_pub NUMBER(8,2);
+    v_taux     NUMBER(5,2) := 0;
 BEGIN
-    -- 1. Récupération du prix public du médicament via le lot
-    SELECT prix_public INTO v_prix_pub 
-    FROM MEDICAMENT M 
-    JOIN LOT L ON L.code_cip = M.code_cip 
-    WHERE L.num_lot = :NEW.numero_de_lot;
+    IF :NEW.numero_de_lot IS NOT NULL THEN
+        
+        -- 1. Récupération du prix public
+        BEGIN
+            SELECT M.prix_public INTO v_prix_pub 
+            FROM MEDICAMENT M 
+            JOIN LOT L ON L.code_cip = M.code_cip 
+            WHERE L.num_lot = :NEW.numero_de_lot;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN v_prix_pub := 0;
+        END;
 
-    -- 2. Récupération du taux de remboursement du client
-    BEGIN
-        SELECT COUV.taux_de_remboursement INTO v_taux
-        FROM COUVERTURE COUV
-        JOIN CLIENT C ON C.Nom_mutuelle = COUV.Nom_mutuelle
-        JOIN VENTE V ON V.id_Client = C.NSSI -- Ajuste ici si ta colonne s'appelle NSSI ou id_Client
-        WHERE V.id_Vente = :NEW.id_Vente;
-    EXCEPTION WHEN NO_DATA_FOUND THEN v_taux := 0;
-    END;
+        -- 2. Récupération du taux de remboursement
+        -- Note : J'utilise V.id_Client ici. Si ton champ s'appelle autrement, remplace-le.
+        BEGIN
+            SELECT COUV.taux_de_remboursement INTO v_taux
+            FROM VENTE V
+            JOIN CLIENT C ON V.id_Client = C.NSSI  -- <--- CORRECTION ICI
+            JOIN COUVERTURE COUV ON C.Nom_mutuelle = COUV.Nom_mutuelle
+            WHERE V.id_Vente = :NEW.id_Vente;
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN v_taux := 0;
+        END;
 
-    -- 3. Injection du prix calcul
-    :NEW.prix_après_remboursement := (v_prix_pub * :NEW.quantité_vendu) * (1 - (v_taux / 100));
+        -- 3. Calcul du prix final
+        :NEW.prix_après_remboursement := (:NEW.quantité_vendu * v_prix_pub) * (1 - (v_taux / 100));
+        
+    END IF;
 END;
 /
 
@@ -325,3 +347,50 @@ BEGIN
     WHERE id_vente = :NEW.id_vente;
 END;
 /
+
+--- Insertion test trigger 
+
+-- 1. On crée la couverture (la mutuelle)
+INSERT INTO COUVERTURE (Nom_mutuelle, taux_de_remboursement) 
+VALUES ('MAIF Santé', 75); -- Un remboursement de 75%
+
+-- 2. On crée le client associé
+INSERT INTO CLIENT (NSSI, Nom, Prenom, Adresse, contact, Nom_mutuelle) 
+VALUES (195017512345678, 'DUPONT', 'Jean', '12 Rue de la Paix' , '0601020304','MAIF Santé');
+
+-- 3. On crée une vente vide pour ce client (pour pouvoir y attacher des lignes de vente)
+INSERT INTO VENTE (id_Vente, Date_Vente, id_Client, id_Pharmacien) 
+VALUES (600, SYSDATE, 195017512345678, 1); -- On suppose que le pharmacien ID 1 existe
+
+-- Création de l'ordonnance (id_Ordonnance doit faire 11 chiffres selon vos contraintes)
+INSERT INTO ORDONNANCE (id_Ordonnance, date_Prescription, date_De_Peremption, Id_RPPS, NSSI) 
+VALUES (
+    20000000001, 
+    TO_DATE('2024-05-20', 'YYYY-MM-DD'), 
+    TO_DATE('2024-11-20', 'YYYY-MM-DD'), 
+    10101234567, -- ID RPPS du Dr Alice Martin
+    195017512345678 -- NSSI de Jean Dupont
+);
+
+
+-- Ajout de Doliprane 500mg (CIP: 340093000001) à l'ordonnance
+INSERT INTO LIGNEORDONNANCE (id_ligneordonnace, qt_delivre, duree_trait, date_traitement, id_medicament, id_ordonnance, id_RPPS)
+VALUES (
+    1, 
+    3,              -- Quantité prescrite
+    5,              -- Durée du traitement 
+    SYSDATE, 
+    340093000001,   -- Code CIP du Doliprane
+    20000000001,   -- Liaison avec l'ID Ordonnance créé ci-dessus
+    10000000001    -- ID RPPS du Pharmacien Julien Lefèvre
+);
+
+INSERT INTO VENTE (id_Vente, DateVente, prixfinal, id_Pharmacien,  id_Client) 
+VALUES (600, SYSDATE,NULL,10000000001, 195017512345678); -- (Julien)
+
+-- Insertion d'une ligne de vente (On laisse prix_après_remboursement à NULL POUR LE CALCUL)
+INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance)
+VALUES (999, 2, NULL, 600, NULL, 20000000001); 
+
+
+-- ON OBTIENT NORMALEMENT UNE LIGNE DE VENTE QUI EXTRAIT LE MEDICAMENT DU LOT 6 ET UN PRIX APRES REMBOURSEMENT DE 0.98 OUIIII

@@ -154,7 +154,7 @@ CREATE TABLE LIGNEVENTE(
     foreign key (numero_de_lot) references lot(num_lot),
     foreign key (id_ordonnance) references ordonnance(id_Ordonnance),
 
-    CONSTRAINT check_quantite_vendu CHECK (quantité_vendu >= 0),
+    CONSTRAINT check_quantité_vendu CHECK (quantité_vendu >= 0),
     CONSTRAINT check_prix_apres_remboursement CHECK (prix_après_remboursement >= 0)
 );
 
@@ -557,7 +557,7 @@ insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD
 
 
 
--- LOT 
+-- INSERTION LOT 
 
 -- Pour résultat requete 4 bruh j'ai fait ça pour rien
 INSERT INTO LOT VALUES (61, 0, TO_DATE('2026-11-30','YYYY-MM-DD'), TO_DATE('2024-01-15','YYYY-MM-DD'), 'MediNord', 61,340093000001);
@@ -666,7 +666,40 @@ INSERT INTO VENTE VALUES (33, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 100000000
 INSERT INTO VENTE VALUES (34, TO_DATE('2025-12-20','YYYY-MM-DD'),NULL, 10000000167, 101456789012345);
 
 
+-- insertion des ventes qui correspondnet aux ordonnances
+INSERT INTO VENTE (id_Vente, DateVente, prix_public, id_Pharmacien, id_Client) VALUES
+(501, TO_DATE('2025-12-01','YYYY-MM-DD'), 0, 10000000001, 199057512345678),
+(502, TO_DATE('2025-12-02','YYYY-MM-DD'), 0, 10000000012, 201116924531245),
+(503, TO_DATE('2025-12-03','YYYY-MM-DD'), 0, 10000000023, 198031340217891),
+(504, TO_DATE('2025-12-04','YYYY-MM-DD'), 0, 10000000034, 200073311965422),
+(505, TO_DATE('2025-12-05','YYYY-MM-DD'), 0, 10000000045, 197125932198710),
+(506, TO_DATE('2025-12-06','YYYY-MM-DD'), 0, 10000000056, 202019221034566),
+(507, TO_DATE('2025-12-07','YYYY-MM-DD'), 0, 10000000067, 196064411122233),
+(508, TO_DATE('2025-12-08','YYYY-MM-DD'), 0, 10000000078, 203093145678954),
+(509, TO_DATE('2025-12-09','YYYY-MM-DD'), 0, 10000000089, 195108433344481),
+(510, TO_DATE('2025-12-10','YYYY-MM-DD'), 0, 10000000090, 204026755566609),
+(511, TO_DATE('2025-12-11','YYYY-MM-DD'), 0, 10000000001, 199057512345678),
+(512, TO_DATE('2025-12-12','YYYY-MM-DD'), 0, 10000000012, 201116924531245),
+(513, TO_DATE('2025-12-13','YYYY-MM-DD'), 0, 10000000023, 198031340217891),
+(514, TO_DATE('2025-12-14','YYYY-MM-DD'), 0, 10000000034, 200073311965422),
+(515, TO_DATE('2025-12-15','YYYY-MM-DD'), 0, 10000000045, 197125932198710),
+(516, TO_DATE('2025-12-16','YYYY-MM-DD'), 0, 10000000056, 202019221034566),
+(517, TO_DATE('2025-12-17','YYYY-MM-DD'), 0, 10000000067, 196064411122233),
+(518, TO_DATE('2025-12-18','YYYY-MM-DD'), 0, 10000000078, 203093145678954),
+(519, TO_DATE('2025-12-19','YYYY-MM-DD'), 0, 10000000089, 195108433344481),
+(520, TO_DATE('2025-12-20','YYYY-MM-DD'), 0, 10000000090, 204026755566609),
+(521, TO_DATE('2025-12-21','YYYY-MM-DD'), 0, 10000000001, 199057512345678),
+(522, TO_DATE('2025-12-22','YYYY-MM-DD'), 0, 10000000012, 201116924531245),
+(523, TO_DATE('2025-12-23','YYYY-MM-DD'), 0, 10000000023, 198031340217891),
+(524, TO_DATE('2025-12-24','YYYY-MM-DD'), 0, 10000000034, 200073311965422),
+(525, TO_DATE('2025-12-25','YYYY-MM-DD'), 0, 10000000045, 197125932198710),
+(526, TO_DATE('2025-12-26','YYYY-MM-DD'), 0, 10000000056, 202019221034566),
+(527, TO_DATE('2025-12-27','YYYY-MM-DD'), 0, 10000000067, 196064411122233),
+(528, TO_DATE('2025-12-28','YYYY-MM-DD'), 0, 10000000078, 203093145678954),
+(529, TO_DATE('2025-12-29','YYYY-MM-DD'), 0, 10000000089, 195108433344481),
+(530, TO_DATE('2025-12-30','YYYY-MM-DD'), 0, 10000000090, 204026755566609);
 
+--Insertion des lignes d'ordonnances
 insert into LigneOrdonnance values (101, 10, 5, TO_DATE('2025-12-01','YYYY-MM-DD'), 340093000001, 10000000001, 10000000290);
 insert into LigneOrdonnance values (102, 5, 7, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000002, 10000000002, 10000000012);
 insert into LigneOrdonnance values (103, 8, 10, TO_DATE('2025-12-02','YYYY-MM-DD'), 340093000003, 10000000003, 10000000134);
@@ -700,7 +733,105 @@ insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-D
 insert into LigneOrdonnance values (131, 7, 10, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000021, 10000000030, 10000000289);
 insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000022, 10000000030, 10000000290);
 
+-- -- ==========================================================
+-- INSERTION DANS LIGNEVENTE (32 lignes basées sur tes Ordonnances)
+-- ==========================================================
 
+INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance) VALUES
+-- Vente 501 (Client: 199057512345678)
+(801, 10, NULL, 501, 6, 10000000001),  -- Ordo 1 : CIP ...001 (Doliprane) -> Lot 6 (Doliprane)
+
+-- Vente 502 (Client: 201116924531245)
+(802, 5, NULL, 502, 25, 10000000002), -- Ordo 2 : CIP ...002 (Amoxicilline) -> Lot 25 (Amoxicilline)
+
+-- Vente 503 (Client: 198031340217891) - Ordonnance multiple (2 médicaments)
+(803, 8, NULL, 503, 4, 10000000003),  -- Ordo 3 : CIP ...003 (Ibuprofène) -> Lot 4 (Ibuprofène)
+(804, 6, NULL, 503, 4, 10000000003),  -- Ordo 3 : CIP ...004 (Spasfon) -> Lot 4 (Spasfon)
+
+-- Vente 504 (Client: 200073311965422)
+(805, 12, NULL, 504, 14, 10000000004), -- Ordo 4 : CIP ...005 (Gaviscon) -> Lot 14 (Gaviscon)
+
+-- Vente 505 (Client: 197125932198710)
+(806, 15, NULL, 505, 3, 10000000005),  -- Ordo 5 : CIP ...006 (Ventoline) -> Lot 3 (Ventoline)
+
+-- Vente 506 (Client: 202019221034566)
+(807, 10, NULL, 506, 7, 10000000006),  -- Ordo 6 : CIP ...007 (Aerius) -> Lot 7 (Aerius)
+
+-- Vente 507 (Client: 196064411122233)
+(808, 8, NULL, 507, 8, 10000000007),   -- Ordo 7 : CIP ...008 (Kestine) -> Lot 8 (Kestine)
+
+-- Vente 508 (Client: 203093145678954)
+(809, 6, NULL, 508, 13, 10000000008),  -- Ordo 8 : CIP ...009 (Imodium) -> Lot 13 (Imodium)
+
+-- Vente 509 (Client: 195108433344481)
+(810, 12, NULL, 509, 13, 10000000009), -- Ordo 9 : CIP ...010 (Dafalgan Codeiné) -> Lot 13
+
+-- Vente 510 (Client: 204026755566609)
+(811, 5, NULL, 510, 6, 10000000010),   -- Ordo 10 : CIP ...001 (Doliprane) -> Lot 6
+
+-- Vente 511 (Client: 199057512345678)
+(812, 10, NULL, 511, 25, 10000000011), -- Ordo 11 : CIP ...002 (Amoxicilline) -> Lot 25
+
+-- Vente 512 (Client: 201116924531245)
+(813, 6, NULL, 512, 4, 10000000012),   -- Ordo 12 : CIP ...003 (Ibuprofène) -> Lot 4
+
+-- Vente 513 (Client: 198031340217891)
+(814, 8, NULL, 513, 4, 10000000013),   -- Ordo 13 : CIP ...004 (Spasfon) -> Lot 4
+
+-- Vente 514 (Client: 200073311965422)
+(815, 12, NULL, 514, 14, 10000000014), -- Ordo 14 : CIP ...005 (Gaviscon) -> Lot 14
+
+-- Vente 515 (Client: 197125932198710)
+(816, 5, NULL, 515, 3, 10000000015),   -- Ordo 15 : CIP ...006 (Ventoline) -> Lot 3
+
+-- Vente 516 (Client: 202019221034566)
+(817, 10, NULL, 516, 7, 10000000016),  -- Ordo 16 : CIP ...007 (Aerius) -> Lot 7
+
+-- Vente 517 (Client: 196064411122233)
+(818, 6, NULL, 517, 8, 10000000017),   -- Ordo 17 : CIP ...008 (Kestine) -> Lot 8
+
+-- Vente 518 (Client: 203093145678954)
+(819, 8, NULL, 518, 13, 10000000018),  -- Ordo 18 : CIP ...009 (Imodium) -> Lot 13
+
+-- Vente 519 (Client: 195108433344481)
+(820, 12, NULL, 519, 13, 10000000019), -- Ordo 19 : CIP ...010 (Dafalgan Codeiné) -> Lot 13
+
+-- Vente 520 (Client: 204026755566609)
+(821, 5, NULL, 520, 11, 10000000020),  -- Ordo 20 : CIP ...011 (Tramadol) -> Lot 11
+
+-- Vente 521 (Client: 199057512345678)
+(822, 8, NULL, 521, 21, 10000000021),  -- Ordo 21 : CIP ...012 (Levothyrox) -> Lot 21
+
+-- Vente 522 (Client: 201116924531245)
+(823, 10, NULL, 522, 21, 10000000022), -- Ordo 22 : CIP ...013 (Mopral) -> Lot 21
+
+-- Vente 523 (Client: 198031340217891)
+(824, 6, NULL, 523, 26, 10000000023),  -- Ordo 23 : CIP ...014 (Zyrtec) -> Lot 26
+
+-- Vente 524 (Client: 200073311965422)
+(825, 12, NULL, 524, 26, 10000000024), -- Ordo 24 : CIP ...015 (Efferalgan) -> Lot 26
+
+-- Vente 525 (Client: 197125932198710)
+(826, 5, NULL, 525, 16, 10000000025),  -- Ordo 25 : CIP ...016 (Metformine) -> Lot 16
+
+-- Vente 526 (Client: 202019221034566)
+(827, 8, NULL, 526, 17, 10000000026),  -- Ordo 26 : CIP ...017 (Vogalib) -> Lot 17
+
+-- Vente 527 (Client: 196064411122233)
+(828, 10, NULL, 527, 17, 10000000027), -- Ordo 27 : CIP ...018 (Forlax) -> Lot 17
+
+-- Vente 528 (Client: 203093145678954)
+(829, 6, NULL, 528, 19, 10000000028),  -- Ordo 28 : CIP ...019 (Spasfon Lyoc) -> Lot 19
+
+-- Vente 529 (Client: 195108433344481)
+(830, 12, NULL, 529, 20, 10000000029), -- Ordo 29 : CIP ...020 (Smecta) -> Lot 20
+
+-- Vente 530 (Client: 204026755566609) - Ordonnance multiple
+(831, 7, NULL, 530, 21, 10000000030),  -- Ordo 30 : CIP ...021 (Maalox) -> Lot 21
+(832, 9, NULL, 530, 21, 10000000030);  -- Ordo 30 : CIP ...022 (Nurofen) -> Lot 21
+
+
+/*
 
 -- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
 INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1,10000000001);   
@@ -785,8 +916,9 @@ INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7);
 
 INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
 
+*/
 
-
+-- faut supprimer les lignnes avec ordonnances
 -- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
 INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1, 10000000001);   
 INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2, NULL);  
@@ -913,3 +1045,4 @@ set v.PrixFinal = (
     where lv.id_Vente = v.id_Vente
 );
 
+340093000001
