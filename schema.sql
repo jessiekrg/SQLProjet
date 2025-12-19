@@ -46,6 +46,19 @@ CREATE TABLE COUVERTURE(
 
 
 
+CREATE TABLE CLIENT(
+    NSSI NUMBER primary key,
+    Nom varchar(40),
+    Prenom varchar(40),
+    adresse varchar(40),
+    Contact varchar(40),
+    Nom_mutuelle varchar(40),
+
+    foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle),
+
+    CONSTRAINT check_NSSI CHECK (LENGTH(TO_CHAR(NSSI)) = 15),
+    CONSTRAINT check_Contact CHECK (LENGTH((Contact))= 10)
+);
 
 CREATE TABLE ORDONNANCE(
     id_Ordonnance NUMBER primary key,
@@ -60,21 +73,6 @@ CREATE TABLE ORDONNANCE(
 
     CONSTRAINT check_id_Ordonnance CHECK (LENGTH(TO_CHAR(id_Ordonnance)) = 11),
     CONSTRAINT check_date_ordonnance CHECK (date_Prescription < date_De_Peremption)
-);
-
-
-CREATE TABLE CLIENT(
-    NSSI NUMBER primary key,
-    Nom varchar(40),
-    Prenom varchar(40),
-    adresse varchar(40),
-    Contact varchar(40),
-    Nom_mutuelle varchar(40),
-
-    foreign key (Nom_mutuelle) references COUVERTURE(Nom_mutuelle),
-
-    CONSTRAINT check_NSSI CHECK (LENGTH(TO_CHAR(NSSI)) = 15),
-    CONSTRAINT check_Contact CHECK (LENGTH((Contact))= 10)
 );
 
 CREATE TABLE LIGNEVENTE(
