@@ -113,6 +113,18 @@ CREATE TABLE VENTE(
 );
 
 
+CREATE TABLE COMMANDE(
+    id_Commande NUMBER primary key,
+    Date_Commande date,
+    Statut varchar(40),
+    Prix_Commande NUMBER,
+    Quantite NUMBER,
+    Nom VARCHAR(40),
+
+    foreign key (Nom) references Fournisseur(Nom)
+);
+
+
 CREATE TABLE LOT(
     num_lot NUMBER primary key,
     Quantite NUMBER,
@@ -165,17 +177,6 @@ CREATE TABLE LIGNEORDONNANCE(
     CONSTRAINT check_duree_trait CHECK (duree_trait > 0)
 );
 
-
-CREATE TABLE COMMANDE(
-    id_Commande NUMBER primary key,
-    Date_Commande date,
-    Statut varchar(40),
-    Prix_Commande NUMBER,
-    Quantite NUMBER,
-    Nom VARCHAR(40),
-
-    foreign key (Nom) references Fournisseur(Nom)
-);
 
 
 
