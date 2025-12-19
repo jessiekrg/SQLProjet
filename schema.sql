@@ -1,5 +1,4 @@
--- CREATION DE TABLES (ORDRE PAS DEFINI IL FAUT REARRANGER)
-
+-- CREATION DE TABLES 
 
 DROP TABLE LIGNEVENTE CASCADE CONSTRAINTS;
 DROP TABLE VENTE CASCADE CONSTRAINTS;
@@ -733,10 +732,7 @@ insert into LigneOrdonnance values (130, 12, 14, TO_DATE('2025-12-29','YYYY-MM-D
 insert into LigneOrdonnance values (131, 7, 10, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000021, 10000000030, 10000000289);
 insert into LigneOrdonnance values (132, 9, 14, TO_DATE('2025-12-30','YYYY-MM-DD'), 340093000022, 10000000030, 10000000290);
 
--- -- ==========================================================
--- INSERTION DANS LIGNEVENTE (32 lignes basées sur tes Ordonnances)
--- ==========================================================
-
+-- Insertion ligne de ventes basées sur les 32 lignes d'ordonnances
 INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance) VALUES
 -- Vente 501 (Client: 199057512345678)
 (801, 10, NULL, 501, 6, 10000000001),  -- Ordo 1 : CIP ...001 (Doliprane) -> Lot 6 (Doliprane)
@@ -830,94 +826,6 @@ INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursemen
 (831, 7, NULL, 530, 21, 10000000030),  -- Ordo 30 : CIP ...021 (Maalox) -> Lot 21
 (832, 9, NULL, 530, 21, 10000000030);  -- Ordo 30 : CIP ...022 (Nurofen) -> Lot 21
 
-
-/*
-
--- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
-INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1,10000000001);   
-INSERT INTO LIGNEVENTE VALUES (2, 1, NULL, 1, 2,NULL );  
-
--- Vente n°2 (Client Bernard Emma)
-INSERT INTO LIGNEVENTE VALUES (3, 1, NULL, 2, 25);
-INSERT INTO LIGNEVENTE VALUES (25, 1, NULL, 2, 1);   
-
-
--- Vente n°3
-
-INSERT INTO LIGNEVENTE VALUES (4, 3, NULL, 3, 3);
-INSERT INTO LIGNEVENTE VALUES (26, 1, NULL, 3, 2);   
-
-
--- Vente n°4 (Client Thomas Léa)
-INSERT INTO LIGNEVENTE VALUES (5, 1, NULL, 4, 4);   
-
--- Vente n°5 (Client Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (6, 2, NULL, 5, 20); 
-
--- Vente n°6 (Client Martin Lucas)
-INSERT INTO LIGNEVENTE VALUES (7, 1, NULL, 6, 6);   
-
--- Vente n°9 (Client Durand Chloé)
-INSERT INTO LIGNEVENTE VALUES (8, 2, NULL, 9, 10);
-INSERT INTO LIGNEVENTE VALUES (27, 2, NULL, 9, 8);   
-
-
--- Vente n°10 (Client Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (9, 1, NULL, 10, 13); 
-
--- Vente n°12 (Client Robert Nathan)
-INSERT INTO LIGNEVENTE VALUES (10, 4, NULL, 12, 5); 
-
--- Vente n°13 (Client Rousseau Louis)
-INSERT INTO LIGNEVENTE VALUES (11, 1, NULL, 13, 19); 
-
--- Vente n°14 (Client Faure Camille)
-INSERT INTO LIGNEVENTE VALUES (12, 2, NULL, 14, 17); 
-
--- Vente n°15 (Client Bernard Mathis)
-INSERT INTO LIGNEVENTE VALUES (13, 1, NULL, 15, 25); 
-
--- Vente n°16 (Client Morel Jules)
-INSERT INTO LIGNEVENTE VALUES (14, 1, NULL, 16, 18);
-INSERT INTO LIGNEVENTE VALUES (28, 1, NULL, 14, 1);  
-
-
--- Vente n°17 (Client Thomas Léa)
-INSERT INTO LIGNEVENTE VALUES (15, 2, NULL, 17, 4);  
-
--- Vente n°23 (Client Faure Camille)
-INSERT INTO LIGNEVENTE VALUES (16, 1, NULL, 23, 8);  
-INSERT INTO LIGNEVENTE VALUES (17, 1, NULL, 23, 1);  
-
--- Vente n°25 (Client Renard Chloé)
-INSERT INTO LIGNEVENTE VALUES (18, 3, NULL, 25, 12);
-
--- Vente n°26 (Client Dubois Hugo)
-INSERT INTO LIGNEVENTE VALUES (19, 1, NULL, 26, 24);
-
--- Vente n°28 (Client Durand Chloé)
-INSERT INTO LIGNEVENTE VALUES (20, 2, NULL, 28, 9);
-INSERT INTO LIGNEVENTE VALUES (29, 3, NULL, 20, 20); 
-
-
--- Vente n°30 (Client Vidal Emma)
-INSERT INTO LIGNEVENTE VALUES (21, 1, NULL, 30, 30); 
-
--- Vente n°31 (Client Brun Lucas)
-INSERT INTO LIGNEVENTE VALUES (22, 1, NULL, 31, 16); 
-
--- Vente n°32 (Client Garnier Lola)
-INSERT INTO LIGNEVENTE VALUES (23, 2, NULL, 32, 28);
-
--- Vente n°33 (Client Lopez Antoine)
-INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7); 
-
--- Vente 34
-
-INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4);
-
-*/
-
 -- faut supprimer les lignnes avec ordonnances
 -- Vente n°1 (Client Martin Lucas, Pharmacien Julien Lefèvre)
 INSERT INTO LIGNEVENTE VALUES (1, 2, NULL, 1, 1, 10000000001);   
@@ -996,20 +904,7 @@ INSERT INTO LIGNEVENTE VALUES (24, 1, NULL, 33, 7, 10000000033);
 INSERT INTO LIGNEVENTE VALUES (30, 1, NULL, 34, 4, 10000000034);  
 
 
-
 -- Initialisation des prix après remboursement ou pas des lignes de ventes
-UPDATE LIGNEVENTE lv
-SET lv.PRIX_APRÈS_REMBOURSEMENT = (
-    SELECT (lv.quantité_vendu * m.prix_public) * (1 - (couv.taux_de_remboursement / 100))
-    FROM LOT l
-    JOIN MEDICAMENT m ON l.code_cip = m.code_cip
-    JOIN VENTE v ON lv.id_Vente = v.id_Vente
-    JOIN CLIENT c ON v.id_Client = c.NSSI
-    JOIN COUVERTURE couv ON c.Nom_mutuelle = couv.Nom_mutuelle
-    WHERE l.num_lot = lv.numero_de_lot
-); -- PAS COMPLET, on ne prend  pas en compte la cas où pas ordonnance
-
---SOLUTION:
 
 UPDATE LIGNEVENTE lv
 SET lv.prix_après_remboursement =
@@ -1035,7 +930,6 @@ SET lv.prix_après_remboursement =
     END;
 
 
-
 -- Initialisation du prix final des  ventes
 
 update vente v
@@ -1044,5 +938,3 @@ set v.PrixFinal = (
     from lignevente lv
     where lv.id_Vente = v.id_Vente
 );
-
-340093000001
