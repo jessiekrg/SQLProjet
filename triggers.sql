@@ -234,18 +234,18 @@ END;
 
 
 CREATE OR REPLACE TRIGGER Calcule_Prix_Vente
-AFTER INSERT OR UPDATE ON LIGNEVENTE
-FOR EACH ROW
+AFTER INSERT OR UPDATE OR DELETE ON LIGNEVENTE
 BEGIN
     UPDATE VENTE
     SET prixfinal = (
-        SELECT SUM(lv.prix_après_remboursement)
-        FROM LIGNEVENTE lv
-        WHERE lv.id_vente = :NEW.id_vente
+        SELECT NVL(SUM(prix_après_remboursement),0)
+        FROM LIGNEVENTE
+        WHERE LIGNEVENTE.id_vente = VENTE.id_vente
     )
-    WHERE id_vente = :NEW.id_vente;
-END;
+    WHERE id_vente IN (SELECT DISTINCT id_vente FROM LIGNEVENTE);
+    END;
 /
+
 
 
 -- Il faut faire une contrainte d'integrité en mode quand quantité lot = 0 il est supprimé
@@ -390,9 +390,13 @@ VALUES (
 INSERT INTO VENTE (id_Vente, DateVente, prixfinal, id_Pharmacien,  id_Client) 
 VALUES (600, SYSDATE,NULL,10000000001, 195017512345678); -- (Julien)
 
--- Insertion d'une ligne de vente (On laisse prix_après_remboursement à NULL POUR LE CALCUL)
+-- Insertion d'une ligne de vente --(On laisse prix_après_remboursement à NULL POUR LE CALCUL)
 INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance)
-VALUES (999, 2, NULL, 600, NULL, 20000000001); 
+VALUES (999, 2, NULL, 600, NULL, 20000000001), -- num lot null car le pharmacien a l'ordonnance 
+VALUES (1000, 1, NULL, 600, 1, NULL); --- bon bah le pharmacien il n'a pas d'ordonnace mais il sait exactement quel medicamanent, on part du postulat que qu'il a une idée du lot des médicaments mais pas necessairement de la date de peremption la plus proche, le trigger s'en chargera  
+
+INSERT INTO LIGNEVENTE (id_Lignevente, quantité_vendu, prix_après_remboursement, id_Vente, numero_de_lot, id_ordonnance)
 
 
--- ON OBTIENT NORMALEMENT UNE LIGNE DE VENTE QUI EXTRAIT LE MEDICAMENT DU LOT 6 ET UN PRIX APRES REMBOURSEMENT DE 0.98 OUIIII
+
+-- ON OBTIENT NORMALEMENT UNE LIGNE DE VENTE QUI EXTRAIT LE MEDICAMENT DU LOT 6 ET UN PRIX APRES REMBOURSEMENT DE 0.98 OUIIII (l'autre et valide aussi ) et la somme est bonne.
