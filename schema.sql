@@ -75,6 +75,28 @@ CREATE TABLE ORDONNANCE(
     CONSTRAINT check_date_ordonnance CHECK (date_Prescription < date_De_Peremption)
 );
 
+CREATE TABLE PHARMACIEN(
+    id_RPPS NUMBER primary key,
+    Prenom varchar(40),
+    Nom varchar(40),
+    Mail varchar(40),
+    Adresse varchar(40)
+);
+
+
+CREATE TABLE VENTE(
+    id_Vente NUMBER primary key,
+    DateVente date,
+    PrixFinal NUMBER(8,2),
+    id_Pharmacien NUMBER,
+    id_Client NUMBER,
+
+    foreign key (id_Pharmacien) references Pharmacien(id_RPPS),
+    foreign key (id_Client) references Client(NSSI),
+
+    CONSTRAINT check_prixfinal CHECK (PrixFinal >= 0),
+);
+
 CREATE TABLE LIGNEVENTE(
     id_Lignevente NUMBER primary key,
     quantité_vendu NUMBER ,
@@ -93,18 +115,6 @@ CREATE TABLE LIGNEVENTE(
 );
 
 
-CREATE TABLE VENTE(
-    id_Vente NUMBER primary key,
-    DateVente date,
-    PrixFinal NUMBER(8,2),
-    id_Pharmacien,
-    id_Client,
-
-    foreign key (id_Pharmacien) references Pharmacien(id_RPPS),
-    foreign key (id_Client) references Client(NSSI),
-
-    CONSTRAINT check_prixfinal CHECK (PrixFinal >= 0),
-);
 
 CREATE TABLE LIGNEORDONNANCE(
     id_ligneordonnace NUMBER primary key,
@@ -153,13 +163,7 @@ CREATE TABLE LOT(
 );
 
 
-CREATE TABLE PHARMACIEN(
-    id_RPPS NUMBER primary key,
-    Prenom varchar(40),
-    Nom varchar(40),
-    Mail varchar(40),
-    Adresse varchar(40)
-);
+
 
 -- CREATION DU JEU DE DONNÉES (des requêtes SQL (insert))
 
