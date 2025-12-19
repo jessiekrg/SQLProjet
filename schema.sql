@@ -120,7 +120,6 @@ CREATE TABLE LOT(
     Date_Fabrication date,
     Nom VARCHAR(40) ,
 
-    Id_LigneVente NUMBER,
     Id_Commande NUMBER,
     CODE_CIP NUMBER,
 
