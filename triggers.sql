@@ -235,3 +235,79 @@ END;
 
 -- Il faut faire une contrainte d'integrité en mode quand quantité lot = 0 il est supprimé
 -- On peut prendre d'un lot en cours de livraison
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+--- les trigger corrigé du copain
+
+CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_1_SECURITE_LOT
+BEFORE INSERT ON LIGNEVENTE
+FOR EACH ROW
+DECLARE
+    v_lot_fefo NUMBER;
+BEGIN
+    -- On cherche le numéro du lot qui périme le plus tôt pour ce même médicament
+    SELECT num_lot INTO v_lot_fefo
+    FROM (
+        SELECT num_lot
+        FROM LOT
+        WHERE code_cip = (SELECT code_cip FROM LOT WHERE num_lot = :NEW.numero_de_lot)
+        ORDER BY Date_Peremption ASC
+    ) WHERE ROWNUM = 1;
+
+    -- Si le lot choisi n'est pas le plus ancien, on bloque
+    IF :NEW.numero_de_lot != v_lot_fefo THEN
+        RAISE_APPLICATION_ERROR(-20002, 'ERREUR SECURITE : Le lot ' || v_lot_fefo || ' périme plus tôt. Veuillez utiliser celui-ci.');
+    END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_2_CALCUL_PRIX
+BEFORE INSERT ON LIGNEVENTE
+FOR EACH ROW
+FOLLOWS TRG_LIGNEVENTE_1_SECURITE_LOT
+DECLARE
+    v_prix_pub NUMBER;
+    v_taux     NUMBER := 0;
+BEGIN
+    -- 1. Récupération du prix public du médicament via le lot
+    SELECT prix_public INTO v_prix_pub 
+    FROM MEDICAMENT M 
+    JOIN LOT L ON L.code_cip = M.code_cip 
+    WHERE L.num_lot = :NEW.numero_de_lot;
+
+    -- 2. Récupération du taux de remboursement du client
+    BEGIN
+        SELECT COUV.taux_de_remboursement INTO v_taux
+        FROM COUVERTURE COUV
+        JOIN CLIENT C ON C.Nom_mutuelle = COUV.Nom_mutuelle
+        JOIN VENTE V ON V.id_Client = C.NSSI -- Ajuste ici si ta colonne s'appelle NSSI ou id_Client
+        WHERE V.id_Vente = :NEW.id_Vente;
+    EXCEPTION WHEN NO_DATA_FOUND THEN v_taux := 0;
+    END;
+
+    -- 3. Injection du prix calculé
+    :NEW.prix_après_remboursement := (v_prix_pub * :NEW.quantité_vendu) * (1 - (v_taux / 100));
+END;
+/
+
+CREATE OR REPLACE TRIGGER TRG_LIGNEVENTE_3_MAJ_STOCK
+AFTER INSERT ON LIGNEVENTE
+FOR EACH ROW
+DECLARE
+    v_stock_actuel NUMBER;
+BEGIN
+    -- 1. Vérification du stock restant
+    SELECT Quantite INTO v_stock_actuel FROM LOT WHERE num_lot = :NEW.numero_de_lot;
+
+    IF v_stock_actuel < :NEW.quantité_vendu THEN
+        RAISE_APPLICATION_ERROR(-20003, 'ERREUR STOCK : Quantité insuffisante (Dispo: ' || v_stock_actuel || ').');
+    ELSE
+        -- 2. Mise à jour
+        UPDATE LOT
+        SET Quantite = Quantite - :NEW.quantité_vendu
+        WHERE num_lot = :NEW.numero_de_lot;
+    END IF;
+END;
+/
