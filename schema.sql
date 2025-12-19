@@ -1,5 +1,20 @@
 -- CREATION DE TABLES (ORDRE PAS DEFINI IL FAUT REARRANGER)
 
+
+DROP TABLE LIGNEVENTE CASCADE CONSTRAINTS;
+DROP TABLE VENTE CASCADE CONSTRAINTS;
+DROP TABLE ORDONNANCE CASCADE CONSTRAINTS;
+DROP TABLE LOT CASCADE CONSTRAINTS;
+DROP TABLE MEDICAMENT CASCADE CONSTRAINTS;
+DROP TABLE CLIENT CASCADE CONSTRAINTS;
+DROP TABLE COUVERTURE CASCADE CONSTRAINTS;
+DROP TABLE PHARMACIEN CASCADE CONSTRAINTS;
+DROP TABLE LIGNEORDONNANCE CASCADE CONSTRAINTS;
+DROP TABLE MEDECIN CASCADE CONSTRAINTS;
+DROP TABLE FOURNISSEUR CASCADE CONSTRAINTS;
+DROP TABLE COMMANDE CASCADE CONSTRAINTS;
+
+
 CREATE TABLE MEDICAMENT(
     code_cip NUMBER primary key,
     nom VARCHAR(40),
@@ -97,6 +112,24 @@ CREATE TABLE VENTE(
     CONSTRAINT check_prixfinal CHECK (PrixFinal >= 0),
 );
 
+
+CREATE TABLE LOT(
+    num_lot NUMBER primary key,
+    Quantite NUMBER,
+    Date_Peremption date,
+    Date_Fabrication date,
+    Nom VARCHAR(40) ,
+
+    Id_LigneVente NUMBER,
+    Id_Commande NUMBER,
+    CODE_CIP NUMBER,
+
+    foreign key (Nom) references Fournisseur(Nom),
+    foreign key (CODE_CIP) references Medicament(CODE_CIP),
+    foreign key (Id_Commande) references Commande(id_Commande)
+);
+
+
 CREATE TABLE LIGNEVENTE(
     id_Lignevente NUMBER primary key,
     quantité_vendu NUMBER ,
@@ -146,21 +179,6 @@ CREATE TABLE COMMANDE(
 );
 
 
-
-CREATE TABLE LOT(
-    num_lot NUMBER primary key,
-    Quantite NUMBER,
-    Date_Peremption date,
-    Date_Fabrication date,
-    Nom VARCHAR(40) ,
-    Id_LigneVente NUMBER,
-    Id_Commande NUMBER,
-    CODE_CIP NUMBER,
-
-    foreign key (Nom) references Fournisseur(Nom),
-    foreign key (CODE_CIP) references Medicament(CODE_CIP),
-    foreign key (Id_Commande) references Commande(id_Commande)
-);
 
 
 
