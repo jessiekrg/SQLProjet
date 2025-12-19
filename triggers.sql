@@ -233,6 +233,21 @@ END;
 /
 
 
+CREATE OR REPLACE TRIGGER Calcule_Prix_Vente
+AFTER INSERT OR UPDATE ON LIGNEVENTE
+FOR EACH ROW
+BEGIN
+    UPDATE VENTE
+    SET prixfinal = (
+        SELECT SUM(lv.prix_après_remboursement)
+        FROM LIGNEVENTE lv
+        WHERE lv.id_vente = :NEW.id_vente
+    )
+    WHERE id_vente = :NEW.id_vente;
+END;
+/
+
+
 -- Il faut faire une contrainte d'integrité en mode quand quantité lot = 0 il est supprimé
 -- On peut prendre d'un lot en cours de livraison
 
@@ -334,19 +349,6 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE TRIGGER Calcule_Prix_Vente
-AFTER INSERT OR UPDATE ON LIGNEVENTE
-FOR EACH ROW
-BEGIN
-    UPDATE VENTE
-    SET prixfinal = (
-        SELECT SUM(lv.prix_après_remboursement)
-        FROM LIGNEVENTE lv
-        WHERE lv.id_vente = :NEW.id_vente
-    )
-    WHERE id_vente = :NEW.id_vente;
-END;
-/
 
 --- Insertion test trigger 
 
