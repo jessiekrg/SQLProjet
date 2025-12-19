@@ -109,7 +109,7 @@ CREATE TABLE VENTE(
     foreign key (id_Pharmacien) references Pharmacien(id_RPPS),
     foreign key (id_Client) references Client(NSSI),
 
-    CONSTRAINT check_prixfinal CHECK (PrixFinal >= 0),
+    CONSTRAINT check_prixfinal CHECK (PrixFinal >= 0)
 );
 
 
