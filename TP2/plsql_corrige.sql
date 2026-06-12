@@ -620,3 +620,578 @@ SELECT * FROM JOURNAL_ACTIVITE;
 -- ============================================================
 --  FIN DU SCRIPT
 -- ============================================================
+
+
+
+-- trouver tous les clients qui ont commandé tous les produits
+-- Exo en logique : on fait la reformulation en français
+-- trouver tous les clients, tel que quelque soit le produit ils l'ont commandé
+-- trouver tous les clients, tel que quelque soit le produit, il existe une commande effectuée par ce client et qui concerne ce produit
+-- trouver tous les clients, tel que il n'existe pas de produit, tel qu'il n'existe pas une commande effectuée par ce client et qui concerne ce produit
+SELECT clientid
+FROM Client cl
+WHERE not exists(select *
+				 FROM produit p
+				 WHERE not exists (	select *
+				 					FROM COMMANDE co, lignecommande l
+				 					WHERE co.commandeid = l.commandeid
+				 					AND co.clientid = cl.clientid
+				 					AND l.produitid = p.produitid));
+-- division avec calcul d'agrégats
+SELECT cl.clientid
+FROM client cl, commande co, lignecommande l
+WHERE cl.clientid = co.clientid
+AND co.commandeid = l.commandeid
+GROUP BY cl.clientid
+HAVING count(distinct l.produitid) = select count(*) from produit);
+
+
+--            CORRIGES DE PL/SQL
+-- Exerice 1 : 
+-- Ecrire un fichier de commandes qui :
+-- a) demande l’identifiant d’un client
+-- b) insère un tuple dans la table résultat et le visualise. Ce tuple est tel que :
+-- - s'il n'y a pas de commandes pour ce client, il a comme valeur 'pas de commandes',
+-- - sinon, il a comme valeur 'il y a n commande pour le client X', où n est le nombre de
+-- commande pour ce client.
+
+Set serverout on
+
+prompt 'donner identifiant client'
+accept ClientId
+
+DECLARE 
+	n Number;
+	Id Number := &ClientId;
+	message varchar(40);
+
+BEGIN 
+	SELECT COUNT(CommandeId) INTO n 
+	FROM COMMANDE WHERE ClientId = Id;
+	
+	IF n = 0 THEN 
+		message := 'pas de commandes';
+	ELSE 
+		message := 'il y a ' || n || ' commandes pour le client ' || Id;
+	END IF;
+
+	INSERT INTO RESULTAT VALUES ( 0, message );
+	DBMS_OUTPUT.put_line(message);
+
+END;
+/
+
+
+-- Exercice 2  
+-- Ecrire un fichier de commande qui :
+-- 1) demande l’identifiant d’un client
+-- 2) affiche le montant total des commandes pour ce client ainsi que le montant moyen des
+-- commandes des clients de la même ville
+-- 3) effectue la mise à jour des commandes de ce client dans la table commande :
+-- - si le total des commandes est supérieur à la moyenne des commandes dans la même ville,
+-- réduction de 10% du prix total de chaque commande,
+-- - sinon, réduction de 5%.
+prompt 'donner identifiant client'
+accept ClientId
+
+DECLARE 
+	montant Number;
+	moy Number;
+	Id client.clientid%type := &ClientId;
+	red Number;
+	v varchar(40);
+
+BEGIN 
+	SELECT SUM(PRIXTOTAL) INTO montant 
+	FROM COMMANDE WHERE ClientId = Id;
+
+	SELECT ville INTO v 
+	FROM CLIENT WHERE ClientId = Id;
+
+	SELECT AVG(temp.montant) INTO moy
+	FROM ( SELECT ClientId, SUM(PRIXTOTAL) as montant
+		  FROM CLIENT 
+          JOIN COMMANDE ON CLIENT.CLIENTID = CLIENTID.COMMANDE
+		  WHERE ville = v ) temp;
+	
+	DBMS_OUTPUT.put_line('Prix total des commandes du client ' || Id || ' : ' || montant );	
+	DBMS_OUTPUT.put_line('Montant moyen des commandes faites dans la ville ' || v || ' où habite le client ' || Id || ' : ' || moy );
+
+	IF montant > moy THEN red := 0.90;
+	ELSE red := 0.95;
+	END IF;
+
+	UPDATE COMMANDE SET PRIXTOTAL = PRIXTOTAL*red WHERE ClientId = Id;
+END;
+/
+
+
+
+-- Exercice 3 
+-- Ecrire le fichier de commandes qui permet d’afficher la nième et la nième +1 commandes les
+-- plus récentes (Identifiant, Date et PrixTotal) de la table commande. Ces commandes seront au
+-- préalable insérées dans la table résultat. Le nombre n est un paramètre saisi par l’utilisateur.
+
+prompt 'donner la valeur de n'
+accept num
+
+DECLARE 
+	n NUMBER := &num ;
+	CURSOR c IS SELECT CommandeId, Date_com, PrixTotal 
+		    	FROM COMMANDE 
+		    	ORDER BY Date_com;
+    Id commande.commandeid%type;
+	da commande.date_com%type;
+	pt commande.prixtotal%type;
+	message varchar(60);
+	N_TOO_BIG EXCEPTION;
+
+BEGIN 
+	OPEN c;
+	LOOP 
+		FETCH c INTO Id, da, pt;
+		n := n - 1;
+		exit when ( n=0 or c%notfound)
+	END LOOP;
+	
+	if (c%found) then 
+		message := Id || ' # ' || da || ' # ' || pt;
+		INSERT INTO RESULTAT VALUES ( 0, message );
+		DBMS_OUTPUT.put_line(message);
+
+		FETCH c INTO Id, da, pt;
+		if (c%found) then
+				message := Id || ' # ' || da || ' # ' || pt;
+				INSERT INTO RESULTAT VALUES ( 0, message );
+				DBMS_OUTPUT.put_line(message);
+		end if;
+	ELSE RAISE N_TOO_BIG;
+	end if;
+
+	CLOSE c;
+
+	EXCEPTION 
+	WHEN N_TOO_BIG THEN
+		INSERT INTO RESULTAT VALUES ( 0, 'ERREUR : Le n donné est plus grand que le nombre de commandes !' );
+END;
+/
+
+
+DECLARE 
+    n NUMBER := &num ;
+    CURSOR c IS SELECT CommandeId, Date_com, PrixTotal 
+                FROM COMMANDE 
+                ORDER BY Date_com DESC; -- Ajout de DESC pour avoir les plus récentes
+    Id commande.commandeid%type;
+    da commande.date_com%type;
+    pt commande.prixtotal%type;
+    message varchar(100); -- Augmenté un peu la taille pour être sûr
+    N_TOO_BIG EXCEPTION;
+
+BEGIN 
+    OPEN c;
+    LOOP 
+        FETCH c INTO Id, da, pt;
+        -- On sort si on a trouvé la n-ième ou si on a fini la table
+        EXIT WHEN ( n=1 or c%notfound ); -- Correction : n=1 (pour s'arrêter sur la n-ième) et ajout du ;
+        n := n - 1;
+    END LOOP;
+    
+    -- Si on est sorti parce qu'on a trouvé (n=1) et que le curseur a bien une ligne
+    IF (c%FOUND) THEN 
+        -- Traitement de la n-ième
+        message := 'Cde n : ' || Id || ' # ' || da || ' # ' || pt;
+        INSERT INTO RESULTAT VALUES ( Id, message );
+        DBMS_OUTPUT.put_line(message);
+
+        -- On fait un FETCH de plus pour avoir la (n+1)-ième
+        FETCH c INTO Id, da, pt;
+        IF (c%FOUND) THEN
+            message := 'Cde n+1 : ' || Id || ' # ' || da || ' # ' || pt;
+            INSERT INTO RESULTAT VALUES ( Id, message );
+            DBMS_OUTPUT.put_line(message);
+        END IF;
+    ELSE 
+        RAISE N_TOO_BIG;
+    END IF;
+
+    CLOSE c;
+
+EXCEPTION 
+    WHEN N_TOO_BIG THEN
+        IF c%ISOPEN THEN CLOSE c; END IF;
+        INSERT INTO RESULTAT VALUES ( 0, 'ERREUR : Le n est trop grand !' );
+        DBMS_OUTPUT.put_line('ERREUR : Pas assez de commandes.');
+    WHEN OTHERS THEN
+        IF c%ISOPEN THEN CLOSE c; END IF;
+        DBMS_OUTPUT.put_line('Erreur : ' || SQLERRM);
+END;
+/
+
+-- Exercice 4 
+-- Ecrire le fichier de commandes qui utilisera un curseur paramétré et qui permet de vérifier que
+-- le montant d’une commande est égal à la somme des lignes de commandes correspondantes.
+-- Pour chaque commande, une ligne sera insérée dans la table résultat. Cette ligne aura la forme
+-- suivante :
+-- « Cde : 100 Prix Total : 5000 Prix Total Calculé : 5000 »
+
+DECLARE
+	CURSOR c IS 
+		SELECT CommandeId, PrixTotal FROM Commande;
+	CURSOR l(cde commande.commandid%type) IS 
+		SELECT SUM(itemtotal)
+		FROM LigneCommande 
+		WHERE CommandeId = cde;
+
+	ID commande.commandeid%type;
+	PT commande.prixtotal%type;
+	PC NUMBER(15,2) := 0;
+	message varchar2(60);
+	
+BEGIN 
+	OPEN c;
+
+	LOOP 
+		FETCH c INTO ID, PT;
+		EXIT WHEN c%NOTFOUND;
+		
+		open l(ID);
+		fetch l into pc;
+		close l;
+
+		message := 'Cde : ' || ID || ', Prix Total : ' || PT || ', Prix Total Calculé :' || PC;
+		INSERT INTO Resultat VALUES ( 0, message );
+	
+	END LOOP;
+
+	CLOSE c;
+
+END;
+/
+
+-- exo 4 sans curseur paramétré possible et préférable
+DECLARE
+	CURSOR c IS 
+		SELECT CommandeId, PrixTotal 
+		FROM Commande;
+
+	ID commande.commandeid%type;
+	PT commande.prixtotal%type;
+	PC NUMBER(15,2) := 0;
+	message varchar2(60);
+	
+BEGIN 
+	OPEN c;
+
+	LOOP 
+		FETCH c INTO ID, PT;
+		EXIT WHEN c%NOTFOUND;
+		
+		SELECT SUM(itemtotal) INTO PC
+		FROM LigneCommande 
+		WHERE CommandeId = ID;
+
+		message := 'Cde : ' || ID || ', Prix Total : ' || PT || ', Prix Total Calculé :' || PC;
+		INSERT INTO Resultat VALUES ( 0, message );
+	END LOOP;
+
+	CLOSE c;
+
+END;
+/
+
+
+
+-- Exercice 5 
+-- Ecrire le fichier de commande qui permet de modifier le PrixTotal de toutes les commandes
+-- pour lesquelles le Prix total est différent de la somme des lignes de commandes
+-- correspondantes.
+
+DECLARE
+	CURSOR c IS 
+		SELECT CommandeId, PrixTotal 
+		FROM Commande
+		FOR UPDATE OF PrixTotal;
+
+	ID commande.commandeid%type;
+	PT commande.prixtotal%type;
+	PC NUMBER(15,2) := 0;
+	message varchar2(60);
+BEGIN
+	
+	OPEN c;
+
+	LOOP 
+		FETCH c INTO ID, PT;
+		EXIT WHEN c%NOTFOUND;
+		
+		SELECT SUM(itemtotal) INTO PC
+		FROM LigneCommande 
+		WHERE CommandeId = ID;
+
+		if (PC != PT) THEN 	UPDATE Commande SET PrixTotal = PC
+					 		WHERE current of c;
+		END IF;
+		
+	END LOOP;
+
+	CLOSE c;
+END;
+/
+
+
+
+-- Exercice 6 
+-- Compléter le fichier de commandes obtenu à l’exercice 3 pour gérer l’erreur survenant dans le
+-- cas où le nombre N est strictement supérieur au nombre de commandes dans la table
+-- Commandes. Dans ce cas, un message d’erreur sera inséré dans la table résultat.
+
+-- la solution est intégrée dans l'exo3, avec la gestion de l'exception
+
+
+
+-- Exercice 7 
+-- Ecrire le package comportant une procédure de tri des clients dans l’ordre décroissant de leur
+-- montant total de commandes qui fournit la liste triée des identifiants clients et du montant
+-- total de leurs commandes dans la table résultat, et une fonction qui renvoie l’identifiant du
+-- client ayant le montant de commandes le plus élevé.
+
+CREATE PROCEDURE tri_clients IS 
+DECLARE 
+	CURSOR c IS 
+		SELECT cl.ClientId, SUM (co.prixtotal) as total
+		FROM Client cl, commande co
+		WHERE cl.clientid = co.clientid
+		GROUP BY cl.ClientId 
+		ORDER BY total, cl.ClientId desc;
+
+		Id commande.commandeid%type;
+		tot number(15,2);
+  		    
+BEGIN
+	OPEN c; 
+
+	LOOP
+		FETCH c INTO Id, tot;
+		INSERT INTO Resultat VALUES (0, 'ClientId : ' || Id || ', PrixCommande : ' || tot );
+		EXIT WHEN c%NOTFOUND;
+	END LOOP;
+
+	CLOSE c;
+END;
+/
+
+CREATE OR REPLACE FUNCTION Id_max_com() RETURN client.ClientId%TYPE IS		
+DECLARE
+	CURSOR c IS 
+		SELECT cl.ClientId, SUM (co.prixtotal) as total
+		FROM Client cl, commande co
+		WHERE cl.clientid = co.clientid
+		GROUP BY cl.ClientId 
+		ORDER BY total, cl.ClientId desc;
+	Id client.clientid%type := NULL;
+
+BEGIN
+	OPEN c;
+
+	FETCH c INTO Id;
+    
+	CLOSE c;
+
+	RETURN Id;
+END;
+/
+
+
+CREATE or REPLACE PACKAGE exo7 IS
+	FUNCTION Id_max_com() RETURN Client.ClientId%TYPE;
+
+	PROCEDURE tri_clients;
+
+END;
+/
+
+
+CREATE or REPLACE PACKAGE BODY exo7 IS
+	DECLARE 
+	CURSOR c IS 
+		SELECT cl.ClientId, SUM (co.prixtotal) as total
+		FROM Client cl, commande co
+		WHERE cl.clientid = co.clientid
+		GROUP BY cl.ClientId 
+		ORDER BY total, cl.ClientId desc;
+
+	FUNCTION Id_max_com() RETURN client.ClientId%TYPE IS		
+		DECLARE
+
+			Id client.clientid%type := NULL;
+
+			BEGIN
+				OPEN c;
+				FETCH c INTO Id;
+				CLOSE c;
+
+				RETURN Id;
+			END;
+	END;
+
+	PROCEDURE tri_clients IS 
+		DECLARE 
+
+			Id commande.commandeid%type;
+			tot number(15,2);
+  		    
+		BEGIN
+			OPEN c; 
+
+			LOOP
+				FETCH c INTO Id, tot;
+				INSERT INTO Resultat VALUES (0, 'ClientId : ' || Id || ', PrixCommande : ' || tot );
+				EXIT WHEN c%NOTFOUND;
+			END LOOP;
+
+			CLOSE c;
+		END;
+	END;
+	/
+
+
+--            CORRIGES DES TRIGGERS
+-- TRIGGERS 
+-- exo1 (NB: pas besoin de définir la contrainte également sur lignecommande en raison de la clé étrangère cela sera également vérifié)
+alter table commande add constraint ch_1 check (commandeid between 1 and 999);
+
+-- exo2
+alter table client add constraint ch_2 check (nationalite in ('GB', 'E', 'B', 'US') OR (nationalite = 'FR' and adresse is nou null));
+
+-- visualiser les constraintes en consultant le dictionnaire
+select table_name, constraint_name, constraint_type
+from user_constraints
+order by table_name;
+
+select constraint_name, constraint_type
+from user_constraints
+where table_name = 'CLIENT';
+
+-- exo3 et exo 5 integres
+create or replace trigger t_exo3 before insert on commande for each row
+	declare 
+		nbmax commande.commandid%type := 0;
+	begin
+		select max(commandeid) into nbmax
+		from commande;
+		:new.commandeid := nbmax + 1;
+		:new.date_com := sysdate;
+		:new.prixtotal := 0;
+	end;
+/
+
+-- visualisationd des triggers
+desc user_triggers
+select *
+from user_triggers
+where table_name = 'COMMANDE';
+
+-- maintenant meme si vous avez une contrainte not null vous pouvez insérer une commande de ce type
+-- creation d'une commande pour le client 1 avec les bonnes donnees
+insert into commande values (null, null, 1, null);
+
+-- exo 4
+create or replace trigger t_exo4 before insert on client for each row
+	declare
+		dpt client.departement%type := NULL;
+	begin
+		select distinct departement into dpt 
+		from Client
+		where ville = :new.ville;
+		if (SQL%FOUND and dpt != :new.departement) then 
+					raise_application_error(-20002,'violation de dependance fonctionnelle, insertion impossible');
+		end if;
+	end;
+/
+
+-- exo 5 : la solution de exo 5 est intégré au trigger exo3 avec sysdate
+
+-- exo 6 
+-- pour une gestion simplifiée des problèmes, il faut interdire la MAJ sur ligne de commande
+-- il faut s'assurer que itemtotal corresponde bien au prixproduit * quantite
+
+create or replace trigger t_exo61 before update on lignecommande for each row
+	begin
+		raise_application_error(-20004,'pas de MAJ possible, veuillez supprimer puis insérer à nouveau');
+	end;
+/
+create or replace trigger t_exo62 before insert on lignecommande for each row
+	begin
+		:new.itemtotal := :new.prix * :new.quantite;
+	end;
+/
+create or replace trigger t_exo63 after insert or delete on lignecommande for each row
+	begin
+	if (inserting) then 
+		update commande set prixtotal = prixtotal + :new.itemtotal
+		where commandeid = :new.commandeid;
+	end if;
+	if (deleting) then
+		update commande set prixtotal = prixtotal - :old.itemtotal
+		where commandeid = :old.commandeid;
+	end if;
+	end;
+/ 
+
+-- exo7
+alter table commande add remise number(2);
+
+create or replace trigger t_exo7 after update(prixtotal) on commande for each row
+	declare 
+		montant number(15,2) := 0;
+	begin
+		select sum (prixtotal) into montant
+		from commande
+		where ClientId = :old.clientid;
+		if (montant > 1000) then 	update commande set remise = 10
+									where commandeid = :old.commandeid;
+		end if;
+	end;
+/
+
+-- exo8
+-- il n'y a rien à faire de particulier si ce n'est de retirer l'option on delete cascade sur la définition de la clé étrangère clientid dans la table commande
+
+
+-- exo 9 
+create table statistics ( 
+	table_name varchar(25) primary key,
+	ins integer,
+	upd integer,
+	del integer);
+insert into statistics values ('PRODUIT',0,0,0);
+insert into statistics values ('COMMANDE',0,0,0);
+
+create or replace trigger Monitoring_Produit after insert or update or delete on produit for each row
+	begin
+	if inserting then 	update statistics set ins = ins + 1
+						where table_name = 'PRODUIT';
+	end if;
+	if deleting then 	update statistics set del = del + 1
+						where table_name = 'PRODUIT';
+	end if;
+	if updating then 	update statistics set upd = upd + 1
+						where table_name = 'PRODUIT';
+	end if;
+	end;
+/
+
+create or replace trigger Monitoring_Commande after insert or update or delete on commande for each row
+	begin
+	if inserting then 	update statistics set ins = ins + 1
+						where table_name = 'COMMANDE';
+	end if;
+	if deleting then 	update statistics set del = del + 1
+						where table_name = 'COMMANDE';
+	end if;
+	if updating then 	update statistics set upd = upd + 1
+						where table_name = 'COMMANDE';
+	end if;
+	end;
+/
